@@ -1,6 +1,7 @@
 package com.calendar.calendar;
 import java.util.HashMap;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class DateLogic {
         //a class of functions that provides logic for working with dates
@@ -10,9 +11,9 @@ public class DateLogic {
         public DateLogic(){
             months = new HashMap<>();
             populateMonths();
-            //this date is the first sunday in 2020
+            //this date is the first sunday in 2021
             //date is used to work out leap years and day names
-            lineInTheSand = LocalDate.of(2020,01,03);
+            lineInTheSand = LocalDate.of(2021,01,03);
             days = new HashMap<>();
             populateDays();
         }
@@ -56,15 +57,34 @@ public class DateLogic {
             }
             return false;
         }
-        public int extraLeapYearDays(int yearToCheck, int monthToCheck){
+        public int extraLeapYearDays(LocalDate date1){
             //will return number of extra days added onto the usual 365 by leap years since 01/01/2021
-            int noOfLeapYears = (yearToCheck - 2020)/4;
-            if(monthToCheck > 2){
+            int noOfLeapYears = (date1.getYear() - 2020)/4;
+            if(date1.getMonthValue() > 2){
                 return noOfLeapYears;
             }
             if(noOfLeapYears > 0){
                 return noOfLeapYears - 1;
             }
             return 0;
+        }
+        public long numberOfDaysBetweenTwoDates(LocalDate date1, LocalDate date2){
+            //return the number of days between two local dates
+            //using chronounit and extraLeapYearDays
+            long chronoDays = ChronoUnit.DAYS.between(date1,date2);
+            int leapYearDays = extraLeapYearDays(date2) -
+                    extraLeapYearDays(date1);
+            return chronoDays + leapYearDays;
+        }
+        public boolean isDateWeekend(LocalDate date1){
+            //takes in a local date and returns true if date is a weekend
+            //method uses the days between lineInTheSand and date argument
+            //method uses the same system as days; sunday is day 0 to saturday = day 6
+            Long dayNo = (numberOfDaysBetweenTwoDates(lineInTheSand,date1) - extraLeapYearDays(date1))%7;
+            System.out.println(dayNo);
+            if(dayNo == 0 || dayNo == 6){
+                return true;
+            }
+            return false;
         }
 }
