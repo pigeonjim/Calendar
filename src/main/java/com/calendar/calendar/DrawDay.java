@@ -1,33 +1,52 @@
 package com.calendar.calendar;
-import javafx.scene.layout.BorderPane;
+import javafx.geometry.Pos;
+import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.Parent;
 import javafx.scene.text.Font;
+import javafx.geometry.Insets;
+
 
 public class DrawDay {
-    private BorderPane dayLayout;
-    private Label dateLabel, dayInfo;
-    private TextField dayText;
 
     public DrawDay(){
-        dayLayout = new BorderPane();
-        dateLabel = new Label();
-        dateLabel.setFont(Font.font("SansSerif", 30));
-        dayInfo = new Label();
-        dayInfo.setFont(Font.font("SansSerif", 30));
-        dayText = new TextField();
     }
 
-    public void setDateLabelText(String dateLabel) {
-        this.dateLabel.setText(dateLabel);
+    public Parent getView(){
+        //declare and format controls
+        Label dayLabel = new Label("testing");
+        dayLabel.setFont(Font.font("SansSerif", 15));
+        dayLabel.setAlignment(Pos.CENTER);
+        dayLabel.setMinHeight(50);
+        dayLabel.setMinWidth(100);
+        dayLabel.setStyle("fx-padding: 5,5,5,5;" +
+                "-fx-border-style: solid inside;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-insets: 5;" +
+                "-fx-border-radius: 5;" +
+                "-fx-border-color: black;");
+        Label dayText = new Label("Tester");
+        dayText.setMinHeight(150);
+        dayText.setMinWidth(100);
+        dayText.setPadding(new Insets(5));
+        dayText.setStyle("fx-padding: 5,10,5,5;" +
+                "-fx-border-style: solid;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-insets: 5;" +
+                "-fx-border-radius: 5;" +
+                "-fx-border-color: black;");
+
+        //declare main layout for the day view
+        VBox dayLayout = new VBox();
+        //add controls to layout and format
+        dayLayout.getChildren().addAll(dayLabel,dayText);
+        //dayLayout.setPadding(new Insets(5));
+        dayLayout.setAlignment(Pos.TOP_LEFT);
+        dayLayout.setPrefSize(350,100);
+
+
+        return dayLayout;
     }
 
-    public void setDayInfoText(String dayInfo) {
-        this.dayInfo.setText(dayInfo);
-    }
 
-    public String getDayTextInput(){
-        return dayText.getText();
-    }
 }

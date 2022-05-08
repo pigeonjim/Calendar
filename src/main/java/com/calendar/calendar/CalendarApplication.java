@@ -3,21 +3,45 @@ package com.calendar.calendar;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.layout.BorderPane;
 import java.time.LocalDate;
 import java.io.IOException;
+import javafx.scene.layout.GridPane;
 
 public class CalendarApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+        DrawDay testDay = new DrawDay();
+        DrawDay testDay2 = new DrawDay();
+        DrawDay testDay3 = new DrawDay();
+        DrawDay testDay4 = new DrawDay();
+        DrawDay testDay5 = new DrawDay();
+        DrawDay testDay6 = new DrawDay();
+        DrawDay testDay7 = new DrawDay();
+
+        GridPane gp = new GridPane();
+        gp.add(testDay.getView(),0,0);
+        gp.add(testDay2.getView(),1,0);
+        gp.add(testDay3.getView(),2,0);
+        gp.add(testDay4.getView(),3,0);
+        gp.add(testDay5.getView(),4,0);
+        gp.add(testDay6.getView(),5,0);
+        gp.add(testDay7.getView(),6,0);
+        gp.setHgap(15);
+
+        BorderPane layout = new BorderPane();
+        layout.setPrefSize(400,400);
+        layout.setCenter(gp);
+        Scene testScene = new Scene(layout);
+
+        stage.setScene(testScene);
+        stage.show();
 
     }
 
     public static void main(String[] args) {
 
-        //launch();
-        LocalDate date1 = LocalDate.of(2022,8,2);
-        LocalDate date2 = LocalDate.of(2028,03,01);
-        DateLogic dateL = new DateLogic();
-        System.out.println(dateL.isDateWeekend(date1));
+        launch();
+
     }
 }

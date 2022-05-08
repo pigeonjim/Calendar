@@ -78,13 +78,18 @@ public class DateLogic {
         }
         public boolean isDateWeekend(LocalDate date1){
             //takes in a local date and returns true if date is a weekend
-            //method uses the days between lineInTheSand and date argument
-            //method uses the same system as days; sunday is day 0 to saturday = day 6
-            Long dayNo = (numberOfDaysBetweenTwoDates(lineInTheSand,date1) - extraLeapYearDays(date1))%7;
-            System.out.println(dayNo);
-            if(dayNo == 0 || dayNo == 6){
+            String dayName = getWeekDayName(date1);
+            if(dayName.equals("Sunday") || dayName.equals("Saturday")){
                 return true;
             }
             return false;
+        }
+
+        public String getWeekDayName(LocalDate date1){
+                //takes in a local date and returns the name of the day
+                //method uses the days between lineInTheSand and date argument
+                //method uses the same system as days; sunday is day 0 to saturday = day 6
+            Long dayNo = (numberOfDaysBetweenTwoDates(lineInTheSand,date1) - extraLeapYearDays(date1))%7;
+            return days.get(dayNo.intValue());
         }
 }
