@@ -1,4 +1,5 @@
 package com.calendar.calendar;
+
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.time.LocalDate;
@@ -100,4 +101,41 @@ public class DateLogic {
             DateTimeFormatter dateFormatter  = DateTimeFormatter.ofPattern(("dd/MM/YYYY"));
             return dateFormatter.format(date);
         }
+
+        public int getNoDaysInMonth(LocalDate date){
+            String monthToFind = toSentenceCase(date.getMonth().toString());
+            if(isLeapYear(date.getYear()) && date.getMonthValue() == 2){
+                return months.get(monthToFind)[0] + 1;
+            }
+            return months.get(monthToFind)[0];
+        }
+
+        public LocalDate dateBuilderFirstOfMonth(int month, int year){
+            //method to crate a LocalDate of the 1st of the month being processed
+            return LocalDate.of(year,month,01);
+        }
+
+
+    public String toSentenceCase(String word){
+            //method to change the word argument to sentence class.
+            if(word.isEmpty() || word == null){
+                return " ";
+            }
+            StringBuilder changedWords = new StringBuilder();
+            boolean startOfWord = true;
+            for(char letter: word.toCharArray() ){
+                if(letter == '.'){ //at full stop mark next letter for uppercase
+                    startOfWord = true;
+                } else if(!Character.isAlphabetic(letter)) { //check for a punctuation
+                    //do nothing but append
+                }else if(startOfWord){ //if last char was a full stop
+                        letter = Character.toUpperCase(letter);
+                        startOfWord = false;
+                } else {
+                    letter = Character.toLowerCase(letter);
+                }
+                changedWords.append(letter);
+            }
+            return changedWords.toString();
+    }
 }

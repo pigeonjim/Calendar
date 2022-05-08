@@ -27,7 +27,7 @@ public class DrawDay {
                 "-fx-border-width: 2;" +
                 "-fx-border-insets: 2;" +
                 "-fx-border-color: black;" +
-                "-fx-background-color: #B1C1BB80;" +
+                "-fx-background-color: #C3C37080;" +
                 "-fx-background-insets: 5px;" +
                 "-fx-background-radius: 25;");
         Label dayText = new Label("Tester");
@@ -48,7 +48,6 @@ public class DrawDay {
         dayLayout.setAlignment(Pos.CENTER);
         dayLayout.setSpacing(-8);
         dayLayout.setPrefSize(200,200);
-        //dayLayout.setStyle("-fx-overflow: hidden;");
 
         return dayLayout;
     }
