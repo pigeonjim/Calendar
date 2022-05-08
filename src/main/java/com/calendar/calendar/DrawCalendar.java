@@ -31,7 +31,7 @@ public class DrawCalendar {
         //create a DrawDay object for each day of the month and add to hashmap
         for(int i = 1; i <= dLogic.getNoDaysInMonth(thisMonth); i++){
             daysOfTheMonth.put(dateToAdd, new DrawDay());
-            dateToAdd.plusDays(1);
+            dateToAdd= dateToAdd.plusDays(1);
             System.out.println(dateToAdd.toString());
         }
         System.out.println(daysOfTheMonth.size());

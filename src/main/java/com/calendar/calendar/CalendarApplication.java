@@ -36,10 +36,8 @@ public class CalendarApplication extends Application {
         LocalDate now = LocalDate.of(2022,02,01);
         System.out.println(dl.getNoDaysInMonth(now));
 
-
-
-        //DrawCalendar cal = new DrawCalendar(now,dl);
-        //cal.createDrawDays();
+        DrawCalendar cal = new DrawCalendar(now,dl);
+        cal.createDrawDays();
 
     }
 }
