@@ -1,4 +1,5 @@
 package com.calendar.calendar;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -91,5 +92,12 @@ public class DateLogic {
                 //method uses the same system as days; sunday is day 0 to saturday = day 6
             Long dayNo = (numberOfDaysBetweenTwoDates(lineInTheSand,date1) - extraLeapYearDays(date1))%7;
             return days.get(dayNo.intValue());
+        }
+
+        public String getFormattedDate(LocalDate date){
+            //method to output a date in the format dd-mm-yyyy
+            //parameter is a LocalDate
+            DateTimeFormatter dateFormatter  = DateTimeFormatter.ofPattern(("dd/MM/YYYY"));
+            return dateFormatter.format(date);
         }
 }

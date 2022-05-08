@@ -8,45 +8,60 @@ import javafx.geometry.Insets;
 
 
 public class DrawDay {
+    Label dayLabel;
 
     public DrawDay(){
+        dayLabel = new Label("testing");
     }
 
     public Parent getView(){
         //declare and format controls
-        Label dayLabel = new Label("testing");
+
         dayLabel.setFont(Font.font("SansSerif", 15));
         dayLabel.setAlignment(Pos.CENTER);
         dayLabel.setMinHeight(50);
-        dayLabel.setMinWidth(100);
-        dayLabel.setStyle("fx-padding: 5,5,5,5;" +
+        dayLabel.setMinWidth(200);
+        dayLabel.setStyle( "fx-padding: 5;" +
                 "-fx-border-style: solid inside;" +
+                "-fx-border-radius: 25px;" +
                 "-fx-border-width: 2;" +
-                "-fx-border-insets: 5;" +
-                "-fx-border-radius: 5;" +
-                "-fx-border-color: black;");
+                "-fx-border-insets: 2;" +
+                "-fx-border-color: black;" +
+                "-fx-background-color: #B1C1BB80;" +
+                "-fx-background-insets: 5px;" +
+                "-fx-background-radius: 25;");
         Label dayText = new Label("Tester");
         dayText.setMinHeight(150);
-        dayText.setMinWidth(100);
+        dayText.setMinWidth(200);
         dayText.setPadding(new Insets(5));
         dayText.setStyle("fx-padding: 5,10,5,5;" +
                 "-fx-border-style: solid;" +
+                "-fx-border-radius: 10px;" +
                 "-fx-border-width: 2;" +
                 "-fx-border-insets: 5;" +
-                "-fx-border-radius: 5;" +
                 "-fx-border-color: black;");
 
         //declare main layout for the day view
         VBox dayLayout = new VBox();
         //add controls to layout and format
         dayLayout.getChildren().addAll(dayLabel,dayText);
-        //dayLayout.setPadding(new Insets(5));
-        dayLayout.setAlignment(Pos.TOP_LEFT);
-        dayLayout.setPrefSize(350,100);
-
+        dayLayout.setAlignment(Pos.CENTER);
+        dayLayout.setSpacing(-8);
+        dayLayout.setPrefSize(200,200);
+        //dayLayout.setStyle("-fx-overflow: hidden;");
 
         return dayLayout;
     }
 
-
+    public void setWeekendBackgroundColour(){
+        dayLabel.setStyle( "fx-padding: 5;" +
+                "-fx-border-style: solid inside;" +
+                "-fx-border-radius: 25px;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-insets: 2;" +
+                "-fx-border-color: black;" +
+                "-fx-background-color: #A7999B80;" +
+                "-fx-background-insets: 5px;" +
+                "-fx-background-radius: 25;");
+    }
 }

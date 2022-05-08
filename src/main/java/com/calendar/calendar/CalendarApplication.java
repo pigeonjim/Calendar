@@ -4,9 +4,12 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
-import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.io.IOException;
+import java.time.LocalDate;
+
 import javafx.scene.layout.GridPane;
+
 
 public class CalendarApplication extends Application {
     @Override
@@ -18,6 +21,8 @@ public class CalendarApplication extends Application {
         DrawDay testDay5 = new DrawDay();
         DrawDay testDay6 = new DrawDay();
         DrawDay testDay7 = new DrawDay();
+
+        DateLogic dl =new DateLogic();
 
         GridPane gp = new GridPane();
         gp.add(testDay.getView(),0,0);
@@ -36,6 +41,11 @@ public class CalendarApplication extends Application {
 
         stage.setScene(testScene);
         stage.show();
+
+        testDay7.setWeekendBackgroundColour();
+        LocalDate date = LocalDate.now();
+
+        testDay7.dayLabel.setText(dl.getFormattedDate(date));
 
     }
 
