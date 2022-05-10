@@ -1,4 +1,4 @@
-package com.calendar.calendar;
+package com.calendar;
 
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;

@@ -3,6 +3,6 @@ module com.calendar.calendar {
     requires javafx.fxml;
 
 
-    opens com.calendar.calendar to javafx.fxml;
-    exports com.calendar.calendar;
+    opens com.calendar to javafx.fxml;
+    exports com.calendar;
 }

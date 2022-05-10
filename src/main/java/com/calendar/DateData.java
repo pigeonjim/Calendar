@@ -1,4 +1,4 @@
-package com.calendar.calendar;
+package com.calendar;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

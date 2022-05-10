@@ -1,14 +1,12 @@
-package com.calendar.calendar;
+package com.calendar;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
-import java.time.format.DateTimeFormatter;
+
 import java.io.IOException;
 import java.time.LocalDate;
-
-import javafx.scene.layout.GridPane;
 
 
 public class CalendarApplication extends Application {

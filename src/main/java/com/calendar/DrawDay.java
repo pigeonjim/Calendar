@@ -1,4 +1,4 @@
-package com.calendar.calendar;
+package com.calendar;
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;

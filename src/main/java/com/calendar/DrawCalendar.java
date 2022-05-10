@@ -1,8 +1,5 @@
-package com.calendar.calendar;
+package com.calendar;
 
-
-import javafx.scene.Parent;
-import javafx.scene.control.Label;
 
 import java.time.LocalDate;
 import java.util.HashMap;

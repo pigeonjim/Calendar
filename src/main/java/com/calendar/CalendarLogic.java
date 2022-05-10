@@ -1,4 +1,4 @@
-package com.calendar.calendar;
+package com.calendar;
 
 public class CalendarLogic {
 }
