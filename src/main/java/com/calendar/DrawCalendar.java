@@ -7,8 +7,6 @@ import javafx.scene.layout.GridPane;
 
 
 public class DrawCalendar {
-    //method to draw a calendar for one month
-    //the month drawn will be the month of the date provided
 
     private HashMap<LocalDate, DrawDay> daysOfTheMonth;
     LocalDate thisMonth;
@@ -48,7 +46,7 @@ public class DrawCalendar {
     public void createDrawDays(){
         daysOfTheMonth.clear();
         LocalDate dateToAdd = dLogic.dateBuilderEndOfMonth(thisMonth);
-        //create a DrawDay object for each day of the month and add to hashmap
+
         for(int i = 1; i <= dLogic.getNoDaysInMonth(thisMonth); i++){
             daysOfTheMonth.put(dateToAdd, new DrawDay((dLogic.getWeekDayName(dateToAdd)  + " " + dLogic.getFormattedDate(dateToAdd))));
             dateToAdd= dateToAdd.minusDays(1);

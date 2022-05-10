@@ -8,7 +8,7 @@ import javafx.geometry.Insets;
 
 
 public class DrawDay {
-    Label dayLabel, dayText;
+    private Label dayLabel, dayText;
 
     public DrawDay(String date){
         dayText = new Label(" ");
@@ -64,4 +64,5 @@ public class DrawDay {
                 "-fx-background-insets: 5px;" +
                 "-fx-background-radius: 25;");
     }
+
 }
