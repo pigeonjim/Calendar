@@ -8,10 +8,11 @@ import javafx.geometry.Insets;
 
 
 public class DrawDay {
-    Label dayLabel;
+    Label dayLabel, dayText;
 
-    public DrawDay(){
-        dayLabel = new Label("testing");
+    public DrawDay(String date){
+        dayText = new Label(" ");
+        dayLabel = new Label(date);
     }
 
     public Parent getView(){
@@ -30,7 +31,7 @@ public class DrawDay {
                 "-fx-background-color: #C3C37080;" +
                 "-fx-background-insets: 5px;" +
                 "-fx-background-radius: 25;");
-        Label dayText = new Label("Tester");
+
         dayText.setMinHeight(150);
         dayText.setMinWidth(200);
         dayText.setPadding(new Insets(5));

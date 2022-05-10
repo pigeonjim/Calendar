@@ -87,17 +87,22 @@ public class DateLogic {
             return false;
         }
 
+        public long getDayNoFromDate(LocalDate date1){
+            //method uses the days between lineInTheSand and date argument
+            //method uses the same system as days; sunday is day 0 to saturday = day 6
+            return (numberOfDaysBetweenTwoDates(lineInTheSand,date1) - extraLeapYearDays(date1))%7;
+
+        }
+
         public String getWeekDayName(LocalDate date1){
                 //takes in a local date and returns the name of the day
                 //method uses the days between lineInTheSand and date argument
                 //method uses the same system as days; sunday is day 0 to saturday = day 6
-            Long dayNo = (numberOfDaysBetweenTwoDates(lineInTheSand,date1) - extraLeapYearDays(date1))%7;
+            Long dayNo = getDayNoFromDate(date1);
             return days.get(dayNo.intValue());
         }
 
         public String getFormattedDate(LocalDate date){
-            //method to output a date in the format dd-mm-yyyy
-            //parameter is a LocalDate
             DateTimeFormatter dateFormatter  = DateTimeFormatter.ofPattern(("dd/MM/YYYY"));
             return dateFormatter.format(date);
         }
@@ -110,25 +115,26 @@ public class DateLogic {
             return months.get(monthToFind)[0];
         }
 
-        public LocalDate dateBuilderFirstOfMonth(int month, int year){
-            //method to crate a LocalDate of the 1st of the month being processed
-            return LocalDate.of(year,month,01);
+        public LocalDate dateBuilderFirstOfMonth(LocalDate date){
+            return LocalDate.of(date.getYear(),date.getMonthValue(),01);
         }
-
+    public LocalDate dateBuilderEndOfMonth(LocalDate date){
+        int lastDay = getNoDaysInMonth(date);
+        return LocalDate.of(date.getYear(),date.getMonthValue(),lastDay);
+    }
 
     public String toSentenceCase(String word){
-            //method to change the word argument to sentence class.
             if(word.isEmpty() || word == null){
                 return " ";
             }
             StringBuilder changedWords = new StringBuilder();
             boolean startOfWord = true;
             for(char letter: word.toCharArray() ){
-                if(letter == '.'){ //at full stop mark next letter for uppercase
+                if(letter == '.'){
                     startOfWord = true;
-                } else if(!Character.isAlphabetic(letter)) { //check for a punctuation
+                } else if(!Character.isAlphabetic(letter)) {
                     //do nothing but append
-                }else if(startOfWord){ //if last char was a full stop
+                }else if(startOfWord){
                         letter = Character.toUpperCase(letter);
                         startOfWord = false;
                 } else {
