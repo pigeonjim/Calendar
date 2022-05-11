@@ -22,10 +22,8 @@ public class DrawCalendar {
     }
 
     public Parent getView(){
-
         drawMonth();
         return daysLayout;
-
     }
 
     public void createDrawDays(){

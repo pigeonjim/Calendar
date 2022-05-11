@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 public class DrawUI {
 
-    private ComboBox monthDD;
+    private ComboBox monthDD, yearDD;
     private HBox layout;
     private DateLogic dateLogic;
     private DrawCalendar drawCalendar;
@@ -24,27 +24,31 @@ public class DrawUI {
 
     public Parent getView(){
         ObservableList<String> months = FXCollections.observableArrayList(new DateFormatSymbols().getMonths());
+        ObservableList<String> years = FXCollections.observableArrayList("2021","2022","2023","2024","2025","2026");
         monthDD =new ComboBox(months);
+        yearDD = new ComboBox(years);
         layout = new HBox();
-        layout.getChildren().add(monthDD);
+        layout.getChildren().addAll(monthDD,yearDD);
 
         monthDD.getSelectionModel().select(allData.getWorkingDate().getMonthValue() - 1);
+        yearDD.setValue(allData.getWorkingDate().getYear());
 
         monthDD.setOnAction((event) -> {
-            monthDDChange();
+            dateDDChange();
+        });
+        yearDD.setOnAction((event) -> {
+            dateDDChange();
         });
 
         return layout;
     }
 
-    public void monthDDChange(){
-        String whatMonth = monthDD.getValue().toString();
-        if(!whatMonth.isEmpty()){
-            LocalDate newDate = this. dateLogic.buildDateFromStrings(monthDD.getValue().toString(),2022);
+    public void dateDDChange(){
+        if(!monthDD.getValue().toString().isEmpty() && !yearDD.getValue().toString().isEmpty() ){
+            LocalDate newDate = this. dateLogic.buildDateFromStrings(monthDD.getValue().toString(),Integer.valueOf(yearDD.getValue().toString()));
             allData.setWorkingDate(newDate);
             drawCalendar.drawMonth();
         }
-
     }
 
 }
