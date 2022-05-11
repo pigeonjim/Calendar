@@ -1,25 +1,33 @@
 package com.calendar;
 
 import javafx.collections.FXCollections;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.Parent;
 import javafx.collections.ObservableList;
 import java.text.DateFormatSymbols;
 import java.time.LocalDate;
+import javafx.application.Platform;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class DrawUI {
 
     private ComboBox monthDD, yearDD;
-    private HBox layout;
+    private HBox buttonLayout;
+    private BorderPane layout;
     private DateLogic dateLogic;
     private DrawCalendar drawCalendar;
     private AllData allData;
+    Button exit;
 
     public DrawUI(DateLogic dLogic, DrawCalendar dCal, AllData allData){
         this.dateLogic = dLogic;
         this.drawCalendar = dCal;
         this.allData = allData;
+        exit = new Button("Exit");
     }
 
     public Parent getView(){
@@ -27,8 +35,8 @@ public class DrawUI {
         ObservableList<String> years = FXCollections.observableArrayList("2021","2022","2023","2024","2025","2026");
         monthDD =new ComboBox(months);
         yearDD = new ComboBox(years);
-        layout = new HBox();
-        layout.getChildren().addAll(monthDD,yearDD);
+        buttonLayout = new HBox();
+        buttonLayout.getChildren().addAll(monthDD,yearDD);
 
         monthDD.getSelectionModel().select(allData.getWorkingDate().getMonthValue() - 1);
         yearDD.setValue(allData.getWorkingDate().getYear());
@@ -40,7 +48,18 @@ public class DrawUI {
             dateDDChange();
         });
 
-        layout.setStyle( "-fx-border-width: 2;" +
+        layout = new BorderPane();
+        layout.setLeft(buttonLayout);
+        layout.setRight(exit);
+        exit.setPrefSize(100,40);
+        exit.setStyle("-fx-background-color: #FFC30080");
+        exit.setFont(Font.font("SansSerif", 18));
+
+        exit.setOnAction((event) -> {
+            Platform.exit();
+        } );
+
+        buttonLayout.setStyle( "-fx-border-width: 2;" +
                 "-fx-border-insets: 10;" +
                 "-fx-border-color: black;");
 
