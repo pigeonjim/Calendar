@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.StageStyle;
 
 public class CalendarApplication extends Application {
     @Override
@@ -22,6 +23,7 @@ public class CalendarApplication extends Application {
 
         stage.setScene(mainScene);
         stage.setTitle(allData.getWorkingDate().toString() + " " + allData.getWorkingDate().getYear());
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
     }
 

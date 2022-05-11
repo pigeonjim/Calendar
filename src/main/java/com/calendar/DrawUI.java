@@ -57,14 +57,14 @@ public class DrawUI {
         layout = new BorderPane();
         layout.setLeft(buttonLayout);
         layout.setRight(exit);
-        layout.setMargin(exit, new Insets(20));
+        layout.setMargin(exit, new Insets(10,10,5,10));
 
-        exit.setPrefSize(100,40);
+        exit.setPrefSize(100,20);
         exit.setStyle("-fx-background-color: #ECE146;" +
                 "-fx-background-radius: 25;");
         exit.setFont(Font.font("SansSerif", 18));
         exit.setEffect(new DropShadow());
-        layout.setMargin(buttonLayout,new Insets(10));
+        layout.setMargin(buttonLayout,new Insets(10,10,5,10));
 
 
         exit.setOnAction((event) -> {
