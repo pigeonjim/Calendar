@@ -5,14 +5,13 @@ import java.util.HashMap;
 
 public class AllData {
     private HashMap<LocalDate, DayData> allData;
-    private LocalDate workingDate = LocalDate.of(2022,05,10);
+    private LocalDate workingDate = LocalDate.now();
     public AllData(DateLogic dLogic){
         allData = new HashMap<>();
     }
 
     public AllData(){
         allData = new HashMap<>();
-
     }
 
     public void addNewDayData(LocalDate date, String text){

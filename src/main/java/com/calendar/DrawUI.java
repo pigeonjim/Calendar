@@ -25,9 +25,10 @@ public class DrawUI {
     public Parent getView(){
         ObservableList<String> months = FXCollections.observableArrayList(new DateFormatSymbols().getMonths());
         monthDD =new ComboBox(months);
-
         layout = new HBox();
         layout.getChildren().add(monthDD);
+
+        monthDD.getSelectionModel().select(allData.getWorkingDate().getMonthValue() - 1);
 
         monthDD.setOnAction((event) -> {
             monthDDChange();

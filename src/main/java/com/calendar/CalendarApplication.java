@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
-
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -15,7 +14,6 @@ public class CalendarApplication extends Application {
 
         DateLogic dateLogic =new DateLogic();
         AllData allData = new AllData();
-        LocalDate now = allData.getWorkingDate();
         DrawCalendar drawCalendar = new DrawCalendar(allData,dateLogic);
         DrawUI ui = new DrawUI(dateLogic, drawCalendar, allData);
 
@@ -28,7 +26,7 @@ public class CalendarApplication extends Application {
         Scene testScene = new Scene(layout);
 
         stage.setScene(testScene);
-        stage.setTitle(now.getMonth().toString() + " " + now.getYear());
+        stage.setTitle(allData.getWorkingDate().toString() + " " + allData.getWorkingDate().getYear());
         stage.show();
     }
 
