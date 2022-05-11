@@ -28,7 +28,7 @@ public class AllData {
         if(allData.containsKey(date)){
             return this.allData.get(date).getTodaysData();
         }
-        return "No data found ";
+        return "";
     }
 
     public void deleteAllDataFromDay(LocalDate date){

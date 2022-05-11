@@ -16,25 +16,26 @@ import javafx.stage.StageStyle;
 public class DrawTextPopup{
 
     private AllData allData;
-    private LocalDate date;
     private VBox layout;
     private Button addButton, seeButton,close;
     private Stage popUp;
     private TextField inputBox;
-    private String returnString;
     private DrawDay drawDay;
+    private Label output;
 
     public DrawTextPopup(AllData allData, DrawDay drawDay){
         this.allData = allData;
         this.layout = new VBox();
         this.inputBox = new TextField();
         this.drawDay = drawDay;
+        this.output = new Label();
     }
 
     public void showPopup(){
         close = new Button("Close");
         close.setOnAction((event) -> {
             closeEvent();
+            popUp.close();
         });
 
         popUp = new Stage();
@@ -46,15 +47,28 @@ public class DrawTextPopup{
         popUp.setScene(popScene);
         popUp.initStyle(StageStyle.TRANSPARENT);
         popUp.show();
-
-        System.out.println(returnString);
     }
 
     public void choice(){
 
         addButton = new Button("Click to add new entry");
         seeButton = new Button("Click to see all entries for this day");
-        layout.getChildren().addAll(addButton,seeButton,close);
+        layout.getChildren().addAll(addButton,seeButton,close,inputBox,output);
+        inputBox.setDisable(true);
+        inputBox.setStyle("-fx-background-radius: 25;"+
+                "-fx-border-style: solid inside;" +
+                "-fx-border-radius: 15px;" +
+                "-fx-border-width: 4;" +
+                "-fx-border-color: #2B3984;" +
+                "-fx-background-color: #FFFFFF");
+        output.setMinSize(300,300);
+        output.setAlignment(Pos.TOP_CENTER);
+        output.setStyle("-fx-background-radius: 25;"+
+                "-fx-border-style: solid inside;" +
+                "-fx-border-radius: 15px;" +
+                "-fx-border-width: 4;" +
+                "-fx-border-color: #2B3984;" +
+                "-fx-background-color: #FFFFFF");
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(10));
         layout.setSpacing(15);
@@ -64,40 +78,42 @@ public class DrawTextPopup{
                 "-fx-border-width: 4;" +
                 "-fx-border-color: black;" +
                 "-fx-background-color: #9BADDC");
-        layout.setMinSize(150,200);
 
         addButton.setOnAction((event) -> {
             addButtonEvent();
         });
 
         seeButton.setOnAction((event) -> {
-            layout.getChildren().clear();
-
-           try{
-               Label show = new Label(allData.getDayText(date));
-               layout.getChildren().addAll(show,close);
-               close.setText("Close");
-           }catch(Exception e){
-               System.out.println("No data for this day");
-           }
+            seeButtonEvent();
         });
 
     }
-
         private void addButtonEvent(){
-            layout.getChildren().remove(addButton);
-            layout.getChildren().add(inputBox);
+            inputBox.setDisable(false);
+            addButton.setDisable(true);
+            seeButton.setDisable(false);
+            output.setDisable(true);
             close.setText("Close and save");
         }
 
-        private void closeEvent(){
+        private void seeButtonEvent(){
+            closeEvent();
+            if(layout.getChildren().contains(inputBox)){
+                inputBox.setText("");
+                inputBox.setDisable(true);
+            }
+            output.setDisable(false);
+            addButton.setDisable(false);
+            seeButton.setDisable(true);
+            close.setText("Close");
+            output.setText(allData.getDayText(drawDay.getDate()));
 
+        }
+        private void closeEvent(){
                 if(layout.getChildren().contains(inputBox)){
                     allData.addNewDayData(drawDay.getDate(),inputBox.getText().toString());
                     drawDay.setDayText();
                 }
-                popUp.close();
-
         }
 
 }

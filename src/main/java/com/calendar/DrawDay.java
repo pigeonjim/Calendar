@@ -39,6 +39,7 @@ public class DrawDay {
 
         dayText.setMinHeight(150);
         dayText.setMinWidth(200);
+        dayText.setAlignment(Pos.TOP_CENTER);
         dayText.setPadding(new Insets(5));
         dayText.setStyle("fx-padding: 5,10,5,5;" +
                 "-fx-border-style: solid;" +
@@ -51,9 +52,7 @@ public class DrawDay {
                 "-fx-background-radius: 10;");
         dayText.setText(allData.getDayText(date));
 
-        //declare main layout for the day view
         VBox dayLayout = new VBox();
-        //add controls to layout and format
         dayLayout.getChildren().addAll(dayLabel,dayText);
         dayLayout.setAlignment(Pos.CENTER);
         dayLayout.setSpacing(-8);
