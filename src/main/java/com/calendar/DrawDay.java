@@ -37,9 +37,7 @@ public class DrawDay {
                 "-fx-border-width: 3;" +
                 "-fx-border-insets: 2;" +
                 "-fx-border-color: black;" +
-                "-fx-background-color: #83BC61;" +
-                "-fx-background-insets: 5px;" +
-                "-fx-background-radius: 25;");
+                "-fx-font-weight: bold;");
 
         dayText.setMinHeight(150);
         dayText.setMinWidth(200);
@@ -77,7 +75,7 @@ public class DrawDay {
                 "-fx-border-width: 3;" +
                 "-fx-border-insets: 2;" +
                 "-fx-border-color: black;" +
-                "-fx-background-color: #1B4F81;" +
+                "-fx-background-color: #1B3B81;" +
                 "-fx-background-insets: 5px;" +
                 "-fx-background-radius: 25;");
         dayLabel.setTextFill(Color.web("#EDEDED"));

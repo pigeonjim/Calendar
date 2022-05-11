@@ -4,7 +4,9 @@ import javafx.scene.Parent;
 import java.time.LocalDate;
 import java.util.HashMap;
 import javafx.scene.layout.GridPane;
-
+import javafx.scene.control.ScrollBar;
+import javafx.geometry.Orientation;
+import javafx.scene.layout.BorderPane;
 
 public class DrawCalendar {
 
@@ -14,6 +16,8 @@ public class DrawCalendar {
     private DateLogic dateLogic;
     private LocalDate[] dateAry;
     private GridPane daysLayout;
+    private BorderPane calBP;
+    private ScrollBar vSB;
     public DrawCalendar(AllData allData,DateLogic dateLogic){
         this.daysOfTheMonth = new HashMap<>();
         this.allData = allData;
@@ -23,7 +27,17 @@ public class DrawCalendar {
 
     public Parent getView(){
         drawMonth();
-        return daysLayout;
+
+        calBP = new BorderPane();
+        calBP.setMaxSize(550,550);
+
+        calBP.setCenter(daysLayout);
+
+        vSB = new ScrollBar();
+        vSB.setOrientation(Orientation.VERTICAL);
+        calBP.setRight(vSB);
+
+        return calBP;
     }
 
     public void createDrawDays(){
@@ -65,7 +79,7 @@ public class DrawCalendar {
 
             column++;
         }
-        daysLayout.setStyle("-fx-background-color: radial-gradient(center 60% 80%,radius 70%,#9C6F6F,#1549AB);");
+        daysLayout.setStyle("-fx-background-color: linear-gradient(to top left, #26d07c, #A4ADA8);");
         daysLayout.setVgap(5);
         daysLayout.setHgap(5);
     }

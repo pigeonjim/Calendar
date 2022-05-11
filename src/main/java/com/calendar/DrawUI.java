@@ -1,6 +1,8 @@
 package com.calendar;
 
 import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 import javafx.application.Platform;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.effect.DropShadow;
 
 public class DrawUI {
 
@@ -21,7 +24,8 @@ public class DrawUI {
     private DateLogic dateLogic;
     private DrawCalendar drawCalendar;
     private AllData allData;
-    Button exit;
+    private Button exit;
+
 
     public DrawUI(DateLogic dLogic, DrawCalendar dCal, AllData allData){
         this.dateLogic = dLogic;
@@ -37,6 +41,8 @@ public class DrawUI {
         yearDD = new ComboBox(years);
         buttonLayout = new HBox();
         buttonLayout.getChildren().addAll(monthDD,yearDD);
+        buttonLayout.setPrefSize(250,50);
+        buttonLayout.setSpacing(10);
 
         monthDD.getSelectionModel().select(allData.getWorkingDate().getMonthValue() - 1);
         yearDD.setValue(allData.getWorkingDate().getYear());
@@ -51,17 +57,19 @@ public class DrawUI {
         layout = new BorderPane();
         layout.setLeft(buttonLayout);
         layout.setRight(exit);
+        layout.setAlignment(exit, Pos.CENTER);
+
         exit.setPrefSize(100,40);
-        exit.setStyle("-fx-background-color: #FFC30080");
+        exit.setStyle("-fx-background-color: #FCEB1C;" +
+                "-fx-background-radius: 25;");
         exit.setFont(Font.font("SansSerif", 18));
+        exit.setEffect(new DropShadow());
+        layout.setMargin(buttonLayout,new Insets(10));
+
 
         exit.setOnAction((event) -> {
             Platform.exit();
         } );
-
-        buttonLayout.setStyle( "-fx-border-width: 2;" +
-                "-fx-border-insets: 10;" +
-                "-fx-border-color: black;");
 
         return layout;
     }
