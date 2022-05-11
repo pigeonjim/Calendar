@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.geometry.Insets;
 import java.time.LocalDate;
+import javafx.scene.control.ScrollPane;
 
 public class DrawDay {
     private Label dayLabel, dayText;
@@ -43,20 +44,18 @@ public class DrawDay {
         dayText.setPadding(new Insets(5));
         dayText.setStyle("fx-padding: 5,10,5,5;" +
                 "-fx-border-style: solid;" +
-                "-fx-border-radius: 10px;" +
+                "-fx-border-radius: 25px;" +
                 "-fx-border-width: 4;" +
-                "-fx-border-insets: 2;" +
                 "-fx-border-color: black;" +
                 "-fx-background-color: #F3F3F5;" +
                 "-fx-background-insets: 5px;" +
-                "-fx-background-radius: 10;");
+                "-fx-background-radius: 15;");
         dayText.setText(allData.getDayText(date));
-
         VBox dayLayout = new VBox();
         dayLayout.getChildren().addAll(dayLabel,dayText);
         dayLayout.setAlignment(Pos.CENTER);
-        dayLayout.setSpacing(-8);
-        dayLayout.setPrefSize(200,200);
+        dayLayout.setSpacing(-5);
+        dayLayout.setMinSize(200,200);
 
         dayText.setOnMouseClicked((event) -> {
             clickTextLabel();
