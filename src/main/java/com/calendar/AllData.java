@@ -28,7 +28,10 @@ public class AllData {
     }
 
     public String getDayText(LocalDate date){
-        return this.allData.get(date).getTodaysData();
+        if(allData.containsKey(date)){
+            return this.allData.get(date).getTodaysData();
+        }
+        return "No data found ";
     }
 
     public void deleteAllDataFromDay(LocalDate date){

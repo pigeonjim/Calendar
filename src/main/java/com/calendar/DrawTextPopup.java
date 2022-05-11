@@ -1,7 +1,6 @@
 package com.calendar;
 
 import java.time.LocalDate;
-
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.Parent;
@@ -11,7 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 
-public class DrawTextPopup {
+public class DrawTextPopup{
 
     private AllData allData;
     private LocalDate date;
@@ -26,15 +25,19 @@ public class DrawTextPopup {
         this.date = date;
         this.layout = new VBox();
         this.header = new Label();
+        this.inputBox = new TextField();
     }
 
-    public void showDay(){
+    public void showPopup(){
         close = new Button("Close");
         close.setOnAction((event) -> {
-            closeEvent(inputBox);
+            closeEvent();
         });
 
         popUp = new Stage();
+        popUp.setTitle(date.toString());
+        popUp.setMinHeight(250);
+        popUp.setMinWidth(250);
         popUp.initModality(Modality.APPLICATION_MODAL);
         choice();
         Scene popScene = new Scene(layout);
@@ -47,7 +50,7 @@ public class DrawTextPopup {
 
         addButton = new Button("Click to add new entry");
         seeButton = new Button("Click to see all entries for this day");
-        layout.getChildren().addAll(addButton,seeButton);
+        layout.getChildren().addAll(addButton,seeButton,close);
 
         addButton.setOnAction((event) -> {
             addButtonEvent();
@@ -55,26 +58,30 @@ public class DrawTextPopup {
 
         seeButton.setOnAction((event) -> {
             layout.getChildren().clear();
-            Label show = new Label(allData.getDayText(date));
-            layout.getChildren().addAll(show,close);
+
+           try{
+               Label show = new Label(allData.getDayText(date));
+               layout.getChildren().addAll(show,close);
+           }catch(Exception e){
+               System.out.println("No data for this day");
+           }
         });
 
     }
 
         private void addButtonEvent(){
-            layout.getChildren().clear();
-            inputBox = new TextField();
-            layout.getChildren().addAll(inputBox,close);
+            layout.getChildren().remove(addButton);
+            layout.getChildren().add(inputBox);
         }
 
-        private void closeEvent(TextField text){
-            if(!text.getText().isEmpty()){
-                allData.addNewDayData(this.date,text.getText());
-                text.setText(" ");
+        private void closeEvent(){
+
+                if(layout.getChildren().contains(inputBox)){
+                    allData.addNewDayData(this.date,inputBox.getText());
+                    inputBox.setText(" ");
+                }
                 layout.getChildren().clear();
                 popUp.close();
-            }
-
         }
 
 }

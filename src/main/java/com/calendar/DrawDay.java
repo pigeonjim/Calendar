@@ -82,6 +82,7 @@ public class DrawDay {
     private void clickTextLabel(){
         System.out.println(date.toString() + " Click working");
         DrawTextPopup popup = new DrawTextPopup(allData,this.date);
+        popup.showPopup();
     }
 
 
