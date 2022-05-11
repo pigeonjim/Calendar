@@ -27,6 +27,10 @@ public class AllData {
         }
     }
 
+    public String getDayText(LocalDate date){
+        return this.allData.get(date).getTodaysData();
+    }
+
     public void deleteAllDataFromDay(LocalDate date){
             allData.remove(date);
     }

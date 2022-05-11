@@ -31,7 +31,7 @@ public class DrawCalendar {
         LocalDate dateToAdd = dateLogic.dateBuilderEndOfMonth(allData.getWorkingDate());
 
         for(int i = 1; i <= dateLogic.getNoDaysInMonth(allData.getWorkingDate()); i++){
-            daysOfTheMonth.put(dateToAdd, new DrawDay((dateLogic.getWeekDayName(dateToAdd)  + " " + dateLogic.getFormattedDate(dateToAdd))));
+            daysOfTheMonth.put(dateToAdd, new DrawDay(dateToAdd,allData,dateLogic));
             dateToAdd= dateToAdd.minusDays(1);
         }
     }

@@ -40,6 +40,10 @@ public class DrawUI {
             dateDDChange();
         });
 
+        layout.setStyle( "-fx-border-width: 2;" +
+                "-fx-border-insets: 10;" +
+                "-fx-border-color: black;");
+
         return layout;
     }
 

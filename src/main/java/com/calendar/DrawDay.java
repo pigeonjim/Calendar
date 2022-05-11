@@ -1,18 +1,27 @@
 package com.calendar;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import javafx.scene.Parent;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.geometry.Insets;
 
+import java.time.LocalDate;
 
 public class DrawDay {
     private Label dayLabel, dayText;
+    private AllData allData;
+    private DateLogic dateLogic;
+    private LocalDate date;
 
-    public DrawDay(String date){
+    public DrawDay(LocalDate date, AllData allData, DateLogic dateLogic){
         dayText = new Label(" ");
-        dayLabel = new Label(date);
+        this.allData = allData;
+        this.dateLogic = dateLogic;
+        this.date = date;
+        dayLabel = new Label((dateLogic.getWeekDayName(this.date)  + " " + dateLogic.getFormattedDate(this.date)));
     }
 
     public Parent getView(){
@@ -28,7 +37,7 @@ public class DrawDay {
                 "-fx-border-width: 2;" +
                 "-fx-border-insets: 2;" +
                 "-fx-border-color: black;" +
-                "-fx-background-color: #C3C37080;" +
+                "-fx-background-color: #83BC61;" +
                 "-fx-background-insets: 5px;" +
                 "-fx-background-radius: 25;");
 
@@ -50,6 +59,10 @@ public class DrawDay {
         dayLayout.setSpacing(-8);
         dayLayout.setPrefSize(200,200);
 
+        dayText.setOnMouseClicked((event) -> {
+            clickTextLabel();
+        });
+
         return dayLayout;
     }
 
@@ -60,9 +73,16 @@ public class DrawDay {
                 "-fx-border-width: 2;" +
                 "-fx-border-insets: 2;" +
                 "-fx-border-color: black;" +
-                "-fx-background-color: #A7999B80;" +
+                "-fx-background-color: #1B4F81;" +
                 "-fx-background-insets: 5px;" +
                 "-fx-background-radius: 25;");
+        dayLabel.setTextFill(Color.web("#EDEDED"));
     }
+
+    private void clickTextLabel(){
+        System.out.println(date.toString() + " Click working");
+        DrawTextPopup popup = new DrawTextPopup(allData,this.date);
+    }
+
 
 }
