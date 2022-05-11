@@ -4,10 +4,8 @@ import java.lang.StringBuilder;
 
 public class DayData {
     private ArrayList<String> todaysData;
-    private DateLogic dLogic;
-    public DayData(DateLogic dLogic){
+    public DayData(){
         todaysData = new ArrayList<>();
-        this.dLogic = dLogic;
     }
 
     public String getTodaysData(){

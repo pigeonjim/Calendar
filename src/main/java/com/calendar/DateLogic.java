@@ -144,4 +144,9 @@ public class DateLogic {
             }
             return changedWords.toString();
     }
+
+    public LocalDate buildDateFromStrings(String month, int year){
+        return LocalDate.of(year,months.get(month)[1],01);
+
+    }
 }

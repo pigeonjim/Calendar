@@ -9,18 +9,19 @@ import javafx.scene.layout.GridPane;
 public class DrawCalendar {
 
     private HashMap<LocalDate, DrawDay> daysOfTheMonth;
-    LocalDate thisMonth;
-    DateLogic dLogic;
-    LocalDate[] dateAry;
+    private LocalDate thisMonth;
+    private DateLogic dLogic;
+    private LocalDate[] dateAry;
+    private GridPane daysLayout;
     public DrawCalendar(LocalDate date,DateLogic dLogic){
         this.daysOfTheMonth = new HashMap<>();
         this.thisMonth = date;
         this.dLogic = dLogic;
+        daysLayout = new GridPane();
     }
 
     public Parent getView(){
 
-        GridPane daysLayout = new GridPane();
         createDrawDays();
         dateAry = new LocalDate[daysOfTheMonth.size()];
 
@@ -59,5 +60,9 @@ public class DrawCalendar {
             dateAry[index] = date;
             index++;
         }
+    }
+
+    public void changeMonth(){
+
     }
 }

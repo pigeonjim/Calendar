@@ -12,14 +12,19 @@ import java.time.LocalDate;
 public class CalendarApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-         DateLogic dl =new DateLogic();
-        LocalDate now = LocalDate.of(2022,05,10);
-        DrawCalendar cal = new DrawCalendar(now,dl);
+
+        DateLogic dateLogic =new DateLogic();
+        AllData allData = new AllData();
+        LocalDate now = allData.getWorkingDate();
+        DrawCalendar drawCalendar = new DrawCalendar(now,dateLogic);
+        DrawUI ui = new DrawUI(dateLogic, drawCalendar, allData);
+
 
         BorderPane layout = new BorderPane();
         layout.setPrefSize(800,800);
 
-        layout.setRight(cal.getView());
+        layout.setRight(drawCalendar.getView());
+        layout.setTop(ui.getView());
         //layout.setCenter();
         Scene testScene = new Scene(layout);
 
@@ -31,6 +36,6 @@ public class CalendarApplication extends Application {
     public static void main(String[] args) {
 
         launch();
-
     }
+
 }
