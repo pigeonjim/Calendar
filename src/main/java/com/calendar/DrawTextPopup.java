@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import javafx.stage.Modality;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
-import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
 
 public class DrawTextPopup{
@@ -19,17 +18,17 @@ public class DrawTextPopup{
     private AllData allData;
     private LocalDate date;
     private VBox layout;
-    private Label header;
     private Button addButton, seeButton,close;
     private Stage popUp;
     private TextField inputBox;
+    private String returnString;
+    private DrawDay drawDay;
 
-    public DrawTextPopup(AllData allData, LocalDate date){
+    public DrawTextPopup(AllData allData, DrawDay drawDay){
         this.allData = allData;
-        this.date = date;
         this.layout = new VBox();
-        this.header = new Label();
         this.inputBox = new TextField();
+        this.drawDay = drawDay;
     }
 
     public void showPopup(){
@@ -39,7 +38,7 @@ public class DrawTextPopup{
         });
 
         popUp = new Stage();
-        popUp.setTitle(date.toString());
+        popUp.setTitle(drawDay.getDate().toString());
         popUp.initModality(Modality.APPLICATION_MODAL);
         choice();
         Scene popScene = new Scene(layout);
@@ -48,6 +47,7 @@ public class DrawTextPopup{
         popUp.initStyle(StageStyle.TRANSPARENT);
         popUp.show();
 
+        System.out.println(returnString);
     }
 
     public void choice(){
@@ -93,11 +93,11 @@ public class DrawTextPopup{
         private void closeEvent(){
 
                 if(layout.getChildren().contains(inputBox)){
-                    allData.addNewDayData(this.date,inputBox.getText());
-                    inputBox.setText(" ");
+                    allData.addNewDayData(drawDay.getDate(),inputBox.getText().toString());
+                    drawDay.setDayText();
                 }
-                layout.getChildren().clear();
                 popUp.close();
+
         }
 
 }

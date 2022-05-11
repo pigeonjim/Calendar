@@ -2,7 +2,6 @@ package com.calendar;
 
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
@@ -13,7 +12,6 @@ import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import javafx.application.Platform;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.effect.DropShadow;
 
 public class DrawUI {

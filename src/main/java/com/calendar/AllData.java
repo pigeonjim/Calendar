@@ -6,9 +6,6 @@ import java.util.HashMap;
 public class AllData {
     private HashMap<LocalDate, DayData> allData;
     private LocalDate workingDate = LocalDate.now();
-    public AllData(DateLogic dLogic){
-        allData = new HashMap<>();
-    }
 
     public AllData(){
         allData = new HashMap<>();

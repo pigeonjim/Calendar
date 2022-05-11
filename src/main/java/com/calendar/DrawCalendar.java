@@ -3,16 +3,14 @@ package com.calendar;
 import javafx.scene.Parent;
 import java.time.LocalDate;
 import java.util.HashMap;
-
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.ScrollPane;
-import javafx.geometry.Orientation;
+
 
 public class DrawCalendar {
 
     private HashMap<LocalDate, DrawDay> daysOfTheMonth;
-    private LocalDate thisMonth;
     private AllData allData;
     private DateLogic dateLogic;
     private LocalDate[] dateAry;

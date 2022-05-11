@@ -5,9 +5,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.geometry.Insets;
-
 import java.time.LocalDate;
 
 public class DrawDay {
@@ -17,17 +15,14 @@ public class DrawDay {
     private LocalDate date;
 
     public DrawDay(LocalDate date, AllData allData, DateLogic dateLogic){
-        dayText = new Label(" ");
+        dayText = new Label("");
         this.allData = allData;
         this.dateLogic = dateLogic;
         this.date = date;
-        dayLabel = new Label((dateLogic.getWeekDayName(this.date)  + " " + dateLogic.getFormattedDate(this.date)));
+        dayLabel = new Label();
     }
 
     public Parent getView(){
-        //declare and format controls
-
-        dayLabel.setFont(Font.font("SansSerif", 15));
         dayLabel.setAlignment(Pos.CENTER);
         dayLabel.setMinHeight(50);
         dayLabel.setMinWidth(200);
@@ -37,7 +32,10 @@ public class DrawDay {
                 "-fx-border-width: 3;" +
                 "-fx-border-insets: 2;" +
                 "-fx-border-color: black;" +
-                "-fx-font-weight: bold;");
+                "-fx-font-weight: bold;" +
+                "-fx-font-family: sans-serif;" +
+                "fx-font-size: 15;");
+        dayLabel.setText((dateLogic.getWeekDayName(this.date)  + " " + dateLogic.getFormattedDate(this.date)));
 
         dayText.setMinHeight(150);
         dayText.setMinWidth(200);
@@ -82,10 +80,15 @@ public class DrawDay {
     }
 
     private void clickTextLabel(){
-        System.out.println(date.toString() + " Click working");
-        DrawTextPopup popup = new DrawTextPopup(allData,this.date);
+        DrawTextPopup popup = new DrawTextPopup(allData, this);
         popup.showPopup();
     }
 
+    public void setDayText() {
+        dayText.setText(allData.getDayText(date));
+    }
 
+    public LocalDate getDate(){
+        return date;
+    }
 }
