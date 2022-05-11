@@ -3,10 +3,11 @@ package com.calendar;
 import javafx.scene.Parent;
 import java.time.LocalDate;
 import java.util.HashMap;
+
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.geometry.Orientation;
-import javafx.scene.layout.BorderPane;
 
 public class DrawCalendar {
 
@@ -16,8 +17,8 @@ public class DrawCalendar {
     private DateLogic dateLogic;
     private LocalDate[] dateAry;
     private GridPane daysLayout;
-    private BorderPane calBP;
-    private ScrollBar vSB;
+    private Pane scrollPane;
+    private ScrollPane gridScroll;
     public DrawCalendar(AllData allData,DateLogic dateLogic){
         this.daysOfTheMonth = new HashMap<>();
         this.allData = allData;
@@ -27,17 +28,22 @@ public class DrawCalendar {
 
     public Parent getView(){
         drawMonth();
+        scrollPane = new Pane();
+        scrollPane.setMaxSize(400,400);
 
-        calBP = new BorderPane();
-        calBP.setMaxSize(550,550);
 
-        calBP.setCenter(daysLayout);
+        gridScroll = new ScrollPane(daysLayout);
 
-        vSB = new ScrollBar();
-        vSB.setOrientation(Orientation.VERTICAL);
-        calBP.setRight(vSB);
+        gridScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        gridScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-        return calBP;
+        scrollPane.getChildren().addAll(daysLayout,gridScroll);
+        scrollPane.setMinSize(1450,800);
+        gridScroll.setFitToWidth(true);
+        gridScroll.setPrefHeight(800);
+
+
+        return scrollPane;
     }
 
     public void createDrawDays(){
@@ -79,7 +85,7 @@ public class DrawCalendar {
 
             column++;
         }
-        daysLayout.setStyle("-fx-background-color: linear-gradient(to top left, #26d07c, #A4ADA8);");
+        daysLayout.setStyle("-fx-background-color: linear-gradient(to bottom left, #26d07c, #FFFFFF);");
         daysLayout.setVgap(5);
         daysLayout.setHgap(5);
     }
