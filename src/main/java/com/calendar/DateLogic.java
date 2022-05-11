@@ -9,19 +9,17 @@ public class DateLogic {
         //a class of functions that provides logic for working with dates
         private HashMap<String,Integer[]> months;
         private HashMap<Integer,String> days;
-        LocalDate lineInTheSand;
+        private LocalDate lineInTheSand;
         public DateLogic(){
             months = new HashMap<>();
             populateMonths();
-            //this date is the first sunday in 2021
+            //lineInTheSand date is the first sunday in 2021
             //date is used to work out leap years and day names
             lineInTheSand = LocalDate.of(2021,01,03);
             days = new HashMap<>();
             populateDays();
         }
         private void populateMonths(){
-            //method to populate the hashMap of months and
-            //number of days
             months.put("January",new Integer[] {31,1});
             months.put("February",new Integer[] {28,2});
             months.put("March",new Integer[] {31,3});
@@ -36,7 +34,6 @@ public class DateLogic {
             months.put("December",new Integer[] {31,12});
         }
         private void populateDays(){
-            //populates the days array with day number and name
             //weeks start at 0 on Sunday
             days.put(0,"Sunday");
             days.put(1,"Monday");
@@ -72,7 +69,6 @@ public class DateLogic {
         }
         public long numberOfDaysBetweenTwoDates(LocalDate date1, LocalDate date2){
             //return the number of days between two local dates
-            //using chronounit and extraLeapYearDays
             long chronoDays = ChronoUnit.DAYS.between(date1,date2);
             int leapYearDays = extraLeapYearDays(date2) -
                     extraLeapYearDays(date1);
@@ -88,15 +84,12 @@ public class DateLogic {
         }
 
         public long getDayNoFromDate(LocalDate date1){
-            //method uses the days between lineInTheSand and date argument
             //method uses the same system as days; sunday is day 0 to saturday = day 6
             return (numberOfDaysBetweenTwoDates(lineInTheSand,date1) - extraLeapYearDays(date1))%7;
 
         }
 
         public String getWeekDayName(LocalDate date1){
-                //takes in a local date and returns the name of the day
-                //method uses the days between lineInTheSand and date argument
                 //method uses the same system as days; sunday is day 0 to saturday = day 6
             Long dayNo = getDayNoFromDate(date1);
             return days.get(dayNo.intValue());
@@ -147,6 +140,5 @@ public class DateLogic {
 
     public LocalDate buildDateFromStrings(String month, int year){
         return LocalDate.of(year,months.get(month)[1],01);
-
     }
 }

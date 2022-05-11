@@ -10,46 +10,30 @@ public class DrawCalendar {
 
     private HashMap<LocalDate, DrawDay> daysOfTheMonth;
     private LocalDate thisMonth;
-    private DateLogic dLogic;
+    private AllData allData;
+    private DateLogic dateLogic;
     private LocalDate[] dateAry;
     private GridPane daysLayout;
-    public DrawCalendar(LocalDate date,DateLogic dLogic){
+    public DrawCalendar(AllData allData,DateLogic dateLogic){
         this.daysOfTheMonth = new HashMap<>();
-        this.thisMonth = date;
-        this.dLogic = dLogic;
+        this.allData = allData;
+        this.dateLogic = dateLogic;
         daysLayout = new GridPane();
     }
 
     public Parent getView(){
 
-        createDrawDays();
-        dateAry = new LocalDate[daysOfTheMonth.size()];
-
-        int row = 0;
-        long column = dLogic.getDayNoFromDate(dLogic.dateBuilderFirstOfMonth(thisMonth));
-        putKeysIntoAry();
-        for(int i = (dateAry.length -1) ; i >= 0 ;i--){
-            if(column > 6){
-                column = 0;
-                row++;
-            }
-            daysLayout.add(daysOfTheMonth.get(dateAry[i]).getView(), (int) column ,row);
-            if(dLogic.isDateWeekend(dateAry[i])){
-                daysOfTheMonth.get(dateAry[i]).setWeekendBackgroundColour();
-            }
-
-            column++;
-        }
+        drawMonth();
         return daysLayout;
 
     }
 
     public void createDrawDays(){
         daysOfTheMonth.clear();
-        LocalDate dateToAdd = dLogic.dateBuilderEndOfMonth(thisMonth);
+        LocalDate dateToAdd = dateLogic.dateBuilderEndOfMonth(allData.getWorkingDate());
 
-        for(int i = 1; i <= dLogic.getNoDaysInMonth(thisMonth); i++){
-            daysOfTheMonth.put(dateToAdd, new DrawDay((dLogic.getWeekDayName(dateToAdd)  + " " + dLogic.getFormattedDate(dateToAdd))));
+        for(int i = 1; i <= dateLogic.getNoDaysInMonth(allData.getWorkingDate()); i++){
+            daysOfTheMonth.put(dateToAdd, new DrawDay((dateLogic.getWeekDayName(dateToAdd)  + " " + dateLogic.getFormattedDate(dateToAdd))));
             dateToAdd= dateToAdd.minusDays(1);
         }
     }
@@ -62,7 +46,26 @@ public class DrawCalendar {
         }
     }
 
-    public void changeMonth(){
+    public void drawMonth(){
+        createDrawDays();
+        dateAry = new LocalDate[daysOfTheMonth.size()];
 
+        daysLayout.getChildren().clear();
+
+        int row = 0;
+        long column = dateLogic.getDayNoFromDate(dateLogic.dateBuilderFirstOfMonth(allData.getWorkingDate()));
+        putKeysIntoAry();
+        for(int i = (dateAry.length -1) ; i >= 0 ;i--){
+            if(column > 6){
+                column = 0;
+                row++;
+            }
+            daysLayout.add(daysOfTheMonth.get(dateAry[i]).getView(), (int) column ,row);
+            if(dateLogic.isDateWeekend(dateAry[i])){
+                daysOfTheMonth.get(dateAry[i]).setWeekendBackgroundColour();
+            }
+
+            column++;
+        }
     }
 }

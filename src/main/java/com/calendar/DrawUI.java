@@ -41,6 +41,7 @@ public class DrawUI {
         if(!whatMonth.isEmpty()){
             LocalDate newDate = this. dateLogic.buildDateFromStrings(monthDD.getValue().toString(),2022);
             allData.setWorkingDate(newDate);
+            drawCalendar.drawMonth();
         }
 
     }

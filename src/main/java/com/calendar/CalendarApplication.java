@@ -16,7 +16,7 @@ public class CalendarApplication extends Application {
         DateLogic dateLogic =new DateLogic();
         AllData allData = new AllData();
         LocalDate now = allData.getWorkingDate();
-        DrawCalendar drawCalendar = new DrawCalendar(now,dateLogic);
+        DrawCalendar drawCalendar = new DrawCalendar(allData,dateLogic);
         DrawUI ui = new DrawUI(dateLogic, drawCalendar, allData);
 
 
@@ -25,7 +25,6 @@ public class CalendarApplication extends Application {
 
         layout.setRight(drawCalendar.getView());
         layout.setTop(ui.getView());
-        //layout.setCenter();
         Scene testScene = new Scene(layout);
 
         stage.setScene(testScene);
