@@ -2,11 +2,10 @@ package com.calendar;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
 import java.io.IOException;
-import java.time.LocalDate;
-
 
 public class CalendarApplication extends Application {
     @Override
@@ -23,9 +22,9 @@ public class CalendarApplication extends Application {
 
         layout.setRight(drawCalendar.getView());
         layout.setTop(ui.getView());
-        Scene testScene = new Scene(layout);
+        Scene mainScene = new Scene(layout);
 
-        stage.setScene(testScene);
+        stage.setScene(mainScene);
         stage.setTitle(allData.getWorkingDate().toString() + " " + allData.getWorkingDate().getYear());
         stage.show();
     }

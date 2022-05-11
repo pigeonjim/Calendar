@@ -3,12 +3,16 @@ package com.calendar;
 import java.time.LocalDate;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
+import javafx.geometry.Pos;
+import javafx.geometry.Insets;
+import javafx.scene.paint.Color;
+import javafx.stage.StageStyle;
 
 public class DrawTextPopup{
 
@@ -36,12 +40,12 @@ public class DrawTextPopup{
 
         popUp = new Stage();
         popUp.setTitle(date.toString());
-        popUp.setMinHeight(250);
-        popUp.setMinWidth(250);
         popUp.initModality(Modality.APPLICATION_MODAL);
         choice();
         Scene popScene = new Scene(layout);
+        popScene.setFill(Color.TRANSPARENT);
         popUp.setScene(popScene);
+        popUp.initStyle(StageStyle.TRANSPARENT);
         popUp.show();
 
     }
@@ -51,6 +55,16 @@ public class DrawTextPopup{
         addButton = new Button("Click to add new entry");
         seeButton = new Button("Click to see all entries for this day");
         layout.getChildren().addAll(addButton,seeButton,close);
+        layout.setAlignment(Pos.CENTER);
+        layout.setPadding(new Insets(10));
+        layout.setSpacing(15);
+        layout.setStyle("-fx-background-radius: 25;"+
+                "-fx-border-style: solid inside;" +
+                "-fx-border-radius: 25px;" +
+                "-fx-border-width: 4;" +
+                "-fx-border-color: black;" +
+                "-fx-background-color: #9BADDC");
+        layout.setMinSize(150,200);
 
         addButton.setOnAction((event) -> {
             addButtonEvent();
@@ -62,6 +76,7 @@ public class DrawTextPopup{
            try{
                Label show = new Label(allData.getDayText(date));
                layout.getChildren().addAll(show,close);
+               close.setText("Close");
            }catch(Exception e){
                System.out.println("No data for this day");
            }
@@ -72,6 +87,7 @@ public class DrawTextPopup{
         private void addButtonEvent(){
             layout.getChildren().remove(addButton);
             layout.getChildren().add(inputBox);
+            close.setText("Close and save");
         }
 
         private void closeEvent(){

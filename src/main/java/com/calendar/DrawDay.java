@@ -1,5 +1,5 @@
 package com.calendar;
-import javafx.event.EventHandler;
+
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
@@ -34,7 +34,7 @@ public class DrawDay {
         dayLabel.setStyle( "fx-padding: 5;" +
                 "-fx-border-style: solid inside;" +
                 "-fx-border-radius: 25px;" +
-                "-fx-border-width: 2;" +
+                "-fx-border-width: 3;" +
                 "-fx-border-insets: 2;" +
                 "-fx-border-color: black;" +
                 "-fx-background-color: #83BC61;" +
@@ -47,9 +47,13 @@ public class DrawDay {
         dayText.setStyle("fx-padding: 5,10,5,5;" +
                 "-fx-border-style: solid;" +
                 "-fx-border-radius: 10px;" +
-                "-fx-border-width: 2;" +
-                "-fx-border-insets: 5;" +
-                "-fx-border-color: black;");
+                "-fx-border-width: 4;" +
+                "-fx-border-insets: 2;" +
+                "-fx-border-color: black;" +
+                "-fx-background-color: #F3F3F5;" +
+                "-fx-background-insets: 5px;" +
+                "-fx-background-radius: 10;");
+        dayText.setText(allData.getDayText(date));
 
         //declare main layout for the day view
         VBox dayLayout = new VBox();
@@ -70,7 +74,7 @@ public class DrawDay {
         dayLabel.setStyle( "fx-padding: 5;" +
                 "-fx-border-style: solid inside;" +
                 "-fx-border-radius: 25px;" +
-                "-fx-border-width: 2;" +
+                "-fx-border-width: 3;" +
                 "-fx-border-insets: 2;" +
                 "-fx-border-color: black;" +
                 "-fx-background-color: #1B4F81;" +

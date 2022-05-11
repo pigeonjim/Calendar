@@ -65,5 +65,8 @@ public class DrawCalendar {
 
             column++;
         }
+        daysLayout.setStyle("-fx-background-color: radial-gradient(center 80% 30%,radius 80% ,#A1EAC7, #0C4B2C );");
+        daysLayout.setVgap(5);
+        daysLayout.setHgap(5);
     }
 }
