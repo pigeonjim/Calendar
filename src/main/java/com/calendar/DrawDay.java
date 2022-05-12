@@ -73,10 +73,9 @@ public class DrawDay {
                 "-fx-border-width: 3;" +
                 "-fx-border-insets: 2;" +
                 "-fx-border-color: black;" +
-                "-fx-background-color: #3B74B4;" +
+                "-fx-background-color: #AEB6BF;" +
                 "-fx-background-insets: 5px;" +
                 "-fx-background-radius: 25;");
-        dayLabel.setTextFill(Color.web("#EDEDED"));
     }
 
     private void clickTextLabel(){
