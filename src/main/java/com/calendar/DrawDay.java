@@ -29,10 +29,10 @@ public class DrawDay {
         dayLabel.setMinWidth(200);
         dayLabel.setStyle( "fx-padding: 5;" +
                 "-fx-border-style: solid inside;" +
-                "-fx-border-radius: 25px;" +
                 "-fx-border-width: 3;" +
                 "-fx-border-insets: 2;" +
                 "-fx-border-color: black;" +
+               "-fx-border-radius: 50px 10px 35px 10px;" +
                 "-fx-font-weight: bold;" +
                 "-fx-font-family: sans-serif;" +
                 "fx-font-size: 15;");
@@ -42,15 +42,17 @@ public class DrawDay {
         dayText.setMinWidth(200);
         dayText.setAlignment(Pos.TOP_CENTER);
         dayText.setPadding(new Insets(5));
+        dayText.setMaxSize(200,150);
         dayText.setStyle("fx-padding: 5,10,5,5;" +
                 "-fx-border-style: solid;" +
-                "-fx-border-radius: 25px;" +
+                "-fx-border-radius: 25px 25px 0px 0px;" +
                 "-fx-border-width: 4;" +
                 "-fx-border-color: black;" +
                 "-fx-background-color: #F3F3F5;" +
                 "-fx-background-insets: 5px;" +
-                "-fx-background-radius: 15;");
+                "-fx-background-radius: 15px 15px 0px 0px;");
         dayText.setText(allData.getDayText(date));
+
         VBox dayLayout = new VBox();
         dayLayout.getChildren().addAll(dayLabel,dayText);
         dayLayout.setAlignment(Pos.CENTER);
@@ -71,7 +73,7 @@ public class DrawDay {
                 "-fx-border-width: 3;" +
                 "-fx-border-insets: 2;" +
                 "-fx-border-color: black;" +
-                "-fx-background-color: #1B3B81;" +
+                "-fx-background-color: #3B74B4;" +
                 "-fx-background-insets: 5px;" +
                 "-fx-background-radius: 25;");
         dayLabel.setTextFill(Color.web("#EDEDED"));

@@ -1,6 +1,5 @@
 package com.calendar;
 
-import java.time.LocalDate;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -37,7 +36,6 @@ public class DrawTextPopup{
             closeEvent();
             popUp.close();
         });
-
         popUp = new Stage();
         popUp.setTitle(drawDay.getDate().toString());
         popUp.initModality(Modality.APPLICATION_MODAL);
@@ -59,7 +57,7 @@ public class DrawTextPopup{
                 "-fx-border-style: solid inside;" +
                 "-fx-border-radius: 15px;" +
                 "-fx-border-width: 4;" +
-                "-fx-border-color: #2B3984;" +
+                "-fx-border-color: #ECE146;" +
                 "-fx-background-color: #FFFFFF");
         output.setMinSize(300,300);
         output.setAlignment(Pos.TOP_CENTER);
@@ -67,7 +65,7 @@ public class DrawTextPopup{
                 "-fx-border-style: solid inside;" +
                 "-fx-border-radius: 15px;" +
                 "-fx-border-width: 4;" +
-                "-fx-border-color: #2B3984;" +
+                "-fx-border-color: #ECE146;" +
                 "-fx-background-color: #FFFFFF");
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(10));
@@ -77,7 +75,7 @@ public class DrawTextPopup{
                 "-fx-border-radius: 25px;" +
                 "-fx-border-width: 4;" +
                 "-fx-border-color: black;" +
-                "-fx-background-color: #9BADDC");
+                "-fx-background-color: #3B74B4");
 
         addButton.setOnAction((event) -> {
             addButtonEvent();
