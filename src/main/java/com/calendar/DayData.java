@@ -30,6 +30,10 @@ public class DayData {
         todaysData.remove(text);
     }
 
+    public int getNoOfEntries(){
+        return todaysData.size();
+    }
+
 
 
 

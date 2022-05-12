@@ -42,4 +42,11 @@ public class AllData {
         this.workingDate = date;
     }
 
+    public int getNoDayEntries(LocalDate date){
+        if(allData.containsKey(date)){
+            return allData.get(date).getNoOfEntries();
+        }
+        return 0;
+    }
+
 }
