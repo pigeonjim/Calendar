@@ -26,13 +26,15 @@ public class DrawDeletePopup {
     private BorderPane mainLayout;
     private Button allButton, selectedButton, closeButton;
     private HBox buttonLayout;
+    private DrawTextPopup textPopup;
 
-    public DrawDeletePopup(AllData allData, DrawDay drawDay){
+    public DrawDeletePopup(AllData allData, DrawDay drawDay, DrawTextPopup textPopup){
         this.allData = allData;
         this.drawDay = drawDay;
         cbAry = new ArrayList<>();
         cbLayout = new VBox();
         buttonLayout = new HBox();
+        this.textPopup  = textPopup;
     }
 
     public void showPopup(){
@@ -59,9 +61,19 @@ public class DrawDeletePopup {
                 "-fx-border-radius: 25px;" +
                 "-fx-border-width: 4;" +
                 "-fx-border-color: black;" +
-                "-fx-background-color: #E67E22;" +
+                "-fx-background-color: #FFFF;" +
                 "-fx-padding: 15px;");
         mainLayout.setStyle("-fx-background-color: transparent");
+
+        formatButton(allButton);
+        formatButton(selectedButton);
+        closeButton.setPrefSize(100,40);
+        closeButton.setStyle("-fx-background-color: #D6DBDF;" +
+                "-fx-background-radius: 25;" +
+                "-fx-border-style: solid inside;" +
+                "-fx-border-radius: 25px;" +
+                "-fx-border-width: 4;" +
+                "-fx-border-color: black;");
 
         Scene popScene = new Scene(mainLayout);
         Stage popUp = new Stage();
@@ -115,10 +127,23 @@ public class DrawDeletePopup {
         }
         drawDay.setDayText();
         setUpCheckBoxes();
+        textPopup.setOutputBox();
     }
     private void allButtonEvent(){
         allData.deleteAllDataFromDay(drawDay.getDate());
         drawDay.setDayText();
         cbLayout.getChildren().clear();
+        textPopup.setOutputBox();
+    }
+
+    private void formatButton(Button button){
+        button.setPrefSize(350,40);
+        button.setStyle("-fx-background-color: #D98880;" +
+                "-fx-background-radius: 25;" +
+                "-fx-border-style: solid inside;" +
+                "-fx-border-radius: 25px;" +
+                "-fx-border-width: 4;" +
+                "-fx-border-color: black;");
+
     }
 }

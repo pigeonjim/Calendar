@@ -46,6 +46,7 @@ public class DrawTextPopup{
         popUp.setScene(popScene);
         popUp.initStyle(StageStyle.TRANSPARENT);
         popUp.show();
+        inputBox.requestFocus();
     }
 
     public void choice(){
@@ -109,7 +110,7 @@ public class DrawTextPopup{
         }
         private void deleteButtonEvent(){
             allButtonEvents();
-            DrawDeletePopup drawDeletePopup = new DrawDeletePopup(this.allData,this.drawDay);
+            DrawDeletePopup drawDeletePopup = new DrawDeletePopup(this.allData,this.drawDay, this);
             drawDeletePopup.showPopup();
             if(layout.getChildren().contains(inputBox)){
                 inputBox.setText("");
@@ -117,4 +118,7 @@ public class DrawTextPopup{
             }
         }
 
+    public void setOutputBox() {
+        outputBox.setText(allData.getDayText(drawDay.getDate()));
+    }
 }
