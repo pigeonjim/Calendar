@@ -1,9 +1,7 @@
 package com.calendar;
 
 import java.io.PrintWriter;
-import java.io.IOException;
 import java.util.Scanner;
-import java.util.ArrayList;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 
@@ -14,7 +12,7 @@ public class DataIO {
         this.allData = allData;
     }
 
-    public void outputToCSV(String path){
+        public void outputToCSV(String path){
         try{
             PrintWriter csvWriter = new PrintWriter(path);
             for(String entry: allData.allDataInCSV()){
@@ -28,7 +26,6 @@ public class DataIO {
     }
 
     public void readFromCSV(String path){
-
        try(Scanner lineIn = new Scanner(Paths.get(path))){
             while(lineIn.hasNextLine()){
                 String row = lineIn.nextLine();
@@ -38,7 +35,6 @@ public class DataIO {
         }
        } catch(Exception e){
            System.out.println("error - " + e.toString());
-
         }
     }
 
