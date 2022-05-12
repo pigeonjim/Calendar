@@ -2,8 +2,7 @@ package com.calendar;
 
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.Parent;
@@ -17,24 +16,26 @@ import javafx.scene.effect.DropShadow;
 public class DrawUI {
 
     private ComboBox monthDD, yearDD;
+    private MenuBar  menuBar;
     private HBox buttonLayout;
     private BorderPane layout;
     private DateLogic dateLogic;
     private DrawCalendar drawCalendar;
     private AllData allData;
-    private Button exit;
+    private DataIO dataIO;
 
-
-    public DrawUI(DateLogic dLogic, DrawCalendar dCal, AllData allData){
+    public DrawUI(DateLogic dLogic, DrawCalendar dCal, AllData allData, DataIO dataIO){
         this.dateLogic = dLogic;
         this.drawCalendar = dCal;
         this.allData = allData;
-        exit = new Button("Exit");
+        this.dataIO = dataIO;
+        menuBar = new MenuBar();
     }
 
     public Parent getView(){
         ObservableList<String> months = FXCollections.observableArrayList(new DateFormatSymbols().getMonths());
         ObservableList<String> years = FXCollections.observableArrayList("2021","2022","2023","2024","2025","2026");
+        ObservableList<String> ioList = FXCollections.observableArrayList("Save to CSV", "Load from CSV","Connect to DB");
         monthDD =new ComboBox(months);
         yearDD = new ComboBox(years);
         buttonLayout = new HBox();
@@ -52,33 +53,52 @@ public class DrawUI {
             dateDDChange();
         });
 
+        setUpMenus();
+
         layout = new BorderPane();
         layout.setLeft(buttonLayout);
-        layout.setRight(exit);
-        layout.setMargin(exit, new Insets(15,10,5,15));
-
-        exit.setPrefSize(100,20);
-        exit.setStyle("-fx-background-color: #ECE146;" +
-                "-fx-background-radius: 25;");
-        exit.setFont(Font.font("SansSerif", 18));
-        exit.setEffect(new DropShadow());
+        layout.setTop(menuBar);
         layout.setMargin(buttonLayout,new Insets(20,10,5,20));
-        layout.setStyle("-fx-background-color: #3B74B4;");
-
-
-        exit.setOnAction((event) -> {
-            Platform.exit();
-        } );
+        layout.setStyle("-fx-background-color: #3B74B4 ;");
 
         return layout;
     }
 
     public void dateDDChange(){
         if(!monthDD.getValue().toString().isEmpty() && !yearDD.getValue().toString().isEmpty() ){
-            LocalDate newDate = this. dateLogic.buildDateFromStrings(monthDD.getValue().toString(),Integer.valueOf(yearDD.getValue().toString()));
+            LocalDate newDate = this. dateLogic.buildDateFromStringAndInt(monthDD.getValue().toString(),Integer.valueOf(yearDD.getValue().toString()));
             allData.setWorkingDate(newDate);
             drawCalendar.drawMonth();
         }
+    }
+
+    public void setUpMenus(){
+
+        Menu ioMenu = new Menu("Files");
+        ioMenu.setStyle("-fx-background-color:  #808B96");
+        MenuItem toCsvM = new MenuItem("Save data to csv");
+        MenuItem fromCsvM  =new MenuItem("Load data from csv");
+        MenuItem connectM = new MenuItem("Connect to database");
+
+        ioMenu.getItems().addAll(toCsvM,fromCsvM,connectM);
+
+        Menu exit = new Menu("Exit");
+        MenuItem exitM = new MenuItem("Exit");
+        exit.getItems().add(exitM);
+
+        menuBar.getMenus().addAll(exit,ioMenu);
+
+        toCsvM.setOnAction((event) -> {
+            dataIO.outputToCSV("James.csv");
+        });
+        fromCsvM.setOnAction((event) -> {
+            dataIO.readFromCSV("James.csv");
+            dateDDChange();
+        });
+        exitM.setOnAction((event) -> {
+            Platform.exit();
+        });
+
     }
 
 }
