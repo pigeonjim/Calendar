@@ -1,6 +1,7 @@
 package com.calendar;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AllData {
@@ -26,7 +27,7 @@ public class AllData {
 
     public String getDayText(LocalDate date){
         if(allData.containsKey(date)){
-            return this.allData.get(date).getTodaysData();
+            return this.allData.get(date).toString();
         }
         return "";
     }
@@ -49,4 +50,13 @@ public class AllData {
         return 0;
     }
 
+    public ArrayList<String> allDataInCSV(){
+        ArrayList<String> allDataCsv = new ArrayList<>();
+        for(LocalDate day:allData.keySet()){
+            for(String entry: allData.get(day).getTodaysData()){
+                allDataCsv.add(day.toString() + "," + entry + "\n");
+            }
+        }
+        return allDataCsv;
+    }
 }

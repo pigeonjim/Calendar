@@ -8,7 +8,7 @@ public class DayData {
         todaysData = new ArrayList<>();
     }
 
-    public String getTodaysData(){
+    public String toString(){
         StringBuilder textToday = new StringBuilder();
 
         if(todaysData.isEmpty()){
@@ -34,7 +34,7 @@ public class DayData {
         return todaysData.size();
     }
 
-
-
-
+    public ArrayList<String> getTodaysData() {
+        return todaysData;
+    }
 }

@@ -12,6 +12,7 @@ public class CalendarApplication extends Application {
 
         DateLogic dateLogic =new DateLogic();
         AllData allData = new AllData();
+        DataIO dataIO = new DataIO(allData);
         DrawCalendar drawCalendar = new DrawCalendar(allData,dateLogic);
         DrawUI ui = new DrawUI(dateLogic, drawCalendar, allData);
 
