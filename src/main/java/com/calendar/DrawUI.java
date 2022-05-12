@@ -10,12 +10,6 @@ import javafx.collections.ObservableList;
 import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import javafx.application.Platform;
-import javafx.scene.paint.Color;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.stage.StageStyle;
-import java.io.File;
 
 public class DrawUI {
 
@@ -93,10 +87,10 @@ public class DrawUI {
         menuBar.getMenus().addAll(exit,ioMenu);
 
        toCsvM.setOnAction((event) -> {
-            dataIO.outputToCSV(getFilePath(true));
+            dataIO.outputToCSV(dataIO.getFilePath(true));
         });
         fromCsvM.setOnAction((event) -> {
-            dataIO.readFromCSV(getFilePath(false));
+            dataIO.readFromCSV(dataIO.getFilePath(false));
             dateDDChange();
         });
         exitM.setOnAction((event) -> {
@@ -105,35 +99,4 @@ public class DrawUI {
 
     }
 
-
-    private String getFilePath(boolean loadOrSave){
-        //parameter is true for save file and false for load file
-        BorderPane borderPane = new BorderPane();
-        borderPane.setStyle("-fx-background-color: transparent;");
-        Scene scene = new Scene(borderPane);
-        scene.setFill(Color.TRANSPARENT);
-        Stage fcStage = new Stage();
-        fcStage.initStyle(StageStyle.TRANSPARENT);
-        fcStage.setScene(scene);
-        fcStage.show();
-        if(loadOrSave){
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Please choose where to save the file");
-            File file = fileChooser.showSaveDialog(fcStage);
-            if(file == null){
-                return"";
-            }
-            System.out.println(file.getPath());
-            return file.getPath();
-        }
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Please choose where to save the file");
-        File file = fileChooser.showOpenDialog(fcStage);
-        if(file == null){
-            return"";
-        }
-        System.out.println(file.getPath());
-        return file.getPath();
-
-    }
 }
