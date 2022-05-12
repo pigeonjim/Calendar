@@ -21,25 +21,24 @@ public class DrawDeletePopup {
     private String[] todaysData;
     private ArrayList<CheckBox> cbAry;
     private AllData allData;
-    private LocalDate date;
+    private DrawDay drawDay;
     private VBox cbLayout;
     private BorderPane mainLayout;
     private Button allButton, selectedButton, closeButton;
     private HBox buttonLayout;
 
-    public DrawDeletePopup(LocalDate date, AllData allData){
+    public DrawDeletePopup(AllData allData, DrawDay drawDay){
         this.allData = allData;
-        this.date = date;
+        this.drawDay = drawDay;
         cbAry = new ArrayList<>();
         cbLayout = new VBox();
         buttonLayout = new HBox();
     }
 
     public void showPopup(){
-        if(allData.getNoDayEntries(date) == 0){
+        if(allData.getNoDayEntries(drawDay.getDate()) == 0){
             return;
         }
-        populateDataAry();
         setUpCheckBoxes();
 
         mainLayout = new BorderPane();
@@ -47,13 +46,29 @@ public class DrawDeletePopup {
         selectedButton = new Button("Click to remove selected entries from this date");
         closeButton = new Button("Exit");
         buttonLayout.getChildren().addAll(allButton,selectedButton,closeButton);
+        buttonLayout.setPrefWidth(750);
+        buttonLayout.setAlignment(Pos.CENTER);
+        buttonLayout.setStyle("-fx-background-color: transparent");
         cbLayout.setPrefSize(750,400);
-        mainLayout.setCenter(cbLayout);
         mainLayout.setTop(buttonLayout);
+        mainLayout.setCenter(cbLayout);
         mainLayout.setPrefSize(750,500);
+
+        cbLayout.setStyle("-fx-background-radius: 25;"+
+                "-fx-border-style: solid inside;" +
+                "-fx-border-radius: 25px;" +
+                "-fx-border-width: 4;" +
+                "-fx-border-color: black;" +
+                "-fx-background-color: #E67E22;" +
+                "-fx-padding: 15px;");
+        mainLayout.setStyle("-fx-background-color: transparent");
 
         Scene popScene = new Scene(mainLayout);
         Stage popUp = new Stage();
+
+        popScene.setFill(Color.TRANSPARENT);
+        popUp.initStyle(StageStyle.TRANSPARENT);
+
         popUp.setScene(popScene);
         popUp.show();
 
@@ -71,13 +86,21 @@ public class DrawDeletePopup {
     }
 
     private void populateDataAry(){
-        todaysData = new String[allData.getNoDayEntries(date)];
-        todaysData = allData.getDayText(date).split("\n");
+        todaysData = new String[allData.getNoDayEntries(drawDay.getDate())];
+        todaysData = allData.getDayText(drawDay.getDate()).split("\n");
     }
 
     private void setUpCheckBoxes(){
+        populateDataAry();
+        cbLayout.getChildren().clear();
+        cbAry.clear();
         for(int cbIndex = 0; cbIndex < todaysData.length; cbIndex++){
-            cbAry.add(new CheckBox(todaysData[cbIndex]));
+            CheckBox cb = new CheckBox(todaysData[cbIndex]);
+            cb.setPrefHeight(40);
+            cb.setStyle("-fx-font-weight: bold;" +
+                    "-fx-font-family: cursive;" +
+                    "fx-font-size: 30;");
+            cbAry.add(cb);
         }
         for(CheckBox cb:cbAry){
             cbLayout.getChildren().add(cb);
@@ -87,11 +110,15 @@ public class DrawDeletePopup {
     private void selectedButtonEvent(){
         for(CheckBox cb:cbAry){
             if(cb.isSelected()){
-                allData.deleteDayData(date,cb.getText());
+                allData.deleteDayData(drawDay.getDate(),cb.getText());
             }
         }
+        drawDay.setDayText();
+        setUpCheckBoxes();
     }
     private void allButtonEvent(){
-        allData.deleteAllDataFromDay(date);
+        allData.deleteAllDataFromDay(drawDay.getDate());
+        drawDay.setDayText();
+        cbLayout.getChildren().clear();
     }
 }

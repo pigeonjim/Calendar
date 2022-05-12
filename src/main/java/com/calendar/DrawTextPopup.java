@@ -2,6 +2,7 @@ package com.calendar;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -16,18 +17,18 @@ public class DrawTextPopup{
 
     private AllData allData;
     private VBox layout;
-    private Button addButton, seeButton, deleteButton,close;
+    private Button addButton, deleteButton,close;
     private Stage popUp;
     private TextField inputBox;
     private DrawDay drawDay;
-    private Label output;
+    private Label outputBox;
 
     public DrawTextPopup(AllData allData, DrawDay drawDay){
         this.allData = allData;
         this.layout = new VBox();
         this.inputBox = new TextField();
         this.drawDay = drawDay;
-        this.output = new Label();
+        this.outputBox = new Label();
     }
 
     public void showPopup(){
@@ -49,20 +50,18 @@ public class DrawTextPopup{
 
     public void choice(){
 
-        addButton = new Button("Click to add new entry");
-        seeButton = new Button("Click to see all entries for this date");
+        addButton = new Button("Click to save and add new entry");
         deleteButton  =new Button("Click to remove entries from this date");
-        layout.getChildren().addAll(addButton,seeButton,deleteButton,close,inputBox,output);
-        inputBox.setDisable(true);
+        layout.getChildren().addAll(addButton,deleteButton,close,inputBox, outputBox);
         inputBox.setStyle("-fx-background-radius: 25;"+
                 "-fx-border-style: solid inside;" +
                 "-fx-border-radius: 15px;" +
                 "-fx-border-width: 4;" +
                 "-fx-border-color: #ECE146;" +
                 "-fx-background-color: #FFFFFF");
-        output.setMinSize(300,300);
-        output.setAlignment(Pos.TOP_CENTER);
-        output.setStyle("-fx-background-radius: 25;"+
+        outputBox.setMinSize(300,300);
+        outputBox.setAlignment(Pos.TOP_CENTER);
+        outputBox.setStyle("-fx-background-radius: 25;"+
                 "-fx-border-style: solid inside;" +
                 "-fx-border-radius: 15px;" +
                 "-fx-border-width: 4;" +
@@ -77,14 +76,17 @@ public class DrawTextPopup{
                 "-fx-border-width: 4;" +
                 "-fx-border-color: black;" +
                 "-fx-background-color: #3B74B4");
+        outputBox.setText(allData.getDayText(drawDay.getDate()));
 
         addButton.setOnAction((event) -> {
             addButtonEvent();
         });
-
-        seeButton.setOnAction((event) -> {
-            seeButtonEvent();
+        inputBox.setOnKeyReleased((event) -> {
+            if(event.getCode() == KeyCode.ENTER){
+                addButtonEvent();
+            }
         });
+
         deleteButton.setOnAction((event) -> {
             deleteButtonEvent();
         });
@@ -92,26 +94,13 @@ public class DrawTextPopup{
     }
         private void addButtonEvent(){
             allButtonEvents();
+            outputBox.setText(allData.getDayText(drawDay.getDate()));
             inputBox.setDisable(false);
             inputBox.setText("");
             addButton.setText("Save and add another new entry");
-            seeButton.setDisable(false);
-            output.setDisable(true);
             close.setText("Close and save");
         }
 
-        private void seeButtonEvent(){
-            allButtonEvents();
-            if(layout.getChildren().contains(inputBox)){
-                inputBox.setText("");
-                addButton.setText("Click to add new entry");
-            }
-            output.setDisable(false);
-            seeButton.setDisable(true);
-            close.setText("Close");
-            output.setText(allData.getDayText(drawDay.getDate()));
-
-        }
         private void allButtonEvents(){
                 if(layout.getChildren().contains(inputBox) && !inputBox.getText().isEmpty()){
                     allData.addNewDayData(drawDay.getDate(),inputBox.getText().toString());
@@ -120,7 +109,7 @@ public class DrawTextPopup{
         }
         private void deleteButtonEvent(){
             allButtonEvents();
-            DrawDeletePopup drawDeletePopup = new DrawDeletePopup(this.drawDay.getDate(),this.allData);
+            DrawDeletePopup drawDeletePopup = new DrawDeletePopup(this.allData,this.drawDay);
             drawDeletePopup.showPopup();
             if(layout.getChildren().contains(inputBox)){
                 inputBox.setText("");
