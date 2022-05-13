@@ -11,10 +11,11 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-
+import java.sql.*;
 public class DataIO {
 
     AllData allData;
+
     public DataIO(AllData allData){
         this.allData = allData;
     }
@@ -74,4 +75,35 @@ public class DataIO {
         return file.getPath();
     }
 
+    public void getDataFromAccess(){
+        String accessURL = "jdbc:ucanaccess://C:\\Users\\pigeo\\Documents\\CallendarApp.accdb";
+        try(Connection connection = DriverManager.getConnection(accessURL) ){
+
+            String SQLQuery = "Select * From Cal_Entries";
+            Statement statement = connection.createStatement();
+            ResultSet results = statement.executeQuery(SQLQuery);
+            while(results.next()){
+                System.out.println(results.getString("Entry"));
+            }
+
+        } catch (Exception e){
+            System.out.println("Did not work. Error " + e.toString());
+        }
+    }
+
+    public void saveDataToAccess(){
+        String accessURL = "jdbc:ucanaccess://C:\\Users\\pigeo\\Documents\\CallendarApp.accdb";
+        try(Connection connection = DriverManager.getConnection(accessURL) ){
+
+            String SQLQuery = "INSERT INTO Cal_Entries(Entry_Date, Entry)";
+            Statement statement = connection.createStatement();
+            ResultSet results = statement.executeQuery(SQLQuery);
+            while(results.next()){
+                System.out.println(results.getString("Entry"));
+            }
+
+        } catch (Exception e){
+            System.out.println("Did not work. Error " + e.toString());
+        }
+    }
 }
