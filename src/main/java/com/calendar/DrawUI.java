@@ -84,13 +84,13 @@ public class DrawUI {
         Menu exit = new Menu("Exit");
         MenuItem exitM = new MenuItem("Exit");
         exit.getItems().add(exitM);
-        ioMenu.setStyle("-fx-background-color: #AB7F7F;" +
+        ioMenu.setStyle("-fx-background-color: #D2D7DB;" +
                 "-fx-border-style: solid inside;" +
                 "-fx-border-width: 2;" +
                 "-fx-border-color: black;" +
                 "-fx-font-size: 15;" +
                 "-fx-font-family: monospace;");
-        exit.setStyle("-fx-background-color:  #DEC705;"+
+        exit.setStyle("-fx-background-color:  #D2D7DB;"+
                 "-fx-border-style: solid inside;" +
                 "-fx-border-width: 2;" +
                 "-fx-border-color: black;"+
