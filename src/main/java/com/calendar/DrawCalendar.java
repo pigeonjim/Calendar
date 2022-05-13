@@ -15,7 +15,7 @@ public class DrawCalendar {
     private DateLogic dateLogic;
     private LocalDate[] dateAry;
     private GridPane daysLayout;
-    private Pane scrollPane;
+    private Pane pane;
     private ScrollPane gridScroll;
     public DrawCalendar(AllData allData,DateLogic dateLogic){
         this.daysOfTheMonth = new HashMap<>();
@@ -26,8 +26,8 @@ public class DrawCalendar {
 
     public Parent getView(){
         drawMonth();
-        scrollPane = new Pane();
-        scrollPane.setMaxSize(400,400);
+        pane = new Pane();
+        pane.setMaxSize(400,400);
 
 
         gridScroll = new ScrollPane(daysLayout);
@@ -35,13 +35,13 @@ public class DrawCalendar {
         gridScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         gridScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-        scrollPane.getChildren().addAll(daysLayout,gridScroll);
-        scrollPane.setMinSize(1450,800);
+        pane.getChildren().addAll(daysLayout,gridScroll);
+        pane.setMinSize(1450,800);
         gridScroll.setFitToWidth(true);
         gridScroll.setPrefHeight(800);
 
 
-        return scrollPane;
+        return pane;
     }
 
     public void createDrawDays(){

@@ -1,5 +1,6 @@
 package com.calendar;
 
+import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,9 +8,14 @@ import java.util.HashMap;
 public class AllData {
     private HashMap<LocalDate, DayData> allData;
     private LocalDate workingDate = LocalDate.now();
+    private GraphicsDevice gfxDevice;
+    private int screenHeight, screenWidth;
 
     public AllData(){
         allData = new HashMap<>();
+        gfxDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        screenHeight = gfxDevice.getDisplayMode().getHeight();
+        screenWidth = gfxDevice.getDisplayMode().getWidth();
     }
 
     public void addNewDayData(LocalDate date, String text){
@@ -58,5 +64,13 @@ public class AllData {
             }
         }
         return allDataCsv;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
+    public int getScreenWidth() {
+        return screenWidth;
     }
 }

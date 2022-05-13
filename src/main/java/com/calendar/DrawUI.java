@@ -89,13 +89,13 @@ public class DrawUI {
                 "-fx-border-width: 2;" +
                 "-fx-border-color: black;" +
                 "-fx-font-size: 15;" +
-                "-fx-font-family: monospace;");
+                "-fx-font-family: Verdana;");
         exit.setStyle("-fx-background-color:  #D2D7DB;"+
                 "-fx-border-style: solid inside;" +
                 "-fx-border-width: 2;" +
                 "-fx-border-color: black;"+
                 "-fx-font-size: 15;" +
-                "-fx-font-family: monospace;");
+                "-fx-font-family: Verdana;");
         menuBar.getMenus().addAll(exit,ioMenu);
         menuBar.setPrefHeight(30);
         menuBar.setPadding(new Insets(10,15,10,15));
