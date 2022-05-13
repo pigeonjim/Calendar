@@ -83,7 +83,7 @@ public class DrawCalendar {
 
             column++;
         }
-        daysLayout.setStyle("-fx-background-color: linear-gradient(to bottom left, #26d07c, #FFFFFF);");
+        daysLayout.setStyle("-fx-background-color: #C3CAC6;");
         daysLayout.setVgap(5);
         daysLayout.setHgap(5);
     }

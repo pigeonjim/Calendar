@@ -57,7 +57,7 @@ public class DrawUI {
         layout.setLeft(buttonLayout);
         layout.setTop(menuBar);
         layout.setMargin(buttonLayout,new Insets(20,10,5,20));
-        layout.setStyle("-fx-background-color: #3B74B4 ;");
+        layout.setStyle("-fx-background-color: linear-gradient(to left, #26d07c, #FFFFFF) ;");
 
         return layout;
     }

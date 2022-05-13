@@ -27,12 +27,14 @@ public class DrawDay {
         dayLabel.setAlignment(Pos.CENTER);
         dayLabel.setMinHeight(50);
         dayLabel.setMinWidth(200);
-        dayLabel.setStyle( "fx-padding: 5;" +
-                "-fx-border-style: solid inside;" +
+        dayLabel.setStyle("-fx-border-style: solid inside;" +
                 "-fx-border-width: 3;" +
                 "-fx-border-insets: 2;" +
                 "-fx-border-color: black;" +
+                "-fx-background-color: #fafad290;" +
+                "-fx-background-radius: 50px 10px 35px 10px; " +
                "-fx-border-radius: 50px 10px 35px 10px;" +
+                "-fx-background-insets: 5px;" +
                 "-fx-font-weight: bold;" +
                 "-fx-font-family: sans-serif;" +
                 "fx-font-size: 15;");

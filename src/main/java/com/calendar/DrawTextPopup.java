@@ -76,7 +76,7 @@ public class DrawTextPopup{
                 "-fx-border-radius: 25px;" +
                 "-fx-border-width: 4;" +
                 "-fx-border-color: black;" +
-                "-fx-background-color: #3B74B4");
+                "-fx-background-color: #778899");
         outputBox.setText(allData.getDayText(drawDay.getDate()));
 
         addButton.setOnAction((event) -> {
