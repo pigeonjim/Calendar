@@ -3,6 +3,8 @@ package com.calendar;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.effect.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.Parent;
@@ -38,7 +40,6 @@ public class DrawUI {
         yearDD = new ComboBox(years);
         buttonLayout = new HBox();
         buttonLayout.getChildren().addAll(monthDD,yearDD);
-        buttonLayout.setPrefSize(250,50);
         buttonLayout.setSpacing(10);
 
         monthDD.getSelectionModel().select(allData.getWorkingDate().getMonthValue() - 1);
@@ -56,8 +57,8 @@ public class DrawUI {
         layout = new BorderPane();
         layout.setLeft(buttonLayout);
         layout.setTop(menuBar);
-        layout.setMargin(buttonLayout,new Insets(20,10,5,20));
-        layout.setStyle("-fx-background-color: linear-gradient(to left, #26d07c, #FFFFFF) ;");
+        layout.setMargin(buttonLayout,new Insets(20,10,10,20));
+        layout.setStyle("-fx-background-color: linear-gradient(to left, #26d07c, #f5fffa) ;");
 
         return layout;
     }
@@ -72,8 +73,8 @@ public class DrawUI {
 
     public void setUpMenus(){
 
+        menuBar.setStyle("-fx-background-color: linear-gradient(from 0% 50% to 100% 100%,#A4AFB9, #778899, #2f4f4f);");
         Menu ioMenu = new Menu("Files");
-        ioMenu.setStyle("-fx-background-color:  #808B96");
         MenuItem toCsvM = new MenuItem("Save data to csv");
         MenuItem fromCsvM  =new MenuItem("Load data from csv");
         MenuItem connectM = new MenuItem("Connect to database");
@@ -83,8 +84,27 @@ public class DrawUI {
         Menu exit = new Menu("Exit");
         MenuItem exitM = new MenuItem("Exit");
         exit.getItems().add(exitM);
-
+        ioMenu.setStyle("-fx-background-color: #AB7F7F;" +
+                "-fx-border-style: solid inside;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-color: black;" +
+                "-fx-font-size: 15;" +
+                "-fx-font-family: monospace;");
+        exit.setStyle("-fx-background-color:  #DEC705;"+
+                "-fx-border-style: solid inside;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-color: black;"+
+                "-fx-font-size: 15;" +
+                "-fx-font-family: monospace;");
         menuBar.getMenus().addAll(exit,ioMenu);
+        menuBar.setPrefHeight(30);
+        menuBar.setPadding(new Insets(10,15,10,15));
+
+        Light.Distant light = new Light.Distant();
+        light.setAzimuth(-120);
+        Lighting lighting = new Lighting(light);
+        lighting.setSurfaceScale(5);
+        menuBar.setEffect(lighting);
 
        toCsvM.setOnAction((event) -> {
             dataIO.outputToCSV(dataIO.getFilePath(true));

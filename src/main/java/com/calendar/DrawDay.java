@@ -32,8 +32,8 @@ public class DrawDay {
                 "-fx-border-insets: 2;" +
                 "-fx-border-color: black;" +
                 "-fx-background-color: #fafad290;" +
-                "-fx-background-radius: 50px 10px 35px 10px; " +
-               "-fx-border-radius: 50px 10px 35px 10px;" +
+                "-fx-background-radius: 20px 20px 5px 5px; " +
+               "-fx-border-radius: 20px 20px 5px 5px;" +
                 "-fx-background-insets: 5px;" +
                 "-fx-font-weight: bold;" +
                 "-fx-font-family: sans-serif;" +
