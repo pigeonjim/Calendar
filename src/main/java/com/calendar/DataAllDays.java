@@ -5,13 +5,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AllData {
-    private HashMap<LocalDate, DayData> allData;
+public class DataAllDays {
+    private HashMap<LocalDate, DataSingleDay> allData;
     private LocalDate workingDate = LocalDate.now();
     private GraphicsDevice gfxDevice;
     private int screenHeight, screenWidth;
 
-    public AllData() {
+    public DataAllDays() {
         allData = new HashMap<>();
         gfxDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         screenHeight = gfxDevice.getDisplayMode().getHeight();
@@ -20,7 +20,7 @@ public class AllData {
 
     public void addNewDayData(LocalDate date, String text) {
         if (!allData.containsKey(date)) {
-            allData.put(date, new DayData());
+            allData.put(date, new DataSingleDay());
         }
         allData.get(date).addText(text);
     }
@@ -71,7 +71,7 @@ public class AllData {
         return screenHeight;
     }
 
-    public HashMap<LocalDate, DayData> getAllData() {
+    public HashMap<LocalDate, DataSingleDay> getAllData() {
         return allData;
     }
 }

@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.effect.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.Parent;
@@ -21,13 +20,13 @@ public class DrawUI {
     private BorderPane layout;
     private DateLogic dateLogic;
     private DrawCalendar drawCalendar;
-    private AllData allData;
+    private DataAllDays dataAllDays;
     private DataIO dataIO;
 
-    public DrawUI(DateLogic dLogic, DrawCalendar dCal, AllData allData, DataIO dataIO){
+    public DrawUI(DateLogic dLogic, DrawCalendar dCal, DataAllDays dataAllDays, DataIO dataIO){
         this.dateLogic = dLogic;
         this.drawCalendar = dCal;
-        this.allData = allData;
+        this.dataAllDays = dataAllDays;
         this.dataIO = dataIO;
         menuBar = new MenuBar();
     }
@@ -42,8 +41,8 @@ public class DrawUI {
         buttonLayout.getChildren().addAll(monthDD,yearDD);
         buttonLayout.setSpacing(10);
 
-        monthDD.getSelectionModel().select(allData.getWorkingDate().getMonthValue() - 1);
-        yearDD.setValue(allData.getWorkingDate().getYear());
+        monthDD.getSelectionModel().select(dataAllDays.getWorkingDate().getMonthValue() - 1);
+        yearDD.setValue(dataAllDays.getWorkingDate().getYear());
 
         monthDD.setOnAction((event) -> {
             dateDDChange();
@@ -66,7 +65,7 @@ public class DrawUI {
     public void dateDDChange(){
         if(!monthDD.getValue().toString().isEmpty() && !yearDD.getValue().toString().isEmpty() ){
             LocalDate newDate = this. dateLogic.buildDateFromStringAndInt(monthDD.getValue().toString(),Integer.valueOf(yearDD.getValue().toString()));
-            allData.setWorkingDate(newDate);
+            dataAllDays.setWorkingDate(newDate);
             drawCalendar.drawMonth();
         }
     }

@@ -2,9 +2,9 @@ package com.calendar;
 import java.util.ArrayList;
 import java.lang.StringBuilder;
 
-public class DayData {
+public class DataSingleDay {
     private ArrayList<String> todaysData;
-    public DayData(){
+    public DataSingleDay(){
         todaysData = new ArrayList<>();
     }
 

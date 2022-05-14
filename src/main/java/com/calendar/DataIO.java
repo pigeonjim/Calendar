@@ -14,16 +14,16 @@ import java.time.LocalDate;
 import java.sql.*;
 public class DataIO {
 
-    AllData allData;
+    DataAllDays dataAllDays;
 
-    public DataIO(AllData allData) {
-        this.allData = allData;
+    public DataIO(DataAllDays dataAllDays) {
+        this.dataAllDays = dataAllDays;
     }
 
     public void outputToCSV(String path) {
         try {
             PrintWriter csvWriter = new PrintWriter(path);
-            for (String entry : allData.allDataInCSV()) {
+            for (String entry : dataAllDays.allDataInCSV()) {
                 csvWriter.print(entry);
             }
             csvWriter.close();
@@ -38,7 +38,7 @@ public class DataIO {
                 String row = lineIn.nextLine();
                 String[] words = row.split(",");
                 LocalDate date = LocalDate.parse(words[0]);
-                allData.addNewDayData(date, words[1]);
+                dataAllDays.addNewDayData(date, words[1]);
             }
         } catch (Exception e) {
             System.out.println("error - " + e.toString());
@@ -85,7 +85,7 @@ public class DataIO {
             ResultSet results = statement.executeQuery(SQLQuery);
             while (results.next()) {
                 System.out.println(results.getString("Entry"));
-                allData.addNewDayData(results.getDate("Entry_Date").toLocalDate(), results.getString("Entry"));
+                dataAllDays.addNewDayData(results.getDate("Entry_Date").toLocalDate(), results.getString("Entry"));
             }
 
         } catch (Exception e) {
@@ -96,10 +96,10 @@ public class DataIO {
     public void saveDataToAccess() {
         String accessURL = "jdbc:ucanaccess://C:\\Users\\pigeo\\Documents\\CallendarApp.accdb";
         try (Connection connection = DriverManager.getConnection(accessURL)) {
-            String SQLQuery = "INSERT INTO Cal_Entries(Entry_Date, Entry) VALUES(?,?)";
+            String SQLQuery = "INSERT INTO Cal_Entries(Entry_Date, Entry) VALUES(?,?) ON DUPLICATE KEY UPDATE Entry_Date = VALUES(Entry_Date), Entry =VALUES(Entry);";
             try (PreparedStatement statement = connection.prepareStatement(SQLQuery);) {
-                for (LocalDate lDate : allData.getAllData().keySet()) {
-                    for (String entry : allData.getAllData().get(lDate).getTodaysData()) {
+                for (LocalDate lDate : dataAllDays.getAllData().keySet()) {
+                    for (String entry : dataAllDays.getAllData().get(lDate).getTodaysData()) {
                         statement.setDate(1, Date.valueOf(lDate));
                         statement.setString(2, entry);
                         statement.executeUpdate();

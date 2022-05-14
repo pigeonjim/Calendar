@@ -15,7 +15,7 @@ import javafx.stage.StageStyle;
 
 public class DrawTextPopup{
 
-    private AllData allData;
+    private DataAllDays dataAllDays;
     private VBox layout;
     private Button addButton, deleteButton,close;
     private Stage popUp;
@@ -23,8 +23,8 @@ public class DrawTextPopup{
     private DrawDay drawDay;
     private Label outputBox;
 
-    public DrawTextPopup(AllData allData, DrawDay drawDay){
-        this.allData = allData;
+    public DrawTextPopup(DataAllDays dataAllDays, DrawDay drawDay){
+        this.dataAllDays = dataAllDays;
         this.layout = new VBox();
         this.inputBox = new TextField();
         this.drawDay = drawDay;
@@ -77,7 +77,7 @@ public class DrawTextPopup{
                 "-fx-border-width: 4;" +
                 "-fx-border-color: black;" +
                 "-fx-background-color: #778899");
-        outputBox.setText(allData.getDayText(drawDay.getDate()));
+        outputBox.setText(dataAllDays.getDayText(drawDay.getDate()));
 
         addButton.setOnAction((event) -> {
             addButtonEvent();
@@ -95,7 +95,7 @@ public class DrawTextPopup{
     }
         private void addButtonEvent(){
             allButtonEvents();
-            outputBox.setText(allData.getDayText(drawDay.getDate()));
+            outputBox.setText(dataAllDays.getDayText(drawDay.getDate()));
             inputBox.setDisable(false);
             inputBox.setText("");
             addButton.setText("Save and add another new entry");
@@ -104,13 +104,13 @@ public class DrawTextPopup{
 
         private void allButtonEvents(){
                 if(layout.getChildren().contains(inputBox) && !inputBox.getText().isEmpty()){
-                    allData.addNewDayData(drawDay.getDate(),inputBox.getText().toString());
+                    dataAllDays.addNewDayData(drawDay.getDate(),inputBox.getText().toString());
                     drawDay.setDayText();
                 }
         }
         private void deleteButtonEvent(){
             allButtonEvents();
-            DrawDeletePopup drawDeletePopup = new DrawDeletePopup(this.allData,this.drawDay, this);
+            DrawDeletePopup drawDeletePopup = new DrawDeletePopup(this.dataAllDays,this.drawDay, this);
             drawDeletePopup.showPopup();
             if(layout.getChildren().contains(inputBox)){
                 inputBox.setText("");
@@ -119,6 +119,6 @@ public class DrawTextPopup{
         }
 
     public void setOutputBox() {
-        outputBox.setText(allData.getDayText(drawDay.getDate()));
+        outputBox.setText(dataAllDays.getDayText(drawDay.getDate()));
     }
 }

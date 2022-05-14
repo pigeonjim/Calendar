@@ -6,25 +6,23 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.Scene;
 import javafx.stage.StageStyle;
 
-import java.awt.*;
-
 public class CalendarApplication extends Application {
     @Override
     public void start(Stage stage) {
         DateLogic dateLogic =new DateLogic();
-        AllData allData = new AllData();
-        DataIO dataIO = new DataIO(allData);
-        DrawCalendar drawCalendar = new DrawCalendar(allData,dateLogic);
-        DrawUI ui = new DrawUI(dateLogic, drawCalendar, allData,dataIO);
+        DataAllDays dataAllDays = new DataAllDays();
+        DataIO dataIO = new DataIO(dataAllDays);
+        DrawCalendar drawCalendar = new DrawCalendar(dataAllDays,dateLogic);
+        DrawUI ui = new DrawUI(dateLogic, drawCalendar, dataAllDays,dataIO);
 
         BorderPane layout = new BorderPane();
         layout.setRight(drawCalendar.getView());
         layout.setTop(ui.getView());
         Scene mainScene = new Scene(layout);
         stage.setScene(mainScene);
-        stage.setTitle(allData.getWorkingDate().toString() + " " + allData.getWorkingDate().getYear());
+        stage.setTitle(dataAllDays.getWorkingDate().toString() + " " + dataAllDays.getWorkingDate().getYear());
         stage.initStyle(StageStyle.UNDECORATED);
-        stage.setMaxHeight(allData.getScreenHeight() * 0.8);
+        stage.setMaxHeight(dataAllDays.getScreenHeight() * 0.8);
         stage.show();
     }
 
