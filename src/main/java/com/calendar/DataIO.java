@@ -79,7 +79,6 @@ public class DataIO {
     public void getDataFromAccess() {
         String accessURL = "jdbc:ucanaccess://C:\\Users\\pigeo\\Documents\\CallendarApp.accdb";
         try (Connection connection = DriverManager.getConnection(accessURL)) {
-
             String SQLQuery = "Select * From Cal_Entries";
             Statement statement = connection.createStatement();
             ResultSet results = statement.executeQuery(SQLQuery);
@@ -87,21 +86,20 @@ public class DataIO {
                 System.out.println(results.getString("Entry"));
                 dataAllDays.addNewDayData(results.getDate("Entry_Date").toLocalDate(), results.getString("Entry"));
             }
-
         } catch (Exception e) {
             System.out.println("Did not work. Error " + e.toString());
         }
     }
-
     public void saveDataToAccess() {
         String accessURL = "jdbc:ucanaccess://C:\\Users\\pigeo\\Documents\\CallendarApp.accdb";
         try (Connection connection = DriverManager.getConnection(accessURL)) {
-            String SQLQuery = "INSERT INTO Cal_Entries(Entry_Date, Entry) VALUES(?,?) ON DUPLICATE KEY UPDATE Entry_Date = VALUES(Entry_Date), Entry =VALUES(Entry);";
+            String SQLQuery = "INSERT INTO Cal_Entries(Entry_ID, Entry_Date, Entry) VALUES(?,?,?)";
             try (PreparedStatement statement = connection.prepareStatement(SQLQuery);) {
                 for (LocalDate lDate : dataAllDays.getAllData().keySet()) {
-                    for (String entry : dataAllDays.getAllData().get(lDate).getTodaysData()) {
-                        statement.setDate(1, Date.valueOf(lDate));
-                        statement.setString(2, entry);
+                    for (Integer index : dataAllDays.getAllData().get(lDate).getTodaysData().keySet()) {
+
+                        statement.setDate(2, Date.valueOf(lDate));
+                        statement.setString(3, index.toString());
                         statement.executeUpdate();
                     }
                 }

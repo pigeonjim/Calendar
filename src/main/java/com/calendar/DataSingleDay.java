@@ -1,40 +1,44 @@
 package com.calendar;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.lang.StringBuilder;
 
 public class DataSingleDay {
-    private ArrayList<String> todaysData;
+    private HashMap<Integer,String> todaysData;
+    IndexControl indexControl;
+    Integer nextIndex;
     public DataSingleDay(){
-        todaysData = new ArrayList<>();
+        todaysData = new HashMap();
+        indexControl = new IndexControl();
+        nextIndex = 1;
     }
 
     public String toString(){
         StringBuilder textToday = new StringBuilder();
 
         if(todaysData.isEmpty()){
-            textToday.append(" ");
-            return textToday.toString();
+            return "";
         }
 
-        for(String note:todaysData){
-            textToday.append(note + "\n");
+        for(Integer index:todaysData.keySet()){
+            textToday.append(todaysData.get(index) + "\n");
         }
         return textToday.toString();
     }
 
     public void addText(String text){
-        todaysData.add(text);
+        todaysData.put(nextIndex,text);
+        nextIndex++; //NEEDS A FUCTION TO AVOID DUPLICATES
     }
 
     public void removeText(String text){
-        todaysData.remove(text);
+        while(todaysData.values().remove(text));
     }
 
     public int getNoOfEntries(){
         return todaysData.size();
     }
 
-    public ArrayList<String> getTodaysData() {
+    public HashMap<Integer,String> getTodaysData() {
         return todaysData;
     }
 }

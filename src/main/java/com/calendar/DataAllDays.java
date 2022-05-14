@@ -60,8 +60,8 @@ public class DataAllDays {
     public ArrayList<String> allDataInCSV() {
         ArrayList<String> allDataCsv = new ArrayList<>();
         for (LocalDate day : allData.keySet()) {
-            for (String entry : allData.get(day).getTodaysData()) {
-                allDataCsv.add(day.toString() + "," + entry + "\n");
+            for (Integer index : allData.get(day).getTodaysData().keySet()) {
+                allDataCsv.add(day.toString() + "," + allData.get(day).getTodaysData().get(index) + "\n");
             }
         }
         return allDataCsv;
@@ -69,10 +69,11 @@ public class DataAllDays {
 
     public int getScreenHeight() {
         return screenHeight;
-    }
-
+    }//THIS DOESNT BELONG HERE
     public HashMap<LocalDate, DataSingleDay> getAllData() {
         return allData;
     }
+
+
 }
 
