@@ -36,10 +36,9 @@ public class DrawCalendar {
         gridScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
         pane.getChildren().addAll(daysLayout,gridScroll);
-        pane.setMinSize(1450,800);
+        pane.setMinSize(1450,allData.getScreenHeight() * 0.6);
         gridScroll.setFitToWidth(true);
-        gridScroll.setPrefHeight(800);
-
+        gridScroll.setPrefHeight(allData.getScreenHeight() * 0.59);
 
         return pane;
     }
@@ -86,5 +85,6 @@ public class DrawCalendar {
         daysLayout.setStyle("-fx-background-color: #C3CAC6;");
         daysLayout.setVgap(5);
         daysLayout.setHgap(5);
+        daysLayout.setMaxHeight(allData.getScreenHeight() * 0.4);
     }
 }
