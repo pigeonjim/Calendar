@@ -16,35 +16,36 @@ public class DataIO {
 
     AllData allData;
 
-    public DataIO(AllData allData){
+    public DataIO(AllData allData) {
         this.allData = allData;
     }
 
-        public void outputToCSV(String path){
-        try{
+    public void outputToCSV(String path) {
+        try {
             PrintWriter csvWriter = new PrintWriter(path);
-            for(String entry: allData.allDataInCSV()){
+            for (String entry : allData.allDataInCSV()) {
                 csvWriter.print(entry);
             }
             csvWriter.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    public void readFromCSV(String path){
-       try(Scanner lineIn = new Scanner(Paths.get(path))){
-            while(lineIn.hasNextLine()){
+    public void readFromCSV(String path) {
+        try (Scanner lineIn = new Scanner(Paths.get(path))) {
+            while (lineIn.hasNextLine()) {
                 String row = lineIn.nextLine();
                 String[] words = row.split(",");
                 LocalDate date = LocalDate.parse(words[0]);
                 allData.addNewDayData(date, words[1]);
-        }
-       } catch(Exception e){
-           System.out.println("error - " + e.toString());
+            }
+        } catch (Exception e) {
+            System.out.println("error - " + e.toString());
         }
     }
-    public String getFilePath(boolean loadOrSave){
+
+    public String getFilePath(boolean loadOrSave) {
         //parameter is true for save file and false for load file
         BorderPane borderPane = new BorderPane();
         borderPane.setStyle("-fx-background-color: transparent;");
@@ -57,53 +58,61 @@ public class DataIO {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV","*.csv"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
 
-        if(loadOrSave){
+        if (loadOrSave) {
             fileChooser.setTitle("Please choose where to save the file");
             File file = fileChooser.showSaveDialog(fcStage);
-            if(file == null){
-                return"";
+            if (file == null) {
+                return "";
             }
             return file.getPath();
         }
         fileChooser.setTitle("Please choose where to save the file");
         File file = fileChooser.showOpenDialog(fcStage);
-        if(file == null){
-            return"";
+        if (file == null) {
+            return "";
         }
         return file.getPath();
     }
 
-    public void getDataFromAccess(){
+    public void getDataFromAccess() {
         String accessURL = "jdbc:ucanaccess://C:\\Users\\pigeo\\Documents\\CallendarApp.accdb";
-        try(Connection connection = DriverManager.getConnection(accessURL) ){
+        try (Connection connection = DriverManager.getConnection(accessURL)) {
 
             String SQLQuery = "Select * From Cal_Entries";
             Statement statement = connection.createStatement();
             ResultSet results = statement.executeQuery(SQLQuery);
-            while(results.next()){
+            while (results.next()) {
                 System.out.println(results.getString("Entry"));
+                allData.addNewDayData(results.getDate("Entry_Date").toLocalDate(), results.getString("Entry"));
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Did not work. Error " + e.toString());
         }
     }
 
-    public void saveDataToAccess(){
+    public void saveDataToAccess() {
         String accessURL = "jdbc:ucanaccess://C:\\Users\\pigeo\\Documents\\CallendarApp.accdb";
-        try(Connection connection = DriverManager.getConnection(accessURL) ){
-
-            String SQLQuery = "INSERT INTO Cal_Entries(Entry_Date, Entry)";
-            Statement statement = connection.createStatement();
-            ResultSet results = statement.executeQuery(SQLQuery);
-            while(results.next()){
-                System.out.println(results.getString("Entry"));
+        try (Connection connection = DriverManager.getConnection(accessURL)) {
+            String SQLQuery = "INSERT INTO Cal_Entries(Entry_Date, Entry) VALUES(?,?)";
+            try (PreparedStatement statement = connection.prepareStatement(SQLQuery);) {
+                for (LocalDate lDate : allData.getAllData().keySet()) {
+                    for (String entry : allData.getAllData().get(lDate).getTodaysData()) {
+                        statement.setDate(1, Date.valueOf(lDate));
+                        statement.setString(2, entry);
+                        statement.executeUpdate();
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Did not write. Error " + e);
+                if(e instanceof SQLException){
+                    System.out.println(e.getMessage());
+                }
             }
-
-        } catch (Exception e){
-            System.out.println("Did not work. Error " + e.toString());
+        } catch (Exception e) {
+            System.out.println("Connection error " + e);
         }
     }
 }

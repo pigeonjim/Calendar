@@ -36,9 +36,9 @@ public class DrawCalendar {
         gridScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
         pane.getChildren().addAll(daysLayout,gridScroll);
-        pane.setMinSize(1450,allData.getScreenHeight() * 0.6);
+        pane.setMinSize(1450,allData.getScreenHeight() * 0.65);
         gridScroll.setFitToWidth(true);
-        gridScroll.setPrefHeight(allData.getScreenHeight() * 0.59);
+        gridScroll.setPrefHeight(allData.getScreenHeight() * 0.65);
 
         return pane;
     }

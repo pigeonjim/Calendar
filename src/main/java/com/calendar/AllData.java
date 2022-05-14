@@ -11,55 +11,56 @@ public class AllData {
     private GraphicsDevice gfxDevice;
     private int screenHeight, screenWidth;
 
-    public AllData(){
+    public AllData() {
         allData = new HashMap<>();
         gfxDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         screenHeight = gfxDevice.getDisplayMode().getHeight();
         screenWidth = gfxDevice.getDisplayMode().getWidth();
     }
 
-    public void addNewDayData(LocalDate date, String text){
+    public void addNewDayData(LocalDate date, String text) {
         if (!allData.containsKey(date)) {
             allData.put(date, new DayData());
         }
         allData.get(date).addText(text);
     }
 
-    public void deleteDayData(LocalDate date, String text){
-        if(allData.containsKey(date)){
+    public void deleteDayData(LocalDate date, String text) {
+        if (allData.containsKey(date)) {
             allData.get(date).removeText(text);
         }
     }
 
-    public String getDayText(LocalDate date){
-        if(allData.containsKey(date)){
+    public String getDayText(LocalDate date) {
+        if (allData.containsKey(date)) {
             return this.allData.get(date).toString();
         }
         return "";
     }
 
-    public void deleteAllDataFromDay(LocalDate date){
-            allData.remove(date);
+    public void deleteAllDataFromDay(LocalDate date) {
+        allData.remove(date);
     }
 
     public LocalDate getWorkingDate() {
         return workingDate;
     }
-    public void setWorkingDate(LocalDate date){
+
+    public void setWorkingDate(LocalDate date) {
         this.workingDate = date;
     }
 
-    public int getNoDayEntries(LocalDate date){
-        if(allData.containsKey(date)){
+    public int getNoDayEntries(LocalDate date) {
+        if (allData.containsKey(date)) {
             return allData.get(date).getNoOfEntries();
         }
         return 0;
     }
 
-    public ArrayList<String> allDataInCSV(){
+    public ArrayList<String> allDataInCSV() {
         ArrayList<String> allDataCsv = new ArrayList<>();
-        for(LocalDate day:allData.keySet()){
-            for(String entry: allData.get(day).getTodaysData()){
+        for (LocalDate day : allData.keySet()) {
+            for (String entry : allData.get(day).getTodaysData()) {
                 allDataCsv.add(day.toString() + "," + entry + "\n");
             }
         }
@@ -70,7 +71,8 @@ public class AllData {
         return screenHeight;
     }
 
-    public int getScreenWidth() {
-        return screenWidth;
+    public HashMap<LocalDate, DayData> getAllData() {
+        return allData;
     }
 }
+

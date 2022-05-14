@@ -18,7 +18,6 @@ public class CalendarApplication extends Application {
         DrawUI ui = new DrawUI(dateLogic, drawCalendar, allData,dataIO);
 
         BorderPane layout = new BorderPane();
-        //layout.setMaxHeight(allData.getScreenHeight() * 0.75);
         layout.setRight(drawCalendar.getView());
         layout.setTop(ui.getView());
         Scene mainScene = new Scene(layout);

@@ -77,9 +77,10 @@ public class DrawUI {
         Menu ioMenu = new Menu("Files");
         MenuItem toCsvM = new MenuItem("Save data to csv");
         MenuItem fromCsvM  =new MenuItem("Load data from csv");
-        MenuItem connectM = new MenuItem("Connect to database");
+        MenuItem fromAccessM = new MenuItem("Load data from Access database");
+        MenuItem toAccessM = new MenuItem("Save data to Access database");
 
-        ioMenu.getItems().addAll(toCsvM,fromCsvM,connectM);
+        ioMenu.getItems().addAll(toCsvM,fromCsvM,fromAccessM,toAccessM);
 
         Menu exit = new Menu("Exit");
         MenuItem exitM = new MenuItem("Exit");
@@ -116,7 +117,14 @@ public class DrawUI {
         exitM.setOnAction((event) -> {
             Platform.exit();
         });
-
+        fromAccessM.setOnAction((event) -> {
+            dataIO.getDataFromAccess();
+            dateDDChange();
+        });
+        toAccessM.setOnAction((event) -> {
+            dataIO.saveDataToAccess();
+            dateDDChange();
+        });
     }
 
 }
