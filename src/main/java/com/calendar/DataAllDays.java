@@ -10,12 +10,14 @@ public class DataAllDays {
     private LocalDate workingDate = LocalDate.now();
     private GraphicsDevice gfxDevice;
     private int screenHeight, screenWidth;
+    IndexControl indexControl;
 
     public DataAllDays() {
         allData = new HashMap<>();
         gfxDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         screenHeight = gfxDevice.getDisplayMode().getHeight();
         screenWidth = gfxDevice.getDisplayMode().getWidth();
+        indexControl = new IndexControl();
     }
 
     public void addNewDayData(LocalDate date, String text) {
@@ -23,10 +25,6 @@ public class DataAllDays {
             allData.put(date, new DataSingleDay());
         }
         allData.get(date).addText(text);
-    }
-
-    public void updateDayEntry(Integer index, String text, LocalDate date){
-        allData.get(date).getTodaysData().put(index,text);
     }
 
     public void deleteDayData(LocalDate date, String text) {
@@ -82,6 +80,21 @@ public class DataAllDays {
         return allData.get(date).getTodaysData();
     }
 
+
+    public void importDayEntry(Integer index, LocalDate date, String entry){
+        if(index == null){
+            System.out.println("Index null");
+        }
+        if(allData.containsKey(date)){
+            if(allData.get(date).containsEntry(entry)){
+                //pop up and ask
+            } else {
+                allData.get(date).addText(entry);
+            }
+        } else {
+            addNewDayData(date,entry);
+        }
+    }
 
 }
 

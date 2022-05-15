@@ -29,7 +29,6 @@ public class DrawCalendar {
         pane = new Pane();
         pane.setMaxSize(400,400);
 
-
         gridScroll = new ScrollPane(daysLayout);
 
         gridScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);

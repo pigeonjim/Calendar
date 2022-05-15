@@ -8,13 +8,11 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import java.io.File;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 import java.util.Scanner;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.sql.*;
-import java.time.format.DateTimeFormatter;
+
 
 public class DataIO {
 
@@ -45,7 +43,7 @@ public class DataIO {
                 Integer index = Integer.valueOf(words[0]);
                 LocalDate date = LocalDate.parse(words[1]);
                 String text = words[2];
-                inputImportData(index,date, text);
+                dataAllDays.importDayEntry(index,date, text);
             }
 
         } catch (Exception e) {
@@ -95,13 +93,7 @@ public class DataIO {
                 Integer index = results.getInt("Entry_ID");
                 String entry = results.getString("Entry");
 
-                if(dataAllDays.getAllData().containsKey(date) &&
-                        !dataAllDays.getDayData(date).containsKey(index)){
-
-                        dataAllDays.getDayData(date).put(index,entry); //update entry
-                } else {
-                        dataAllDays.addNewDayData(date, entry); //add new entry
-                }
+                dataAllDays.importDayEntry(index,date, entry);
             }
         } catch (Exception e) {
             System.out.println("Did not work. Error " + e.toString());
@@ -132,16 +124,4 @@ public class DataIO {
         }
     }
 
-    public void inputImportData(Integer index, LocalDate date, String entry){
-        if(index == null){
-            System.out.println("Index null");
-        }
-        if( !dataAllDays.getAllData().containsKey(date)){
-            dataAllDays.addNewDayData(date, entry);
-        } else if (!dataAllDays.getDayData(date).containsKey(index) ) {
-            dataAllDays.addNewDayData(date, entry);
-        } else {
-            dataAllDays.updateDayEntry(index, entry, date);
-        }
-    }
 }

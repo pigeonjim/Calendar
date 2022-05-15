@@ -1,16 +1,10 @@
 package com.calendar;
 
 import java.util.ArrayList;
-
-import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Button;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import javafx.geometry.Pos;
-import javafx.stage.StageStyle;
 import javafx.scene.control.CheckBox;
 
 public class DrawDeletePopup {
@@ -19,10 +13,10 @@ public class DrawDeletePopup {
     private DataAllDays dataAllDays;
     private DrawDay drawDay;
     private VBox cbLayout;
-    private BorderPane mainLayout;
     private Button allButton, selectedButton, closeButton;
     private HBox buttonLayout;
     private DrawTextPopup textPopup;
+    BlankStage blankStage;
 
     public DrawDeletePopup(DataAllDays dataAllDays, DrawDay drawDay, DrawTextPopup textPopup){
         this.dataAllDays = dataAllDays;
@@ -31,6 +25,7 @@ public class DrawDeletePopup {
         cbLayout = new VBox();
         buttonLayout = new HBox();
         this.textPopup  = textPopup;
+        blankStage = new BlankStage();
     }
 
     public void showPopup(){
@@ -38,8 +33,6 @@ public class DrawDeletePopup {
             return;
         }
         setUpCheckBoxes();
-
-        mainLayout = new BorderPane();
         allButton = new Button("Click to remove all entries from this date");
         selectedButton = new Button("Click to remove selected entries from this date");
         closeButton = new Button("Exit");
@@ -48,9 +41,9 @@ public class DrawDeletePopup {
         buttonLayout.setAlignment(Pos.CENTER);
         buttonLayout.setStyle("-fx-background-color: transparent");
         cbLayout.setPrefSize(750,400);
-        mainLayout.setTop(buttonLayout);
-        mainLayout.setCenter(cbLayout);
-        mainLayout.setPrefSize(750,500);
+        blankStage.getPane().setTop(buttonLayout);
+        blankStage.getPane().setCenter(cbLayout);
+        blankStage.getPane().setPrefSize(750,500);
 
         cbLayout.setStyle("-fx-background-radius: 25;"+
                 "-fx-border-style: solid inside;" +
@@ -59,7 +52,7 @@ public class DrawDeletePopup {
                 "-fx-border-color: black;" +
                 "-fx-background-color: #FFFF;" +
                 "-fx-padding: 15px;");
-        mainLayout.setStyle("-fx-background-color: transparent");
+        blankStage.getPane().setStyle("-fx-background-color: transparent");
 
         formatButton(allButton);
         formatButton(selectedButton);
@@ -71,17 +64,10 @@ public class DrawDeletePopup {
                 "-fx-border-width: 4;" +
                 "-fx-border-color: black;");
 
-        Scene popScene = new Scene(mainLayout);
-        Stage popUp = new Stage();
-
-        popScene.setFill(Color.TRANSPARENT);
-        popUp.initStyle(StageStyle.TRANSPARENT);
-
-        popUp.setScene(popScene);
-        popUp.show();
+        blankStage.showStage();
 
         closeButton.setOnAction((event) -> {
-            popUp.close();
+            blankStage.closeStage();
         });
 
         selectedButton.setOnAction((event) -> {

@@ -42,4 +42,16 @@ public class DataSingleDay {
     public HashMap<Integer,String> getTodaysData() {
         return todaysData;
     }
+
+    public boolean containsEntry(String text){
+        if(todaysData.isEmpty()){
+            return false;
+        }
+        for(Integer index: todaysData.keySet()){
+            if(todaysData.get(index).equals(text)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

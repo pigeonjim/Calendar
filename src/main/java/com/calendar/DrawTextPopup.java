@@ -1,27 +1,23 @@
 package com.calendar;
 
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.stage.Modality;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
-import javafx.stage.StageStyle;
+import javafx.scene.paint.Color;
 
 public class DrawTextPopup{
 
     private DataAllDays dataAllDays;
     private VBox layout;
     private Button addButton, deleteButton,close;
-    private Stage popUp;
     private TextField inputBox;
     private DrawDay drawDay;
     private Label outputBox;
+    private BlankStage blankStage;
 
     public DrawTextPopup(DataAllDays dataAllDays, DrawDay drawDay){
         this.dataAllDays = dataAllDays;
@@ -29,23 +25,20 @@ public class DrawTextPopup{
         this.inputBox = new TextField();
         this.drawDay = drawDay;
         this.outputBox = new Label();
+        blankStage = new BlankStage();
     }
 
     public void showPopup(){
         close = new Button("Close");
         close.setOnAction((event) -> {
             allButtonEvents();
-            popUp.close();
+            blankStage.closeStage();
         });
-        popUp = new Stage();
-        popUp.setTitle(drawDay.getDate().toString());
-        popUp.initModality(Modality.APPLICATION_MODAL);
+        blankStage.setTitle(drawDay.getDate().toString());
         choice();
-        Scene popScene = new Scene(layout);
-        popScene.setFill(Color.TRANSPARENT);
-        popUp.setScene(popScene);
-        popUp.initStyle(StageStyle.TRANSPARENT);
-        popUp.show();
+        blankStage.getPane().setCenter(layout);
+        blankStage.getPane().setStyle("-fx-background-color: transparent;");
+        blankStage.showStage();
         inputBox.requestFocus();
     }
 
