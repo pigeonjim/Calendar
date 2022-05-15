@@ -16,7 +16,7 @@ public class DrawDeletePopup {
     private Button allButton, selectedButton, closeButton;
     private HBox buttonLayout;
     private DrawTextPopup textPopup;
-    BlankStage blankStage;
+    private BlankStage blankStage;
 
     public DrawDeletePopup(DataAllDays dataAllDays, DrawDay drawDay, DrawTextPopup textPopup){
         this.dataAllDays = dataAllDays;
@@ -126,6 +126,5 @@ public class DrawDeletePopup {
                 "-fx-border-radius: 25px;" +
                 "-fx-border-width: 4;" +
                 "-fx-border-color: black;");
-
     }
 }

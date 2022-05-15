@@ -22,7 +22,6 @@ public class DrawUI {
     private DrawCalendar drawCalendar;
     private DataAllDays dataAllDays;
     private DataIO dataIO;
-    private DuplicateEntryPopup duplicateEntryPopup;
 
     public DrawUI(DateLogic dLogic, DrawCalendar dCal, DataAllDays dataAllDays, DataIO dataIO){
         this.dateLogic = dLogic;
@@ -30,7 +29,6 @@ public class DrawUI {
         this.dataAllDays = dataAllDays;
         this.dataIO = dataIO;
         menuBar = new MenuBar();
-        duplicateEntryPopup = new DuplicateEntryPopup();
     }
 
     public Parent getView(){

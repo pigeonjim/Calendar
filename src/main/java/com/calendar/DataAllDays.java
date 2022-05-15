@@ -81,21 +81,20 @@ public class DataAllDays {
     }
 
 
-    public void importDayEntry(Integer index, LocalDate date, String entry){
+    public boolean importDayEntry(Integer index, LocalDate date, String entry){
+        //returns true if date already contains this entry with any index value
         if(index == null){
             System.out.println("Index null");
         }
         if(allData.containsKey(date)){
             if(allData.get(date).containsEntry(entry)){
-                DuplicateEntryPopup dupPop = new DuplicateEntryPopup();
-                dupPop.showPopup(this,date,entry);
+                return true;
             } else {
                 allData.get(date).addText(entry);
             }
         } else {
             addNewDayData(date,entry);
         }
+        return false;
     }
-
 }
-

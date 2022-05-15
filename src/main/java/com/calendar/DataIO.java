@@ -3,6 +3,7 @@ package com.calendar;
 import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -10,8 +11,8 @@ import java.sql.*;
 
 public class DataIO {
 
-    DataAllDays dataAllDays;
-    BlankStage blankStage;
+    private DataAllDays dataAllDays;
+    private BlankStage blankStage;
 
     public DataIO(DataAllDays dataAllDays) {
         this.dataAllDays = dataAllDays;
@@ -30,15 +31,23 @@ public class DataIO {
     }
 
     public void readFromCSV(String path) {
+        HashMap<LocalDate,String> duplicates = new HashMap<>();
         try (Scanner lineIn = new Scanner(Paths.get(path))) {
             while (lineIn.hasNextLine()) {
                 String row = lineIn.nextLine();
                 String[] words = row.split(",");
-
                 Integer index = Integer.valueOf(words[0]);
                 LocalDate date = LocalDate.parse(words[1]);
                 String text = words[2];
-                dataAllDays.importDayEntry(index,date, text);
+                if(dataAllDays.importDayEntry(index,date, text)){
+                    duplicates.put(date,text);
+                } else {
+                    dataAllDays.importDayEntry(index,date, text);
+                }
+            }
+            if(!duplicates.isEmpty()){
+                DuplicateEntryPopup duplicateEntryPopup = new DuplicateEntryPopup(duplicates);
+                duplicateEntryPopup.showPopup(dataAllDays);
             }
 
         } catch (Exception e) {
@@ -74,6 +83,7 @@ public class DataIO {
     }
 
    public void getAllAccess() {
+       HashMap<LocalDate,String> duplicates = new HashMap<>();
         String accessURL = "jdbc:ucanaccess://src/main/resources/com/calendar/CallendarApp.accdb";
         try (Connection connection = DriverManager.getConnection(accessURL)) {
             String SQLQuery = "Select * From Cal_Entries";
@@ -84,8 +94,16 @@ public class DataIO {
                 Integer index = results.getInt("Entry_ID");
                 String entry = results.getString("Entry");
 
-                dataAllDays.importDayEntry(index,date, entry);
+                if(dataAllDays.importDayEntry(index,date, entry)){
+                    duplicates.put(date,entry);
+                } else {
+                    dataAllDays.importDayEntry(index,date, entry);
+                }
             }
+            if(!duplicates.isEmpty()){
+                DuplicateEntryPopup duplicateEntryPopup = new DuplicateEntryPopup(duplicates);
+                duplicateEntryPopup.showPopup(dataAllDays);
+                }
         } catch (Exception e) {
             System.out.println("Did not work. Error " + e.toString());
         }
@@ -114,5 +132,4 @@ public class DataIO {
             System.out.println("Connection error " + e);
         }
     }
-
 }

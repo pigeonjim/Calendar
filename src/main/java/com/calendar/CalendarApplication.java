@@ -6,7 +6,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.Scene;
 import javafx.stage.StageStyle;
 
-
 public class CalendarApplication extends Application {
     @Override
     public void start(Stage stage) {

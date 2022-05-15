@@ -23,7 +23,7 @@ public class BlankStage {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setScene(scene);
         window.initStyle(StageStyle.TRANSPARENT);
-        window.showAndWait();
+        window.show();
     }
     public void closeStage(){
         window.close();
