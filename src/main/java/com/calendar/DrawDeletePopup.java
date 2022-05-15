@@ -64,7 +64,8 @@ public class DrawDeletePopup {
                 "-fx-border-width: 4;" +
                 "-fx-border-color: black;");
 
-        blankStage.showStage();
+        blankStage.buildStage();
+        blankStage.startStage();
 
         closeButton.setOnAction((event) -> {
             blankStage.closeStage();

@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
-import javafx.scene.paint.Color;
 
 public class DrawTextPopup{
 
@@ -38,7 +37,8 @@ public class DrawTextPopup{
         choice();
         blankStage.getPane().setCenter(layout);
         blankStage.getPane().setStyle("-fx-background-color: transparent;");
-        blankStage.showStage();
+        blankStage.buildStage();
+        blankStage.startStage();
         inputBox.requestFocus();
     }
 

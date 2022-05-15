@@ -59,7 +59,7 @@ public class DataIO {
         //parameter is true for save file and false for load file
         blankStage = new BlankStage();
         blankStage.getPane().setStyle("-fx-background-color: transparent;");
-        blankStage.showStage();
+        blankStage.buildStage();
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));

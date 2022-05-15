@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.time.LocalDate;
+
 import javafx.scene.layout.HBox;
 
 
@@ -33,7 +33,7 @@ public class DuplicateEntryPopup {
         yesButton.setStyle("-fx-border-style: solid inside;" +
                         "-fx-border-width: 3;" +
                         "-fx-border-color: green;");
-        noButton = new Button("Click to discard and close");
+        noButton = blankStage.getCloseButton();
         noButton.setStyle("-fx-border-style: solid inside;" +
                         "-fx-border-width: 3;" +
                         "-fx-border-color: red;");
@@ -58,11 +58,9 @@ public class DuplicateEntryPopup {
                 "-fx-border-radius: 25px;" +
                 "-fx-padding: 15px;");
         blankStage.setTitle("Duplicate entry found");
-        blankStage.showStage();
+        blankStage.buildStage();
+        blankStage.showAndWaitStage().showAndWait();
 
-        noButton.setOnAction((event) -> {
-            blankStage.closeStage();
-        });
         yesButton.setOnAction((event) -> {
             for(CheckBox cb: cbAry){
                 if(cb.isSelected()){
