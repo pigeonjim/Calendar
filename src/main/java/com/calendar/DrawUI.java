@@ -64,7 +64,7 @@ public class DrawUI {
 
     public void dateDDChange(){
         if(!monthDD.getValue().toString().isEmpty() && !yearDD.getValue().toString().isEmpty() ){
-            LocalDate newDate = this. dateLogic.buildDateFromStringAndInt(monthDD.getValue().toString(),Integer.valueOf(yearDD.getValue().toString()));
+            LocalDate newDate = this.dateLogic.buildDateFromStringAndInt(monthDD.getValue().toString(),Integer.valueOf(yearDD.getValue().toString()));
             dataAllDays.setWorkingDate(newDate);
             drawCalendar.drawMonth();
         }
@@ -117,11 +117,11 @@ public class DrawUI {
             Platform.exit();
         });
         fromAccessM.setOnAction((event) -> {
-            dataIO.getDataFromAccess();
+           dataIO.getAllAccess();
             dateDDChange();
         });
         toAccessM.setOnAction((event) -> {
-            dataIO.saveDataToAccess();
+            dataIO.saveAllAccess();
             dateDDChange();
         });
     }

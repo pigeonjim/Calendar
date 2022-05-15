@@ -25,6 +25,10 @@ public class DataAllDays {
         allData.get(date).addText(text);
     }
 
+    public void updateDayEntry(Integer index, String text, LocalDate date){
+        allData.get(date).getTodaysData().put(index,text);
+    }
+
     public void deleteDayData(LocalDate date, String text) {
         if (allData.containsKey(date)) {
             allData.get(date).removeText(text);
@@ -33,7 +37,7 @@ public class DataAllDays {
 
     public String getDayText(LocalDate date) {
         if (allData.containsKey(date)) {
-            return this.allData.get(date).toString();
+            return this.allData.get(date).entriesToString();
         }
         return "";
     }
@@ -61,7 +65,7 @@ public class DataAllDays {
         ArrayList<String> allDataCsv = new ArrayList<>();
         for (LocalDate day : allData.keySet()) {
             for (Integer index : allData.get(day).getTodaysData().keySet()) {
-                allDataCsv.add(day.toString() + "," + allData.get(day).getTodaysData().get(index) + "\n");
+                allDataCsv.add(index + "," + day.toString() + "," + allData.get(day).getTodaysData().get(index) + "\n");
             }
         }
         return allDataCsv;
@@ -72,6 +76,10 @@ public class DataAllDays {
     }//THIS DOESNT BELONG HERE
     public HashMap<LocalDate, DataSingleDay> getAllData() {
         return allData;
+    }
+
+    public HashMap<Integer,String> getDayData(LocalDate date){
+        return allData.get(date).getTodaysData();
     }
 
 

@@ -87,11 +87,9 @@ public class DrawTextPopup{
                 addButtonEvent();
             }
         });
-
         deleteButton.setOnAction((event) -> {
             deleteButtonEvent();
         });
-
     }
         private void addButtonEvent(){
             allButtonEvents();
@@ -104,7 +102,7 @@ public class DrawTextPopup{
 
         private void allButtonEvents(){
                 if(layout.getChildren().contains(inputBox) && !inputBox.getText().isEmpty()){
-                    dataAllDays.addNewDayData(drawDay.getDate(),inputBox.getText().toString());
+                    dataAllDays.addNewDayData(drawDay.getDate(),inputBox.getText());
                     drawDay.setDayText();
                 }
         }

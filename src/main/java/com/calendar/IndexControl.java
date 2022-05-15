@@ -1,4 +1,5 @@
 package com.calendar;
+import java.util.Set;
 
 public class IndexControl {
 
@@ -12,4 +13,11 @@ public class IndexControl {
         return highest;
     }
 
+    public Integer findFirstNotInUse(Set<Integer> list) {
+        Integer i = 1;
+        while (list.contains(i)) {
+            i++;
+        }
+        return i;
+    }
 }

@@ -5,14 +5,12 @@ import java.lang.StringBuilder;
 public class DataSingleDay {
     private HashMap<Integer,String> todaysData;
     IndexControl indexControl;
-    Integer nextIndex;
     public DataSingleDay(){
         todaysData = new HashMap();
         indexControl = new IndexControl();
-        nextIndex = 1;
     }
 
-    public String toString(){
+    public String entriesToString(){
         StringBuilder textToday = new StringBuilder();
 
         if(todaysData.isEmpty()){
@@ -26,8 +24,11 @@ public class DataSingleDay {
     }
 
     public void addText(String text){
-        todaysData.put(nextIndex,text);
-        nextIndex++; //NEEDS A FUCTION TO AVOID DUPLICATES
+        if(todaysData.isEmpty()){
+            todaysData.put(1,text);
+        } else {
+            todaysData.put(indexControl.findFirstNotInUse(todaysData.keySet()),text);
+        }
     }
 
     public void removeText(String text){

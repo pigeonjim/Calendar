@@ -8,10 +8,14 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import java.io.File;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.Scanner;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.sql.*;
+import java.time.format.DateTimeFormatter;
+
 public class DataIO {
 
     DataAllDays dataAllDays;
@@ -37,9 +41,13 @@ public class DataIO {
             while (lineIn.hasNextLine()) {
                 String row = lineIn.nextLine();
                 String[] words = row.split(",");
-                LocalDate date = LocalDate.parse(words[0]);
-                dataAllDays.addNewDayData(date, words[1]);
+
+                Integer index = Integer.valueOf(words[0]);
+                LocalDate date = LocalDate.parse(words[1]);
+                String text = words[2];
+                inputImportData(index,date, text);
             }
+
         } catch (Exception e) {
             System.out.println("error - " + e.toString());
         }
@@ -76,41 +84,64 @@ public class DataIO {
         return file.getPath();
     }
 
-    public void getDataFromAccess() {
-        String accessURL = "jdbc:ucanaccess://C:\\Users\\pigeo\\Documents\\CallendarApp.accdb";
+   public void getAllAccess() {
+        String accessURL = "jdbc:ucanaccess://src/main/resources/com/calendar/CallendarApp.accdb";
         try (Connection connection = DriverManager.getConnection(accessURL)) {
             String SQLQuery = "Select * From Cal_Entries";
             Statement statement = connection.createStatement();
             ResultSet results = statement.executeQuery(SQLQuery);
             while (results.next()) {
-                System.out.println(results.getString("Entry"));
-                dataAllDays.addNewDayData(results.getDate("Entry_Date").toLocalDate(), results.getString("Entry"));
+                LocalDate date = results.getDate("Entry_Date").toLocalDate();
+                Integer index = results.getInt("Entry_ID");
+                String entry = results.getString("Entry");
+
+                if(dataAllDays.getAllData().containsKey(date) &&
+                        !dataAllDays.getDayData(date).containsKey(index)){
+
+                        dataAllDays.getDayData(date).put(index,entry); //update entry
+                } else {
+                        dataAllDays.addNewDayData(date, entry); //add new entry
+                }
             }
         } catch (Exception e) {
             System.out.println("Did not work. Error " + e.toString());
         }
     }
-    public void saveDataToAccess() {
-        String accessURL = "jdbc:ucanaccess://C:\\Users\\pigeo\\Documents\\CallendarApp.accdb";
+    public void saveAllAccess() {
+        String accessURL = "jdbc:ucanaccess://src/main/resources/com/calendar/CallendarApp.accdb";
         try (Connection connection = DriverManager.getConnection(accessURL)) {
-            String SQLQuery = "INSERT INTO Cal_Entries(Entry_ID, Entry_Date, Entry) VALUES(?,?,?)";
+            //String SQLQuery = "INSERT INTO Cal_Entries(Entry_ID, Entry_Date, Entry) VALUES(?,?,?)";
+            String SQLQuery = "INSERT INTO Cal_Entries SELECT * FROM Cal_Entries " +
+                    "WHERE NOT EXISTS (SELECT * FROM Cal_Entries AS bd WHERE bd.Entry_ID = ? AND bd.Entry_Date = ? AND " +
+                    "bd.Entry = ?)";
             try (PreparedStatement statement = connection.prepareStatement(SQLQuery);) {
                 for (LocalDate lDate : dataAllDays.getAllData().keySet()) {
                     for (Integer index : dataAllDays.getAllData().get(lDate).getTodaysData().keySet()) {
-
+                        statement.setInt(1,index);
                         statement.setDate(2, Date.valueOf(lDate));
-                        statement.setString(3, index.toString());
+                        statement.setString(3,
+                                dataAllDays.getAllData().get(lDate).getTodaysData().get(index));
                         statement.executeUpdate();
                     }
                 }
             } catch (Exception e) {
                 System.out.println("Did not write. Error " + e);
-                if(e instanceof SQLException){
-                    System.out.println(e.getMessage());
-                }
             }
         } catch (Exception e) {
             System.out.println("Connection error " + e);
+        }
+    }
+
+    public void inputImportData(Integer index, LocalDate date, String entry){
+        if(index == null){
+            System.out.println("Index null");
+        }
+        if( !dataAllDays.getAllData().containsKey(date)){
+            dataAllDays.addNewDayData(date, entry);
+        } else if (!dataAllDays.getDayData(date).containsKey(index) ) {
+            dataAllDays.addNewDayData(date, entry);
+        } else {
+            dataAllDays.updateDayEntry(index, entry, date);
         }
     }
 }
