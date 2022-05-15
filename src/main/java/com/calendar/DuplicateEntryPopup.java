@@ -9,9 +9,7 @@ import javafx.scene.layout.VBox;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import javafx.scene.layout.HBox;
-
 
 public class DuplicateEntryPopup {
     private Button yesButton, noButton;
@@ -59,7 +57,7 @@ public class DuplicateEntryPopup {
                 "-fx-padding: 15px;");
         blankStage.setTitle("Duplicate entry found");
         blankStage.buildStage();
-        blankStage.showAndWaitStage().showAndWait();
+        blankStage.startStage();
 
         yesButton.setOnAction((event) -> {
             for(CheckBox cb: cbAry){
@@ -68,12 +66,11 @@ public class DuplicateEntryPopup {
                     System.out.println(bits[0]);
                     System.out.println(bits[1]);
                     data.addNewDayData(LocalDate.parse(bits[0]),bits[1]);
+                    cb.setDisable(true);
                 }
             }
-
             blankStage.closeStage();
         });
-
     }
 
     private void setUpCheckBoxes(){

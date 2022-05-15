@@ -106,10 +106,10 @@ public class DrawDeletePopup {
         for(CheckBox cb:cbAry){
             if(cb.isSelected()){
                 dataAllDays.deleteDayData(drawDay.getDate(),cb.getText());
+                cb.setDisable(true);
             }
         }
         drawDay.setDayText();
-        setUpCheckBoxes();
         textPopup.setOutputBox();
     }
     private void allButtonEvent(){

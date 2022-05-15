@@ -31,9 +31,6 @@ public class BlankStage {
     public void startStage(){
         window.show();
     }
-    public Stage showAndWaitStage(){
-        return window;
-    }
 
     public BorderPane getPane() {
         return pane;
