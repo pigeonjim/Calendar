@@ -1,6 +1,5 @@
 package com.calendar;
 
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -24,7 +23,7 @@ public class BlankStage {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setScene(scene);
         window.initStyle(StageStyle.TRANSPARENT);
-        window.show();
+        window.showAndWait();
     }
     public void closeStage(){
         window.close();
@@ -35,5 +34,9 @@ public class BlankStage {
     }
     public void setTitle(String title){
         window.setTitle(title);
+    }
+
+    public Stage getWindow() {
+        return window;
     }
 }

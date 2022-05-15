@@ -40,6 +40,10 @@ public class DuplicateEntryPopup {
         noButton.setOnAction((event) -> {
             blankStage.closeStage();
         });
+        yesButton.setOnAction((event) -> {
+            data.addNewDayData(date,entry);
+            blankStage.closeStage();
+        });
 
     }
 }

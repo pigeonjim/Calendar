@@ -1,11 +1,6 @@
 package com.calendar;
 
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.Scanner;
@@ -13,10 +8,10 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.sql.*;
 
-
 public class DataIO {
 
     DataAllDays dataAllDays;
+    BlankStage blankStage;
 
     public DataIO(DataAllDays dataAllDays) {
         this.dataAllDays = dataAllDays;
@@ -53,14 +48,9 @@ public class DataIO {
 
     public String getFilePath(boolean loadOrSave) {
         //parameter is true for save file and false for load file
-        BorderPane borderPane = new BorderPane();
-        borderPane.setStyle("-fx-background-color: transparent;");
-        Scene scene = new Scene(borderPane);
-        scene.setFill(Color.TRANSPARENT);
-        Stage fcStage = new Stage();
-        fcStage.initStyle(StageStyle.TRANSPARENT);
-        fcStage.setScene(scene);
-        fcStage.show();
+        blankStage = new BlankStage();
+        blankStage.getPane().setStyle("-fx-background-color: transparent;");
+        blankStage.showStage();
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -68,17 +58,18 @@ public class DataIO {
 
         if (loadOrSave) {
             fileChooser.setTitle("Please choose where to save the file");
-            File file = fileChooser.showSaveDialog(fcStage);
+            File file = fileChooser.showSaveDialog(blankStage.getWindow());
             if (file == null) {
                 return "";
             }
             return file.getPath();
         }
         fileChooser.setTitle("Please choose where to save the file");
-        File file = fileChooser.showOpenDialog(fcStage);
+        File file = fileChooser.showOpenDialog(blankStage.getWindow());
         if (file == null) {
             return "";
         }
+        blankStage.closeStage();
         return file.getPath();
     }
 

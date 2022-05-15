@@ -87,7 +87,8 @@ public class DataAllDays {
         }
         if(allData.containsKey(date)){
             if(allData.get(date).containsEntry(entry)){
-                //pop up and ask
+                DuplicateEntryPopup dupPop = new DuplicateEntryPopup();
+                dupPop.showPopup(this,date,entry);
             } else {
                 allData.get(date).addText(entry);
             }

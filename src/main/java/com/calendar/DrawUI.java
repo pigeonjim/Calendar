@@ -68,8 +68,8 @@ public class DrawUI {
         if(!monthDD.getValue().toString().isEmpty() && !yearDD.getValue().toString().isEmpty() ){
             LocalDate newDate = this.dateLogic.buildDateFromStringAndInt(monthDD.getValue().toString(),Integer.valueOf(yearDD.getValue().toString()));
             dataAllDays.setWorkingDate(newDate);
-            drawCalendar.drawMonth();
         }
+        drawCalendar.drawMonth();
     }
 
     public void setUpMenus(){
@@ -119,10 +119,8 @@ public class DrawUI {
             Platform.exit();
         });
         fromAccessM.setOnAction((event) -> {
-           //dataIO.getAllAccess();
-            //dateDDChange();
-
-            duplicateEntryPopup.showPopup(dataAllDays,dataAllDays.getWorkingDate(),"This here");
+            dataIO.getAllAccess();
+            dateDDChange();
         });
         toAccessM.setOnAction((event) -> {
             dataIO.saveAllAccess();
