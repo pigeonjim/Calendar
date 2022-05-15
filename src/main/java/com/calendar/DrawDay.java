@@ -4,20 +4,18 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import javafx.scene.Parent;
-import javafx.scene.paint.Color;
 import javafx.geometry.Insets;
 import java.time.LocalDate;
-import javafx.scene.control.ScrollPane;
 
 public class DrawDay {
     private Label dayLabel, dayText;
-    private AllData allData;
+    private DataAllDays dataAllDays;
     private DateLogic dateLogic;
     private LocalDate date;
 
-    public DrawDay(LocalDate date, AllData allData, DateLogic dateLogic){
+    public DrawDay(LocalDate date, DataAllDays dataAllDays, DateLogic dateLogic){
         dayText = new Label("");
-        this.allData = allData;
+        this.dataAllDays = dataAllDays;
         this.dateLogic = dateLogic;
         this.date = date;
         dayLabel = new Label();
@@ -53,7 +51,7 @@ public class DrawDay {
                 "-fx-background-color: #F3F3F5;" +
                 "-fx-background-insets: 5px;" +
                 "-fx-background-radius: 15px 15px 0px 0px;");
-        dayText.setText(allData.getDayText(date));
+        dayText.setText(dataAllDays.getDayText(date));
 
         VBox dayLayout = new VBox();
         dayLayout.getChildren().addAll(dayLabel,dayText);
@@ -81,12 +79,12 @@ public class DrawDay {
     }
 
     private void clickTextLabel(){
-        DrawTextPopup popup = new DrawTextPopup(allData, this);
+        DrawTextPopup popup = new DrawTextPopup(dataAllDays, this);
         popup.showPopup();
     }
 
     public void setDayText() {
-        dayText.setText(allData.getDayText(date));
+        dayText.setText(dataAllDays.getDayText(date));
     }
 
     public LocalDate getDate(){

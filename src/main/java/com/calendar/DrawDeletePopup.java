@@ -1,26 +1,22 @@
 package com.calendar;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.Modality;
 import javafx.geometry.Pos;
-import javafx.geometry.Insets;
 import javafx.stage.StageStyle;
 import javafx.scene.control.CheckBox;
 
 public class DrawDeletePopup {
     private String[] todaysData;
     private ArrayList<CheckBox> cbAry;
-    private AllData allData;
+    private DataAllDays dataAllDays;
     private DrawDay drawDay;
     private VBox cbLayout;
     private BorderPane mainLayout;
@@ -28,8 +24,8 @@ public class DrawDeletePopup {
     private HBox buttonLayout;
     private DrawTextPopup textPopup;
 
-    public DrawDeletePopup(AllData allData, DrawDay drawDay, DrawTextPopup textPopup){
-        this.allData = allData;
+    public DrawDeletePopup(DataAllDays dataAllDays, DrawDay drawDay, DrawTextPopup textPopup){
+        this.dataAllDays = dataAllDays;
         this.drawDay = drawDay;
         cbAry = new ArrayList<>();
         cbLayout = new VBox();
@@ -38,7 +34,7 @@ public class DrawDeletePopup {
     }
 
     public void showPopup(){
-        if(allData.getNoDayEntries(drawDay.getDate()) == 0){
+        if(dataAllDays.getNoDayEntries(drawDay.getDate()) == 0){
             return;
         }
         setUpCheckBoxes();
@@ -98,8 +94,8 @@ public class DrawDeletePopup {
     }
 
     private void populateDataAry(){
-        todaysData = new String[allData.getNoDayEntries(drawDay.getDate())];
-        todaysData = allData.getDayText(drawDay.getDate()).split("\n");
+        todaysData = new String[dataAllDays.getNoDayEntries(drawDay.getDate())];
+        todaysData = dataAllDays.getDayText(drawDay.getDate()).split("\n");
     }
 
     private void setUpCheckBoxes(){
@@ -122,7 +118,7 @@ public class DrawDeletePopup {
     private void selectedButtonEvent(){
         for(CheckBox cb:cbAry){
             if(cb.isSelected()){
-                allData.deleteDayData(drawDay.getDate(),cb.getText());
+                dataAllDays.deleteDayData(drawDay.getDate(),cb.getText());
             }
         }
         drawDay.setDayText();
@@ -130,7 +126,7 @@ public class DrawDeletePopup {
         textPopup.setOutputBox();
     }
     private void allButtonEvent(){
-        allData.deleteAllDataFromDay(drawDay.getDate());
+        dataAllDays.deleteAllDataFromDay(drawDay.getDate());
         drawDay.setDayText();
         cbLayout.getChildren().clear();
         textPopup.setOutputBox();

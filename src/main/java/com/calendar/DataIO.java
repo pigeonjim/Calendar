@@ -8,42 +8,52 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import java.io.File;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.Scanner;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.sql.*;
+import java.time.format.DateTimeFormatter;
 
 public class DataIO {
 
-    AllData allData;
-    public DataIO(AllData allData){
-        this.allData = allData;
+    DataAllDays dataAllDays;
+
+    public DataIO(DataAllDays dataAllDays) {
+        this.dataAllDays = dataAllDays;
     }
 
-        public void outputToCSV(String path){
-        try{
+    public void outputToCSV(String path) {
+        try {
             PrintWriter csvWriter = new PrintWriter(path);
-            for(String entry: allData.allDataInCSV()){
+            for (String entry : dataAllDays.allDataInCSV()) {
                 csvWriter.print(entry);
             }
             csvWriter.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    public void readFromCSV(String path){
-       try(Scanner lineIn = new Scanner(Paths.get(path))){
-            while(lineIn.hasNextLine()){
+    public void readFromCSV(String path) {
+        try (Scanner lineIn = new Scanner(Paths.get(path))) {
+            while (lineIn.hasNextLine()) {
                 String row = lineIn.nextLine();
                 String[] words = row.split(",");
-                LocalDate date = LocalDate.parse(words[0]);
-                allData.addNewDayData(date, words[1]);
-        }
-       } catch(Exception e){
-           System.out.println("error - " + e.toString());
+
+                Integer index = Integer.valueOf(words[0]);
+                LocalDate date = LocalDate.parse(words[1]);
+                String text = words[2];
+                inputImportData(index,date, text);
+            }
+
+        } catch (Exception e) {
+            System.out.println("error - " + e.toString());
         }
     }
-    public String getFilePath(boolean loadOrSave){
+
+    public String getFilePath(boolean loadOrSave) {
         //parameter is true for save file and false for load file
         BorderPane borderPane = new BorderPane();
         borderPane.setStyle("-fx-background-color: transparent;");
@@ -56,22 +66,82 @@ public class DataIO {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV","*.csv"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
 
-        if(loadOrSave){
+        if (loadOrSave) {
             fileChooser.setTitle("Please choose where to save the file");
             File file = fileChooser.showSaveDialog(fcStage);
-            if(file == null){
-                return"";
+            if (file == null) {
+                return "";
             }
             return file.getPath();
         }
         fileChooser.setTitle("Please choose where to save the file");
         File file = fileChooser.showOpenDialog(fcStage);
-        if(file == null){
-            return"";
+        if (file == null) {
+            return "";
         }
         return file.getPath();
     }
 
+   public void getAllAccess() {
+        String accessURL = "jdbc:ucanaccess://src/main/resources/com/calendar/CallendarApp.accdb";
+        try (Connection connection = DriverManager.getConnection(accessURL)) {
+            String SQLQuery = "Select * From Cal_Entries";
+            Statement statement = connection.createStatement();
+            ResultSet results = statement.executeQuery(SQLQuery);
+            while (results.next()) {
+                LocalDate date = results.getDate("Entry_Date").toLocalDate();
+                Integer index = results.getInt("Entry_ID");
+                String entry = results.getString("Entry");
+
+                if(dataAllDays.getAllData().containsKey(date) &&
+                        !dataAllDays.getDayData(date).containsKey(index)){
+
+                        dataAllDays.getDayData(date).put(index,entry); //update entry
+                } else {
+                        dataAllDays.addNewDayData(date, entry); //add new entry
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Did not work. Error " + e.toString());
+        }
+    }
+    public void saveAllAccess() {
+        String accessURL = "jdbc:ucanaccess://src/main/resources/com/calendar/CallendarApp.accdb";
+        try (Connection connection = DriverManager.getConnection(accessURL)) {
+            //String SQLQuery = "INSERT INTO Cal_Entries(Entry_ID, Entry_Date, Entry) VALUES(?,?,?)";
+            String SQLQuery = "INSERT INTO Cal_Entries SELECT * FROM Cal_Entries " +
+                    "WHERE NOT EXISTS (SELECT * FROM Cal_Entries AS bd WHERE bd.Entry_ID = ? AND bd.Entry_Date = ? AND " +
+                    "bd.Entry = ?)";
+            try (PreparedStatement statement = connection.prepareStatement(SQLQuery);) {
+                for (LocalDate lDate : dataAllDays.getAllData().keySet()) {
+                    for (Integer index : dataAllDays.getAllData().get(lDate).getTodaysData().keySet()) {
+                        statement.setInt(1,index);
+                        statement.setDate(2, Date.valueOf(lDate));
+                        statement.setString(3,
+                                dataAllDays.getAllData().get(lDate).getTodaysData().get(index));
+                        statement.executeUpdate();
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Did not write. Error " + e);
+            }
+        } catch (Exception e) {
+            System.out.println("Connection error " + e);
+        }
+    }
+
+    public void inputImportData(Integer index, LocalDate date, String entry){
+        if(index == null){
+            System.out.println("Index null");
+        }
+        if( !dataAllDays.getAllData().containsKey(date)){
+            dataAllDays.addNewDayData(date, entry);
+        } else if (!dataAllDays.getDayData(date).containsKey(index) ) {
+            dataAllDays.addNewDayData(date, entry);
+        } else {
+            dataAllDays.updateDayEntry(index, entry, date);
+        }
+    }
 }

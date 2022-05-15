@@ -11,23 +11,23 @@ import javafx.scene.control.ScrollPane;
 public class DrawCalendar {
 
     private HashMap<LocalDate, DrawDay> daysOfTheMonth;
-    private AllData allData;
+    private DataAllDays dataAllDays;
     private DateLogic dateLogic;
     private LocalDate[] dateAry;
     private GridPane daysLayout;
-    private Pane scrollPane;
+    private Pane pane;
     private ScrollPane gridScroll;
-    public DrawCalendar(AllData allData,DateLogic dateLogic){
+    public DrawCalendar(DataAllDays dataAllDays, DateLogic dateLogic){
         this.daysOfTheMonth = new HashMap<>();
-        this.allData = allData;
+        this.dataAllDays = dataAllDays;
         this.dateLogic = dateLogic;
         daysLayout = new GridPane();
     }
 
     public Parent getView(){
         drawMonth();
-        scrollPane = new Pane();
-        scrollPane.setMaxSize(400,400);
+        pane = new Pane();
+        pane.setMaxSize(400,400);
 
 
         gridScroll = new ScrollPane(daysLayout);
@@ -35,21 +35,20 @@ public class DrawCalendar {
         gridScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         gridScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-        scrollPane.getChildren().addAll(daysLayout,gridScroll);
-        scrollPane.setMinSize(1450,800);
+        pane.getChildren().addAll(daysLayout,gridScroll);
+        pane.setMinSize(1450, dataAllDays.getScreenHeight() * 0.65);
         gridScroll.setFitToWidth(true);
-        gridScroll.setPrefHeight(800);
+        gridScroll.setPrefHeight(dataAllDays.getScreenHeight() * 0.65);
 
-
-        return scrollPane;
+        return pane;
     }
 
     public void createDrawDays(){
         daysOfTheMonth.clear();
-        LocalDate dateToAdd = dateLogic.dateBuilderEndOfMonth(allData.getWorkingDate());
+        LocalDate dateToAdd = dateLogic.dateBuilderEndOfMonth(dataAllDays.getWorkingDate());
 
-        for(int i = 1; i <= dateLogic.getNoDaysInMonth(allData.getWorkingDate()); i++){
-            daysOfTheMonth.put(dateToAdd, new DrawDay(dateToAdd,allData,dateLogic));
+        for(int i = 1; i <= dateLogic.getNoDaysInMonth(dataAllDays.getWorkingDate()); i++){
+            daysOfTheMonth.put(dateToAdd, new DrawDay(dateToAdd, dataAllDays,dateLogic));
             dateToAdd= dateToAdd.minusDays(1);
         }
     }
@@ -69,7 +68,7 @@ public class DrawCalendar {
         daysLayout.getChildren().clear();
 
         int row = 0;
-        long column = dateLogic.getDayNoFromDate(dateLogic.dateBuilderFirstOfMonth(allData.getWorkingDate()));
+        long column = dateLogic.getDayNoFromDate(dateLogic.dateBuilderFirstOfMonth(dataAllDays.getWorkingDate()));
         putKeysIntoAry();
         for(int i = (dateAry.length -1) ; i >= 0 ;i--){
             if(column > 6){
@@ -86,5 +85,6 @@ public class DrawCalendar {
         daysLayout.setStyle("-fx-background-color: #C3CAC6;");
         daysLayout.setVgap(5);
         daysLayout.setHgap(5);
+        daysLayout.setMaxHeight(dataAllDays.getScreenHeight() * 0.4);
     }
 }

@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.effect.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.Parent;
@@ -21,13 +20,13 @@ public class DrawUI {
     private BorderPane layout;
     private DateLogic dateLogic;
     private DrawCalendar drawCalendar;
-    private AllData allData;
+    private DataAllDays dataAllDays;
     private DataIO dataIO;
 
-    public DrawUI(DateLogic dLogic, DrawCalendar dCal, AllData allData, DataIO dataIO){
+    public DrawUI(DateLogic dLogic, DrawCalendar dCal, DataAllDays dataAllDays, DataIO dataIO){
         this.dateLogic = dLogic;
         this.drawCalendar = dCal;
-        this.allData = allData;
+        this.dataAllDays = dataAllDays;
         this.dataIO = dataIO;
         menuBar = new MenuBar();
     }
@@ -42,8 +41,8 @@ public class DrawUI {
         buttonLayout.getChildren().addAll(monthDD,yearDD);
         buttonLayout.setSpacing(10);
 
-        monthDD.getSelectionModel().select(allData.getWorkingDate().getMonthValue() - 1);
-        yearDD.setValue(allData.getWorkingDate().getYear());
+        monthDD.getSelectionModel().select(dataAllDays.getWorkingDate().getMonthValue() - 1);
+        yearDD.setValue(dataAllDays.getWorkingDate().getYear());
 
         monthDD.setOnAction((event) -> {
             dateDDChange();
@@ -65,8 +64,8 @@ public class DrawUI {
 
     public void dateDDChange(){
         if(!monthDD.getValue().toString().isEmpty() && !yearDD.getValue().toString().isEmpty() ){
-            LocalDate newDate = this. dateLogic.buildDateFromStringAndInt(monthDD.getValue().toString(),Integer.valueOf(yearDD.getValue().toString()));
-            allData.setWorkingDate(newDate);
+            LocalDate newDate = this.dateLogic.buildDateFromStringAndInt(monthDD.getValue().toString(),Integer.valueOf(yearDD.getValue().toString()));
+            dataAllDays.setWorkingDate(newDate);
             drawCalendar.drawMonth();
         }
     }
@@ -77,9 +76,10 @@ public class DrawUI {
         Menu ioMenu = new Menu("Files");
         MenuItem toCsvM = new MenuItem("Save data to csv");
         MenuItem fromCsvM  =new MenuItem("Load data from csv");
-        MenuItem connectM = new MenuItem("Connect to database");
+        MenuItem fromAccessM = new MenuItem("Load data from Access database");
+        MenuItem toAccessM = new MenuItem("Save data to Access database");
 
-        ioMenu.getItems().addAll(toCsvM,fromCsvM,connectM);
+        ioMenu.getItems().addAll(toCsvM,fromCsvM,fromAccessM,toAccessM);
 
         Menu exit = new Menu("Exit");
         MenuItem exitM = new MenuItem("Exit");
@@ -89,13 +89,13 @@ public class DrawUI {
                 "-fx-border-width: 2;" +
                 "-fx-border-color: black;" +
                 "-fx-font-size: 15;" +
-                "-fx-font-family: monospace;");
+                "-fx-font-family: Verdana;");
         exit.setStyle("-fx-background-color:  #D2D7DB;"+
                 "-fx-border-style: solid inside;" +
                 "-fx-border-width: 2;" +
                 "-fx-border-color: black;"+
                 "-fx-font-size: 15;" +
-                "-fx-font-family: monospace;");
+                "-fx-font-family: Verdana;");
         menuBar.getMenus().addAll(exit,ioMenu);
         menuBar.setPrefHeight(30);
         menuBar.setPadding(new Insets(10,15,10,15));
@@ -116,7 +116,14 @@ public class DrawUI {
         exitM.setOnAction((event) -> {
             Platform.exit();
         });
-
+        fromAccessM.setOnAction((event) -> {
+           dataIO.getAllAccess();
+            dateDDChange();
+        });
+        toAccessM.setOnAction((event) -> {
+            dataIO.saveAllAccess();
+            dateDDChange();
+        });
     }
 
 }

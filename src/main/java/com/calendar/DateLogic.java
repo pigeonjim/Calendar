@@ -104,7 +104,7 @@ public class DateLogic {
 
     public String getFormattedDate(LocalDate date) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(("dd/MM/YYYY"));
-        return dateFormatter.format(date);
+            return dateFormatter.format(date);
     }
 
     public int getNoDaysInMonth(LocalDate date) {
