@@ -65,6 +65,7 @@ public class DataIO {
 
     public String getFilePath(boolean loadOrSave, boolean DB) {
         //parameter is true for save file and false for load file
+        String path;
         blankStage = new BlankStage();
         blankStage.getPane().setStyle("-fx-background-color: transparent;");
         blankStage.buildStage();
@@ -83,30 +84,39 @@ public class DataIO {
             } else{
                 fileChooser.setTitle("Please choose where to save the file");
         }
-            File file = fileChooser.showSaveDialog(blankStage.getWindow());
+            File file = fileChooser.showSaveDialog(blankStage.getWindow().getScene().getWindow());
+
             if (file == null) {
+                blankStage.closeStage();
                 return "";
+            } else {
+                path = file.getPath();
             }
             blankStage.closeStage();
-            return file.getPath();
+            return path;
         }
         if(DB){
-            fileChooser.setTitle("Please choose which database to write to");
+            fileChooser.setTitle("Please choose which database to load from");
         } else{
             fileChooser.setTitle("Please choose which file to import");
         }
-        File file = fileChooser.showOpenDialog(blankStage.getWindow());
+        File file = fileChooser.showOpenDialog(blankStage.getWindow().getScene().getWindow());
         if (file == null) {
+            blankStage.closeStage();
             return "";
+        } else {
+            path = file.getPath();
         }
         blankStage.closeStage();
-        return file.getPath();
+        return path;
     }
 
 
    public void getAllAccess() {
         String filepath = getFilePath(false, true);
-
+        if(filepath.isEmpty()){
+            return;
+        }
        HashMap<LocalDate,String> duplicates = new HashMap<>();
         String accessURL = "jdbc:ucanaccess://" + filepath;
         try (Connection connection = DriverManager.getConnection(accessURL)) {
@@ -134,6 +144,9 @@ public class DataIO {
     }
     public void saveAllAccess() {
         String filepath = getFilePath(false, true);
+        if(filepath.isEmpty()){
+            return;
+        }
         String accessURL = "jdbc:ucanaccess://" + filepath;
         try (Connection connection = DriverManager.getConnection(accessURL)) {
             String SQLQuery = "INSERT INTO Cal_Entries(Entry_ID, Entry_Date, Entry) VALUES(?,?,?)";

@@ -25,6 +25,7 @@ public class CalendarApplication extends Application {
         stage.setMaxHeight(ui.getScreenHeight() * 0.8);
         stage.show();
         dataIO.getAllAccess();
+        ui.dateDDChange();
     }
 
     public static void main(String[] args) {
