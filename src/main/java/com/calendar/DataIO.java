@@ -124,12 +124,17 @@ public class DataIO {
             try (PreparedStatement statement = connection.prepareStatement(SQLQuery);) {
                 for (LocalDate lDate : dataAllDays.getAllData().keySet()) {
                     for (Integer index : dataAllDays.getAllData().get(lDate).getKeyset()) {
-                        statement.setInt(1,index);
-                        statement.setDate(2, Date.valueOf(lDate));
-                        statement.setString(3,
-                                dataAllDays.getAllData().get(lDate).getAnEntry(index));
-                        System.out.println(dataAllDays.getAllData().get(lDate).getAnEntry(index));
-                        statement.executeUpdate();
+
+                        if (!checkIfRowExists(index, lDate,dataAllDays.getAllData().get(lDate).getAnEntry(index))) {
+                            statement.setInt(1, index);
+                            statement.setDate(2, Date.valueOf(lDate));
+                            statement.setString(3,
+                                    dataAllDays.getAllData().get(lDate).getAnEntry(index));
+                            statement.executeUpdate();
+                            System.out.println("attempted update " + lDate + dataAllDays.getAllData().get(lDate).getAnEntry(index));
+                        } else {
+                            System.out.println("Exists");
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -140,37 +145,27 @@ public class DataIO {
         }
     }
 
-    public void checkIfRowExists(){
-
+    public boolean checkIfRowExists(Integer index, LocalDate date, String entry){
+    //function that returns true if a row exists in the access DB
         String accessURL = "jdbc:ucanaccess://src/main/resources/com/calendar/CallendarApp.accdb";
         try (Connection connection = DriverManager.getConnection(accessURL)) {
-            String SQLQuery = "SELECT TOP 1 IIF((Select SUM([Entry_ID]) " +
-                    "FROM Cal_Entries WHERE [Entry_ID] = ? AND [Entry] = ? " +
-                    "AND Entry_Date = ?) > 0, 1, 2) AS [Check] FROM Cal_Entries";
-            try (PreparedStatement statement = connection.prepareStatement(SQLQuery);) {
-                for (LocalDate lDate : dataAllDays.getAllData().keySet()) {
-                    for (Integer index : dataAllDays.getAllData().get(lDate).getKeyset()) {
-                        statement.setInt(1,index);
-                        statement.setDate(3, Date.valueOf(lDate));
-                        statement.setString(2,
-                                dataAllDays.getAllData().get(lDate).getAnEntry(index));
-                        ResultSet results = statement.executeQuery();
+            String SQLQuery = "SELECT TOP 1 IIF((Select SUM([Entry_ID]) FROM Cal_Entries " +
+                    "WHERE [Entry_ID] = "+ index + " AND [Entry] =  \"" +
+                     entry + "\" AND Entry_Date = '" + Date.valueOf(date) + "') > 0, 1, 2) AS [Check] FROM Cal_Entries";
+            Statement statement = connection.createStatement();
+                ResultSet results = statement.executeQuery(SQLQuery);
                         while (results.next()) {
                             int check = results.getInt("Check");
                             if (check == 1) {
-                                System.out.println("true");
+                                return true;
                             } else {
-                                System.out.println("false");
+                                return false;
                             }
                         }
-                    }
-                }
-            } catch (Exception e){
-                System.out.println("PPStatement did not work. Error " + e);
-            }
         } catch (Exception e) {
             System.out.println("connection did not work. Error " + e);
         }
+        return false;
     }
 
 }
