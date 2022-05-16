@@ -129,7 +129,7 @@ public class DrawUI {
             dateDDChange();
         });
         toAccessM.setOnAction((event) -> {
-            dataIO.checkIfRowExists(1, LocalDate.now(),"james");
+            dataIO.checkIfRowExists();
             dateDDChange();
         });
     }
