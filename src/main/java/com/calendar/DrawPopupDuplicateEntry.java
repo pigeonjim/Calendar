@@ -11,19 +11,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.scene.layout.HBox;
 
-public class DuplicateEntryPopup {
+public class DrawPopupDuplicateEntry {
     private Button yesButton, noButton;
     private BorderPane pane;
     private ArrayList<CheckBox> cbAry;
     private Label output;
-    BlankStage blankStage;
-    VBox cbLayout;
-    HashMap<LocalDate,String> thelist;
-    public DuplicateEntryPopup(HashMap<LocalDate,String> thelist){
+    private DrawCalendar drawCalendar;
+    private BlankStage blankStage;
+    private VBox cbLayout;
+    private HashMap<LocalDate,String> thelist;
+    public DrawPopupDuplicateEntry(HashMap<LocalDate,String> thelist, DrawCalendar drawCalendar){
         blankStage = new BlankStage();
         cbLayout = new VBox();
         this.thelist = thelist;
         cbAry = new ArrayList<>();
+        this.drawCalendar = drawCalendar;
     }
     public void showPopup(DataAllDays data){
         setUpCheckBoxes();
@@ -31,7 +33,7 @@ public class DuplicateEntryPopup {
         yesButton.setStyle("-fx-border-style: solid inside;" +
                         "-fx-border-width: 3;" +
                         "-fx-border-color: green;");
-        noButton = blankStage.getCloseButton();
+        noButton = new Button("Close window");
         noButton.setStyle("-fx-border-style: solid inside;" +
                         "-fx-border-width: 3;" +
                         "-fx-border-color: red;");
@@ -57,16 +59,13 @@ public class DuplicateEntryPopup {
                 "-fx-padding: 15px;");
         blankStage.setTitle("Duplicate entry found");
         blankStage.buildStage();
-        blankStage.startStage();
 
         yesButton.setOnAction((event) -> {
             for(CheckBox cb: cbAry){
                 if(cb.isSelected()){
                     String[] bits = cb.getText().split(" : ");
-                    System.out.println(bits[0]);
-                    System.out.println(bits[1]);
                     data.addNewDayData(LocalDate.parse(bits[0]),bits[1]);
-                    cb.setDisable(true);
+                    drawCalendar.refreshDays();
                 }
             }
             blankStage.closeStage();

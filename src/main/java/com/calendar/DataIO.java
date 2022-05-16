@@ -13,9 +13,11 @@ public class DataIO {
 
     private DataAllDays dataAllDays;
     private BlankStage blankStage;
+    private DrawCalendar drawCalendar;
 
-    public DataIO(DataAllDays dataAllDays) {
+    public DataIO(DataAllDays dataAllDays, DrawCalendar drawCalendar) {
         this.dataAllDays = dataAllDays;
+        this.drawCalendar = drawCalendar;
     }
 
     public void outputToCSV(String path) {
@@ -46,8 +48,8 @@ public class DataIO {
                 }
             }
             if(!duplicates.isEmpty()){
-                DuplicateEntryPopup duplicateEntryPopup = new DuplicateEntryPopup(duplicates);
-                duplicateEntryPopup.showPopup(dataAllDays);
+                DrawPopupDuplicateEntry drawPopupDuplicateEntry = new DrawPopupDuplicateEntry(duplicates, drawCalendar);
+                drawPopupDuplicateEntry.showPopup(dataAllDays);
             }
 
         } catch (Exception e) {
@@ -101,8 +103,8 @@ public class DataIO {
                 }
             }
             if(!duplicates.isEmpty()){
-                DuplicateEntryPopup duplicateEntryPopup = new DuplicateEntryPopup(duplicates);
-                duplicateEntryPopup.showPopup(dataAllDays);
+                DrawPopupDuplicateEntry drawPopupDuplicateEntry = new DrawPopupDuplicateEntry(duplicates, drawCalendar);
+                drawPopupDuplicateEntry.showPopup(dataAllDays);
                 }
         } catch (Exception e) {
             System.out.println("Did not work. Error " + e.toString());

@@ -24,12 +24,10 @@ public class BlankStage {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setScene(scene);
         window.initStyle(StageStyle.TRANSPARENT);
+        window.show();
     }
     public void closeStage(){
         window.close();
-    }
-    public void startStage(){
-        window.show();
     }
 
     public BorderPane getPane() {
@@ -43,11 +41,4 @@ public class BlankStage {
         return window;
     }
 
-    public Button getCloseButton(){
-        Button closebutton = new Button("Close Window");
-        closebutton.setOnAction((event) -> {
-            window.close();
-        });
-        return closebutton;
-    }
 }

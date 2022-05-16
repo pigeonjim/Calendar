@@ -11,8 +11,8 @@ public class CalendarApplication extends Application {
     public void start(Stage stage) {
         DateLogic dateLogic =new DateLogic();
         DataAllDays dataAllDays = new DataAllDays();
-        DataIO dataIO = new DataIO(dataAllDays);
         DrawCalendar drawCalendar = new DrawCalendar(dataAllDays,dateLogic);
+        DataIO dataIO = new DataIO(dataAllDays, drawCalendar);
         DrawUI ui = new DrawUI(dateLogic, drawCalendar, dataAllDays,dataIO);
 
         BorderPane layout = new BorderPane();

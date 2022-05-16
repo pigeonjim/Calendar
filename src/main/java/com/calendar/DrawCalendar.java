@@ -9,7 +9,6 @@ import javafx.scene.control.ScrollPane;
 
 
 public class DrawCalendar {
-
     private HashMap<LocalDate, DrawDay> daysOfTheMonth;
     private DataAllDays dataAllDays;
     private DateLogic dateLogic;
@@ -85,5 +84,12 @@ public class DrawCalendar {
         daysLayout.setVgap(5);
         daysLayout.setHgap(5);
         daysLayout.setMaxHeight(dataAllDays.getScreenHeight() * 0.4);
+    }
+
+    public void refreshDays(){
+        for(LocalDate date: daysOfTheMonth.keySet()){
+            daysOfTheMonth.get(date).setDayText();
+        }
+
     }
 }

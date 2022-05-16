@@ -34,7 +34,6 @@ public class DrawUI {
     public Parent getView(){
         ObservableList<String> months = FXCollections.observableArrayList(new DateFormatSymbols().getMonths());
         ObservableList<String> years = FXCollections.observableArrayList("2021","2022","2023","2024","2025","2026");
-        ObservableList<String> ioList = FXCollections.observableArrayList("Save to CSV", "Load from CSV","Connect to DB");
         monthDD =new ComboBox(months);
         yearDD = new ComboBox(years);
         buttonLayout = new HBox();
