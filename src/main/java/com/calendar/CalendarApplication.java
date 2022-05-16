@@ -24,8 +24,7 @@ public class CalendarApplication extends Application {
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setMaxHeight(ui.getScreenHeight() * 0.8);
         stage.show();
-
-
+        dataIO.getAllAccess();
     }
 
     public static void main(String[] args) {

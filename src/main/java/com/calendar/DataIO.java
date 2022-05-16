@@ -22,7 +22,7 @@ public class DataIO {
     }
 
     public void outputToCSV() {
-        String path =getFilePath(true);
+        String path = getFilePath(true,false);
         try {
             PrintWriter csvWriter = new PrintWriter(path);
             for (String entry : dataAllDays.allDataInCSV()) {
@@ -35,7 +35,7 @@ public class DataIO {
     }
 
     public void readFromCSV() {
-        String path =getFilePath(false);
+        String path = getFilePath(false,false);
 
         HashMap<LocalDate,String> duplicates = new HashMap<>();
         try (Scanner lineIn = new Scanner(Paths.get(path))) {
@@ -63,7 +63,7 @@ public class DataIO {
         }
     }
 
-    public String getFilePath(boolean loadOrSave) {
+    public String getFilePath(boolean loadOrSave, boolean DB) {
         //parameter is true for save file and false for load file
         blankStage = new BlankStage();
         blankStage.getPane().setStyle("-fx-background-color: transparent;");
@@ -71,10 +71,18 @@ public class DataIO {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
-
+        if(DB){
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("MS Access", "*.accdb"));
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("MS Access pre 2007", "*.mdb"));
+        } else {
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
+        }
         if (loadOrSave) {
-            fileChooser.setTitle("Please choose where to save the file");
+            if (DB) {
+                fileChooser.setTitle("Please choose which database to save to");
+            } else{
+                fileChooser.setTitle("Please choose where to save the file");
+        }
             File file = fileChooser.showSaveDialog(blankStage.getWindow());
             if (file == null) {
                 return "";
@@ -82,7 +90,11 @@ public class DataIO {
             blankStage.closeStage();
             return file.getPath();
         }
-        fileChooser.setTitle("Please choose which file to import");
+        if(DB){
+            fileChooser.setTitle("Please choose which database to write to");
+        } else{
+            fileChooser.setTitle("Please choose which file to import");
+        }
         File file = fileChooser.showOpenDialog(blankStage.getWindow());
         if (file == null) {
             return "";
@@ -91,9 +103,12 @@ public class DataIO {
         return file.getPath();
     }
 
+
    public void getAllAccess() {
+        String filepath = getFilePath(false, true);
+
        HashMap<LocalDate,String> duplicates = new HashMap<>();
-        String accessURL = "jdbc:ucanaccess://src/main/resources/com/calendar/CallendarApp.accdb";
+        String accessURL = "jdbc:ucanaccess://" + filepath;
         try (Connection connection = DriverManager.getConnection(accessURL)) {
             String SQLQuery = "Select * From Cal_Entries";
             Statement statement = connection.createStatement();
@@ -118,14 +133,16 @@ public class DataIO {
         }
     }
     public void saveAllAccess() {
-        String accessURL = "jdbc:ucanaccess://src/main/resources/com/calendar/CallendarApp.accdb";
+        String filepath = getFilePath(false, true);
+        String accessURL = "jdbc:ucanaccess://" + filepath;
         try (Connection connection = DriverManager.getConnection(accessURL)) {
             String SQLQuery = "INSERT INTO Cal_Entries(Entry_ID, Entry_Date, Entry) VALUES(?,?,?)";
             try (PreparedStatement statement = connection.prepareStatement(SQLQuery);) {
                 for (LocalDate lDate : dataAllDays.getAllData().keySet()) {
                     for (Integer index : dataAllDays.getAllData().get(lDate).getKeyset()) {
 
-                        if (!checkIfRowExists(index, lDate,dataAllDays.getAllData().get(lDate).getAnEntry(index))) {
+                        if (!checkIfRowExists(index, lDate,
+                                dataAllDays.getAllData().get(lDate).getAnEntry(index), filepath)) {
                             statement.setInt(1, index);
                             statement.setDate(2, Date.valueOf(lDate));
                             statement.setString(3,
@@ -145,9 +162,10 @@ public class DataIO {
         }
     }
 
-    public boolean checkIfRowExists(Integer index, LocalDate date, String entry){
+    public boolean checkIfRowExists(Integer index, LocalDate date, String entry, String filepath){
     //function that returns true if a row exists in the access DB
-        String accessURL = "jdbc:ucanaccess://src/main/resources/com/calendar/CallendarApp.accdb";
+
+        String accessURL = "jdbc:ucanaccess://" + filepath;
         try (Connection connection = DriverManager.getConnection(accessURL)) {
             String SQLQuery = "SELECT TOP 1 IIF((Select SUM([Entry_ID]) FROM Cal_Entries " +
                     "WHERE [Entry_ID] = "+ index + " AND [Entry] =  \"" +
