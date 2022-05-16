@@ -3,11 +3,16 @@ package com.calendar;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.effect.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.Parent;
 import javafx.collections.ObservableList;
+
+import java.awt.*;
 import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import javafx.application.Platform;
@@ -22,6 +27,8 @@ public class DrawUI {
     private DrawCalendar drawCalendar;
     private DataAllDays dataAllDays;
     private DataIO dataIO;
+    private int screenHeight, screenWidth;
+    private GraphicsDevice gfxDevice;
 
     public DrawUI(DateLogic dLogic, DrawCalendar dCal, DataAllDays dataAllDays, DataIO dataIO){
         this.dateLogic = dLogic;
@@ -29,6 +36,9 @@ public class DrawUI {
         this.dataAllDays = dataAllDays;
         this.dataIO = dataIO;
         menuBar = new MenuBar();
+        gfxDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        screenHeight = gfxDevice.getDisplayMode().getHeight();
+        screenWidth = gfxDevice.getDisplayMode().getWidth();
     }
 
     public Parent getView(){
@@ -66,7 +76,7 @@ public class DrawUI {
             LocalDate newDate = this.dateLogic.buildDateFromStringAndInt(monthDD.getValue().toString(),Integer.valueOf(yearDD.getValue().toString()));
             dataAllDays.setWorkingDate(newDate);
         }
-        drawCalendar.drawMonth();
+        drawCalendar.drawMonth(getScreenHeight());
     }
 
     public void setUpMenus(){
@@ -106,10 +116,10 @@ public class DrawUI {
         menuBar.setEffect(lighting);
 
        toCsvM.setOnAction((event) -> {
-            dataIO.outputToCSV(dataIO.getFilePath(true));
+            dataIO.outputToCSV();
         });
         fromCsvM.setOnAction((event) -> {
-            dataIO.readFromCSV(dataIO.getFilePath(false));
+            dataIO.readFromCSV();
             dateDDChange();
         });
         exitM.setOnAction((event) -> {
@@ -125,4 +135,7 @@ public class DrawUI {
         });
     }
 
+    public int getScreenHeight() {
+        return screenHeight;
+    }
 }

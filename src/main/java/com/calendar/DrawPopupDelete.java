@@ -81,7 +81,7 @@ public class DrawPopupDelete {
 
     private void populateDataAry(){
         todaysData = new String[dataAllDays.getNoDayEntries(drawDay.getDate())];
-        todaysData = dataAllDays.getDayText(drawDay.getDate()).split("\n");
+        todaysData = dataAllDays.getDayEntriesToString(drawDay.getDate()).split("\n");
     }
 
     private void setUpCheckBoxes(){

@@ -51,7 +51,7 @@ public class DrawDay {
                 "-fx-background-color: #F3F3F5;" +
                 "-fx-background-insets: 5px;" +
                 "-fx-background-radius: 15px 15px 0px 0px;");
-        dayText.setText(dataAllDays.getDayText(date));
+        dayText.setText(dataAllDays.getDayEntriesToString(date));
 
         VBox dayLayout = new VBox();
         dayLayout.getChildren().addAll(dayLabel,dayText);
@@ -84,7 +84,7 @@ public class DrawDay {
     }
 
     public void setDayText() {
-        dayText.setText(dataAllDays.getDayText(date));
+        dayText.setText(dataAllDays.getDayEntriesToString(date));
     }
 
     public LocalDate getDate(){

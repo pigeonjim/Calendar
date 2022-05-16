@@ -16,13 +16,13 @@ public class CalendarApplication extends Application {
         DrawUI ui = new DrawUI(dateLogic, drawCalendar, dataAllDays,dataIO);
 
         BorderPane layout = new BorderPane();
-        layout.setRight(drawCalendar.getView());
+        layout.setRight(drawCalendar.getView(ui.getScreenHeight()));
         layout.setTop(ui.getView());
         Scene mainScene = new Scene(layout);
         stage.setScene(mainScene);
         stage.setTitle(dataAllDays.getWorkingDate().toString() + " " + dataAllDays.getWorkingDate().getYear());
         stage.initStyle(StageStyle.UNDECORATED);
-        stage.setMaxHeight(dataAllDays.getScreenHeight() * 0.8);
+        stage.setMaxHeight(ui.getScreenHeight() * 0.8);
         stage.show();
 
 

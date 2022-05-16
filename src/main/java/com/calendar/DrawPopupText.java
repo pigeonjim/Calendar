@@ -69,7 +69,7 @@ public class DrawPopupText {
                 "-fx-border-width: 4;" +
                 "-fx-border-color: black;" +
                 "-fx-background-color: #778899");
-        outputBox.setText(dataAllDays.getDayText(drawDay.getDate()));
+        outputBox.setText(dataAllDays.getDayEntriesToString(drawDay.getDate()));
 
         addButton.setOnAction((event) -> {
             addButtonEvent();
@@ -85,7 +85,7 @@ public class DrawPopupText {
     }
         private void addButtonEvent(){
             allButtonEvents();
-            outputBox.setText(dataAllDays.getDayText(drawDay.getDate()));
+            outputBox.setText(dataAllDays.getDayEntriesToString(drawDay.getDate()));
             inputBox.setDisable(false);
             inputBox.setText("");
             addButton.setText("Save and add another new entry");
@@ -109,6 +109,6 @@ public class DrawPopupText {
         }
 
     public void setOutputBox() {
-        outputBox.setText(dataAllDays.getDayText(drawDay.getDate()));
+        outputBox.setText(dataAllDays.getDayEntriesToString(drawDay.getDate()));
     }
 }

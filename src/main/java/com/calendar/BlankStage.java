@@ -20,7 +20,6 @@ public class BlankStage {
     }
     public void buildStage(){
         scene.setFill(Color.TRANSPARENT);
-        window.setTitle("Duplicate entry found");
         window.initModality(Modality.APPLICATION_MODAL);
         window.setScene(scene);
         window.initStyle(StageStyle.TRANSPARENT);

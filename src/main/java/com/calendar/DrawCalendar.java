@@ -23,8 +23,8 @@ public class DrawCalendar {
         daysLayout = new GridPane();
     }
 
-    public Parent getView(){
-        drawMonth();
+    public Parent getView(int screenHeight){
+        drawMonth(screenHeight);
         pane = new Pane();
         pane.setMaxSize(400,400);
 
@@ -34,9 +34,9 @@ public class DrawCalendar {
         gridScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
         pane.getChildren().addAll(daysLayout,gridScroll);
-        pane.setMinSize(1450, dataAllDays.getScreenHeight() * 0.65);
+        pane.setMinSize(1450, screenHeight * 0.65);
         gridScroll.setFitToWidth(true);
-        gridScroll.setPrefHeight(dataAllDays.getScreenHeight() * 0.65);
+        gridScroll.setPrefHeight(screenHeight * 0.65);
 
         return pane;
     }
@@ -59,7 +59,7 @@ public class DrawCalendar {
         }
     }
 
-    public void drawMonth(){
+    public void drawMonth(int screenHeight){
         createDrawDays();
         dateAry = new LocalDate[daysOfTheMonth.size()];
 
@@ -83,7 +83,7 @@ public class DrawCalendar {
         daysLayout.setStyle("-fx-background-color: #C3CAC6;");
         daysLayout.setVgap(5);
         daysLayout.setHgap(5);
-        daysLayout.setMaxHeight(dataAllDays.getScreenHeight() * 0.4);
+        daysLayout.setMaxHeight(screenHeight * 0.4);
     }
 
     public void refreshDays(){

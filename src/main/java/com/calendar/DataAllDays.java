@@ -1,6 +1,5 @@
 package com.calendar;
 
-import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,15 +7,10 @@ import java.util.HashMap;
 public class DataAllDays {
     private HashMap<LocalDate, DataSingleDay> allData;
     private LocalDate workingDate = LocalDate.now();
-    private GraphicsDevice gfxDevice;
-    private int screenHeight, screenWidth;
     IndexControl indexControl;
 
     public DataAllDays() {
         allData = new HashMap<>();
-        gfxDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        screenHeight = gfxDevice.getDisplayMode().getHeight();
-        screenWidth = gfxDevice.getDisplayMode().getWidth();
         indexControl = new IndexControl();
     }
 
@@ -33,7 +27,7 @@ public class DataAllDays {
         }
     }
 
-    public String getDayText(LocalDate date) {
+    public String getDayEntriesToString(LocalDate date) {
         if (allData.containsKey(date)) {
             return this.allData.get(date).entriesToString();
         }
@@ -62,27 +56,19 @@ public class DataAllDays {
     public ArrayList<String> allDataInCSV() {
         ArrayList<String> allDataCsv = new ArrayList<>();
         for (LocalDate day : allData.keySet()) {
-            for (Integer index : allData.get(day).getTodaysData().keySet()) {
-                allDataCsv.add(index + "," + day.toString() + "," + allData.get(day).getTodaysData().get(index) + "\n");
+            for (Integer index : allData.get(day).getKeyset()) {
+                allDataCsv.add(index + "," + day.toString() + "," + allData.get(day).getAnEntry(index) + "\n");
             }
         }
         return allDataCsv;
     }
 
-    public int getScreenHeight() {
-        return screenHeight;
-    }//THIS DOESNT BELONG HERE
     public HashMap<LocalDate, DataSingleDay> getAllData() {
         return allData;
     }
 
-    public HashMap<Integer,String> getDayData(LocalDate date){
-        return allData.get(date).getTodaysData();
-    }
-
-
     public boolean importDayEntry(Integer index, LocalDate date, String entry){
-        //returns true if date already contains this entry with any index value
+        //returns true if date already contains this entry with any key index value in hashmap
         if(index == null){
             System.out.println("Index null");
         }

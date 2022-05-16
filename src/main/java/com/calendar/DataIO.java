@@ -20,7 +20,8 @@ public class DataIO {
         this.drawCalendar = drawCalendar;
     }
 
-    public void outputToCSV(String path) {
+    public void outputToCSV() {
+        String path =getFilePath(true);
         try {
             PrintWriter csvWriter = new PrintWriter(path);
             for (String entry : dataAllDays.allDataInCSV()) {
@@ -32,7 +33,8 @@ public class DataIO {
         }
     }
 
-    public void readFromCSV(String path) {
+    public void readFromCSV() {
+        String path =getFilePath(false);
         HashMap<LocalDate,String> duplicates = new HashMap<>();
         try (Scanner lineIn = new Scanner(Paths.get(path))) {
             while (lineIn.hasNextLine()) {
@@ -73,9 +75,10 @@ public class DataIO {
             if (file == null) {
                 return "";
             }
+            blankStage.closeStage();
             return file.getPath();
         }
-        fileChooser.setTitle("Please choose where to save the file");
+        fileChooser.setTitle("Please choose which file to import");
         File file = fileChooser.showOpenDialog(blankStage.getWindow());
         if (file == null) {
             return "";
@@ -119,11 +122,11 @@ public class DataIO {
                     "bd.Entry = ?)";
             try (PreparedStatement statement = connection.prepareStatement(SQLQuery);) {
                 for (LocalDate lDate : dataAllDays.getAllData().keySet()) {
-                    for (Integer index : dataAllDays.getAllData().get(lDate).getTodaysData().keySet()) {
+                    for (Integer index : dataAllDays.getAllData().get(lDate).getKeyset()) {
                         statement.setInt(1,index);
                         statement.setDate(2, Date.valueOf(lDate));
                         statement.setString(3,
-                                dataAllDays.getAllData().get(lDate).getTodaysData().get(index));
+                                dataAllDays.getAllData().get(lDate).getAnEntry(index));
                         statement.executeUpdate();
                     }
                 }

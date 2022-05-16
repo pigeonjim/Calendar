@@ -1,6 +1,7 @@
 package com.calendar;
 import java.util.HashMap;
 import java.lang.StringBuilder;
+import java.util.Set;
 
 public class DataSingleDay {
     private HashMap<Integer,String> todaysData;
@@ -39,10 +40,6 @@ public class DataSingleDay {
         return todaysData.size();
     }
 
-    public HashMap<Integer,String> getTodaysData() {
-        return todaysData;
-    }
-
     public boolean containsEntry(String text){
         if(todaysData.isEmpty()){
             return false;
@@ -53,5 +50,11 @@ public class DataSingleDay {
             }
         }
         return false;
+    }
+    public String getAnEntry(Integer index){
+        return todaysData.get(index);
+    }
+    public Set<Integer> getKeyset(){
+        return todaysData.keySet();
     }
 }
