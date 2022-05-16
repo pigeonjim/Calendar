@@ -2,7 +2,6 @@ package com.calendar;
 import java.util.Set;
 
 public class IndexControl {
-
     public Integer findHighestInUse(Integer[] list){
         Integer highest = 0;
         for(int i = 0;i < list.length; i++){

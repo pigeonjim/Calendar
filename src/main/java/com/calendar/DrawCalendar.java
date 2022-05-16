@@ -77,7 +77,6 @@ public class DrawCalendar {
             if(dateLogic.isDateWeekend(dateAry[i])){
                 daysOfTheMonth.get(dateAry[i]).setWeekendBackgroundColour();
             }
-
             column++;
         }
         daysLayout.setStyle("-fx-background-color: #C3CAC6;");

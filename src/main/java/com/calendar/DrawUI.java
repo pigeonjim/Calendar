@@ -11,7 +11,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.Parent;
 import javafx.collections.ObservableList;
-
 import java.awt.*;
 import java.text.DateFormatSymbols;
 import java.time.LocalDate;
@@ -130,7 +129,7 @@ public class DrawUI {
             dateDDChange();
         });
         toAccessM.setOnAction((event) -> {
-            dataIO.saveAllAccess();
+            dataIO.checkIfRowExists(1, LocalDate.now(),"james");
             dateDDChange();
         });
     }

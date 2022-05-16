@@ -3,6 +3,7 @@ package com.calendar;
 import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.PrintWriter;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.nio.file.Paths;
@@ -35,13 +36,16 @@ public class DataIO {
 
     public void readFromCSV() {
         String path =getFilePath(false);
+
         HashMap<LocalDate,String> duplicates = new HashMap<>();
         try (Scanner lineIn = new Scanner(Paths.get(path))) {
             while (lineIn.hasNextLine()) {
                 String row = lineIn.nextLine();
                 String[] words = row.split(",");
                 Integer index = Integer.valueOf(words[0]);
-                LocalDate date = LocalDate.parse(words[1]);
+                words[1] = words[1].replace("/" , "-");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate date = LocalDate.parse(words[1],formatter);
                 String text = words[2];
                 if(dataAllDays.importDayEntry(index,date, text)){
                     duplicates.put(date,text);
@@ -99,6 +103,8 @@ public class DataIO {
                 Integer index = results.getInt("Entry_ID");
                 String entry = results.getString("Entry");
 
+                System.out.println(results);
+
                 if(dataAllDays.importDayEntry(index,date, entry)){
                     duplicates.put(date,entry);
                 } else {
@@ -116,10 +122,7 @@ public class DataIO {
     public void saveAllAccess() {
         String accessURL = "jdbc:ucanaccess://src/main/resources/com/calendar/CallendarApp.accdb";
         try (Connection connection = DriverManager.getConnection(accessURL)) {
-            //String SQLQuery = "INSERT INTO Cal_Entries(Entry_ID, Entry_Date, Entry) VALUES(?,?,?)";
-            String SQLQuery = "INSERT INTO Cal_Entries SELECT * FROM Cal_Entries " +
-                    "WHERE NOT EXISTS (SELECT * FROM Cal_Entries AS bd WHERE bd.Entry_ID = ? AND bd.Entry_Date = ? AND " +
-                    "bd.Entry = ?)";
+            String SQLQuery = "INSERT INTO Cal_Entries(Entry_ID, Entry_Date, Entry) VALUES(?,?,?)";
             try (PreparedStatement statement = connection.prepareStatement(SQLQuery);) {
                 for (LocalDate lDate : dataAllDays.getAllData().keySet()) {
                     for (Integer index : dataAllDays.getAllData().get(lDate).getKeyset()) {
@@ -127,6 +130,7 @@ public class DataIO {
                         statement.setDate(2, Date.valueOf(lDate));
                         statement.setString(3,
                                 dataAllDays.getAllData().get(lDate).getAnEntry(index));
+                        System.out.println(dataAllDays.getAllData().get(lDate).getAnEntry(index));
                         statement.executeUpdate();
                     }
                 }
@@ -137,4 +141,26 @@ public class DataIO {
             System.out.println("Connection error " + e);
         }
     }
+
+    public void checkIfRowExists(Integer index, LocalDate date, String entry){
+
+        String accessURL = "jdbc:ucanaccess://src/main/resources/com/calendar/CallendarApp.accdb";
+        try (Connection connection = DriverManager.getConnection(accessURL)) {
+            String SQLQuery = "SELECT IIF((Select SUM([Entry_ID]) FROM Cal_Entries WHERE [Entry_ID] = " + index +
+                    " AND [Entry] = \"" + entry + "\" " +
+                    "AND Entry_Date = '" + Date.valueOf(date)  + "') > 1, 'TRUE', 'FALSE') AS [Check] FROM Cal_Entries";
+            System.out.println(SQLQuery);
+            Statement statement = connection.createStatement();
+            ResultSet results = statement.executeQuery(SQLQuery);
+            while (results.next()) {
+                //LocalDate date = results.getDate("Entry_Date").toLocalDate();
+                //Integer index = results.getInt("Entry_ID");
+                String check = results.getString("Check");
+                   System.out.println(check);
+            }
+        } catch (Exception e) {
+            System.out.println("Did not work. Error " + e.toString());
+        }
+    }
+
 }

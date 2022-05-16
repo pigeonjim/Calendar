@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.scene.layout.HBox;
+import javafx.scene.control.ScrollPane;
 
 public class DrawPopupDuplicateEntry {
     private Button yesButton, noButton;
@@ -20,6 +21,7 @@ public class DrawPopupDuplicateEntry {
     private BlankStage blankStage;
     private VBox cbLayout;
     private HashMap<LocalDate,String> thelist;
+    private ScrollPane scrolling;
     public DrawPopupDuplicateEntry(HashMap<LocalDate,String> thelist, DrawCalendar drawCalendar){
         blankStage = new BlankStage();
         cbLayout = new VBox();
@@ -49,9 +51,14 @@ public class DrawPopupDuplicateEntry {
         output.setMinSize(250,50);
         output.setAlignment(Pos.CENTER);
 
+        cbLayout.setPrefSize(500,500);
+        scrolling = new ScrollPane(cbLayout);
+        scrolling.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrolling.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
         blankStage.getPane().setTop(output);
         blankStage.getPane().setBottom(buttonLayout);
-        blankStage.getPane().setCenter(cbLayout);
+        blankStage.getPane().setCenter(scrolling);
         blankStage.getPane().setStyle("-fx-border-style: solid inside;" +
                 "-fx-border-width: 4;" +
                 "-fx-border-color: black;" +
@@ -70,11 +77,15 @@ public class DrawPopupDuplicateEntry {
             }
             blankStage.closeStage();
         });
+        noButton.setOnAction((event) -> {
+            blankStage.closeStage();
+        });
     }
 
     private void setUpCheckBoxes(){
         cbLayout.getChildren().clear();
         cbAry.clear();
+        System.out.println(thelist.toString());
         for(LocalDate date: thelist.keySet()){
             CheckBox cb = new CheckBox(date + " : " + thelist.get(date));
             cb.setPrefHeight(40);
