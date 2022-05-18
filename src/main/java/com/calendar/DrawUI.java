@@ -25,15 +25,15 @@ public class DrawUI {
     private DateLogic dateLogic;
     private DrawCalendar drawCalendar;
     private DataAllDays dataAllDays;
-    private DataIO dataIO;
+    private IOFunctions IOFunctions;
     private int screenHeight, screenWidth;
     private GraphicsDevice gfxDevice;
 
-    public DrawUI(DateLogic dLogic, DrawCalendar dCal, DataAllDays dataAllDays, DataIO dataIO){
+    public DrawUI(DateLogic dLogic, DrawCalendar dCal, DataAllDays dataAllDays, IOFunctions IOFunctions){
         this.dateLogic = dLogic;
         this.drawCalendar = dCal;
         this.dataAllDays = dataAllDays;
-        this.dataIO = dataIO;
+        this.IOFunctions = IOFunctions;
         menuBar = new MenuBar();
         gfxDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         screenHeight = gfxDevice.getDisplayMode().getHeight();
@@ -84,10 +84,10 @@ public class DrawUI {
         Menu ioMenu = new Menu("Files");
         MenuItem toCsvM = new MenuItem("Save data to csv");
         MenuItem fromCsvM  =new MenuItem("Load data from csv");
-        MenuItem fromAccessM = new MenuItem("Load data from Access database");
-        MenuItem toAccessM = new MenuItem("Save data to Access database");
+        MenuItem dBConnectM = new MenuItem("Connect to Access database");
+        MenuItem dBDisConnectM = new MenuItem("Disconnect from Access database");
 
-        ioMenu.getItems().addAll(toCsvM,fromCsvM,fromAccessM,toAccessM);
+        ioMenu.getItems().addAll(toCsvM,fromCsvM,dBConnectM,dBDisConnectM);
 
         Menu exit = new Menu("Exit");
         MenuItem exitM = new MenuItem("Exit");
@@ -115,21 +115,24 @@ public class DrawUI {
         menuBar.setEffect(lighting);
 
        toCsvM.setOnAction((event) -> {
-            dataIO.outputToCSV();
+            IOFunctions.outputToCSV();
         });
         fromCsvM.setOnAction((event) -> {
-            dataIO.readFromCSV();
+            IOFunctions.readFromCSV();
             dateDDChange();
         });
         exitM.setOnAction((event) -> {
+            if(IOFunctions.getUsingDB()){
+                IOFunctions.disconnectFromDB();
+            }
             Platform.exit();
         });
-        fromAccessM.setOnAction((event) -> {
-            dataIO.getAllAccess();
+        dBConnectM.setOnAction((event) -> {
+            IOFunctions.connectToDB();
             dateDDChange();
         });
-        toAccessM.setOnAction((event) -> {
-            dataIO.saveAllAccess();
+        dBDisConnectM.setOnAction((event) -> {
+            IOFunctions.disconnectFromDB();
             dateDDChange();
         });
     }

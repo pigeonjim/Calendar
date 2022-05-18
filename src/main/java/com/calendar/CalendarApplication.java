@@ -12,8 +12,8 @@ public class CalendarApplication extends Application {
         DateLogic dateLogic =new DateLogic();
         DataAllDays dataAllDays = new DataAllDays();
         DrawCalendar drawCalendar = new DrawCalendar(dataAllDays,dateLogic);
-        DataIO dataIO = new DataIO(dataAllDays, drawCalendar);
-        DrawUI ui = new DrawUI(dateLogic, drawCalendar, dataAllDays,dataIO);
+        IOFunctions IOFunctions = new IOFunctions(dataAllDays, drawCalendar);
+        DrawUI ui = new DrawUI(dateLogic, drawCalendar, dataAllDays, IOFunctions);
 
         BorderPane layout = new BorderPane();
         layout.setRight(drawCalendar.getView(ui.getScreenHeight()));
@@ -24,8 +24,6 @@ public class CalendarApplication extends Application {
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setMaxHeight(ui.getScreenHeight() * 0.8);
         stage.show();
-        dataIO.getAllAccess();
-        ui.dateDDChange();
     }
 
     public static void main(String[] args) {

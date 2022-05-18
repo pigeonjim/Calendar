@@ -8,7 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 
-public class DrawPopupText {
+public class PopupDayInfo {
 
     private DataAllDays dataAllDays;
     private VBox layout;
@@ -18,7 +18,7 @@ public class DrawPopupText {
     private Label outputBox;
     private BlankStage blankStage;
 
-    public DrawPopupText(DataAllDays dataAllDays, DrawDay drawDay){
+    public PopupDayInfo(DataAllDays dataAllDays, DrawDay drawDay){
         this.dataAllDays = dataAllDays;
         this.layout = new VBox();
         this.inputBox = new TextField();
@@ -100,8 +100,8 @@ public class DrawPopupText {
         }
         private void deleteButtonEvent(){
             allButtonEvents();
-            DrawPopupDelete drawPopupDelete = new DrawPopupDelete(this.dataAllDays,this.drawDay, this);
-            drawPopupDelete.showPopup();
+            PopupDeleteEntries popupDeleteEntries = new PopupDeleteEntries(this.dataAllDays,this.drawDay, this);
+            popupDeleteEntries.showPopup();
             if(layout.getChildren().contains(inputBox)){
                 inputBox.setText("");
                 addButton.setText("Click to add new entry");

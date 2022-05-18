@@ -12,7 +12,7 @@ import java.util.HashMap;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.ScrollPane;
 
-public class DrawPopupDuplicateEntry {
+public class PopupDuplicateImport {
     private Button yesButton, noButton;
     private BorderPane pane;
     private ArrayList<CheckBox> cbAry;
@@ -22,7 +22,7 @@ public class DrawPopupDuplicateEntry {
     private VBox cbLayout;
     private HashMap<LocalDate,String> thelist;
     private ScrollPane scrolling;
-    public DrawPopupDuplicateEntry(HashMap<LocalDate,String> thelist, DrawCalendar drawCalendar){
+    public PopupDuplicateImport(HashMap<LocalDate,String> thelist, DrawCalendar drawCalendar){
         blankStage = new BlankStage();
         cbLayout = new VBox();
         this.thelist = thelist;

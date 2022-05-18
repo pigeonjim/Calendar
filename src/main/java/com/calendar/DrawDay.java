@@ -79,7 +79,7 @@ public class DrawDay {
     }
 
     private void clickTextLabel(){
-        DrawPopupText popup = new DrawPopupText(dataAllDays, this);
+        PopupDayInfo popup = new PopupDayInfo(dataAllDays, this);
         popup.showPopup();
     }
 

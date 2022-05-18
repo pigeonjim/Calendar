@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 
-public class DrawPopupDelete {
+public class PopupDeleteEntries {
     private String[] todaysData;
     private ArrayList<CheckBox> cbAry;
     private DataAllDays dataAllDays;
@@ -15,10 +15,10 @@ public class DrawPopupDelete {
     private VBox cbLayout;
     private Button allButton, selectedButton, closeButton;
     private HBox buttonLayout;
-    private DrawPopupText textPopup;
+    private PopupDayInfo textPopup;
     private BlankStage blankStage;
 
-    public DrawPopupDelete(DataAllDays dataAllDays, DrawDay drawDay, DrawPopupText textPopup){
+    public PopupDeleteEntries(DataAllDays dataAllDays, DrawDay drawDay, PopupDayInfo textPopup){
         this.dataAllDays = dataAllDays;
         this.drawDay = drawDay;
         cbAry = new ArrayList<>();
