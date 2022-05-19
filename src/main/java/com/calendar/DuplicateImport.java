@@ -9,6 +9,8 @@ public class DuplicateImport extends DuplicateAbstract {
 
     public DuplicateImport(HashMap<LocalDate, String> thelist, DrawCalendar drawCalendar) {
         super(thelist, drawCalendar);
+        setLabelString("The following entries already exist on the calendar");
+        setyesButtonString("Click to add selected entries again");
 
     }
     public void showPopup(DataAllDays data){

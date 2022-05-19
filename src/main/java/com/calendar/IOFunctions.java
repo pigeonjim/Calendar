@@ -64,8 +64,6 @@ public class IOFunctions {
             }
             if(!duplicates.isEmpty()){
                 DuplicateImport duplicateImport = new DuplicateImport(duplicates, drawCalendar);
-                duplicateImport.setLabelString("The following entries already exist on the calendar");
-                duplicateImport.setyesButtonString("Click to add selected entries again");
                 duplicateImport.showPopup(dataAllDays);
             }
 
@@ -144,8 +142,6 @@ public class IOFunctions {
             }
             if(!duplicates.isEmpty()){
                 DuplicateImport duplicateImport = new DuplicateImport(duplicates, drawCalendar);
-                duplicateImport.setLabelString("The following entries already exist on the calendar");
-                duplicateImport.setyesButtonString("Click to add selected entries again");
                 duplicateImport.showPopup(dataAllDays);
                 }
         } catch (Exception e) {
