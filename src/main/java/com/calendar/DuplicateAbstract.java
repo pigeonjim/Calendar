@@ -12,39 +12,44 @@ import java.util.HashMap;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.ScrollPane;
 
-public class PopupDuplicateImport {
-    private Button yesButton, noButton;
-    private BorderPane pane;
-    private ArrayList<CheckBox> cbAry;
-    private Label output;
-    private DrawCalendar drawCalendar;
-    private BlankStage blankStage;
-    private VBox cbLayout;
-    private HashMap<LocalDate,String> thelist;
-    private ScrollPane scrolling;
-    public PopupDuplicateImport(HashMap<LocalDate,String> thelist, DrawCalendar drawCalendar){
+public abstract class DuplicateAbstract {
+    protected Button yesButton, noButton;
+    protected BorderPane pane;
+    protected ArrayList<CheckBox> cbAry;
+    protected Label output;
+    protected DrawCalendar drawCalendar;
+    protected BlankStage blankStage;
+    protected VBox cbLayout;
+    protected HashMap<LocalDate,String> thelist;
+    protected ScrollPane scrolling;
+    protected String yesButtonString, labelString;
+
+    public DuplicateAbstract(HashMap<LocalDate,String> thelist, DrawCalendar drawCalendar){
         blankStage = new BlankStage();
         cbLayout = new VBox();
         this.thelist = thelist;
         cbAry = new ArrayList<>();
         this.drawCalendar = drawCalendar;
+        yesButtonString = "";
+        labelString = "";
     }
+
     public void showPopup(DataAllDays data){
         setUpCheckBoxes();
-        yesButton = new Button("Click to add selected entries again");
+        yesButton = new Button(yesButtonString);
         yesButton.setStyle("-fx-border-style: solid inside;" +
-                        "-fx-border-width: 3;" +
-                        "-fx-border-color: green;");
+                "-fx-border-width: 3;" +
+                "-fx-border-color: green;");
         noButton = new Button("Close window");
         noButton.setStyle("-fx-border-style: solid inside;" +
-                        "-fx-border-width: 3;" +
-                        "-fx-border-color: red;");
+                "-fx-border-width: 3;" +
+                "-fx-border-color: red;");
         HBox buttonLayout = new HBox();
         buttonLayout.setStyle("-fx-padding: 15px;" +
-                        "-fx-border-radius: 25px;");
+                "-fx-border-radius: 25px;");
         buttonLayout.setSpacing(10);
         buttonLayout.getChildren().addAll(yesButton,noButton);
-        output = new Label("The following entries are already on the calendar:");
+        output = new Label(labelString);
         output.setStyle("-fx-font-weight: bold;" +
                 "-fx-font-family: cursive;" +
                 "fx-font-size: 30;");
@@ -66,17 +71,11 @@ public class PopupDuplicateImport {
                 "-fx-padding: 15px;");
         blankStage.setTitle("Duplicate entry found");
         blankStage.buildStage();
-
         yesButton.setOnAction((event) -> {
-            for(CheckBox cb: cbAry){
-                if(cb.isSelected()){
-                    String[] bits = cb.getText().split(" : ");
-                    data.addNewDayData(LocalDate.parse(bits[0]),bits[1]);
-                    drawCalendar.refreshDays();
-                }
-            }
+            yesButtonEvent(data);
             blankStage.closeStage();
         });
+
         noButton.setOnAction((event) -> {
             blankStage.closeStage();
         });
@@ -97,5 +96,17 @@ public class PopupDuplicateImport {
         for(CheckBox cb:cbAry){
             cbLayout.getChildren().add(cb);
         }
+    }
+
+    protected void yesButtonEvent(DataAllDays yesdata){
+
+    }
+
+    public void setyesButtonString(String butttonstring){
+        this.yesButtonString = butttonstring;
+    }
+
+    public void setLabelString(String labString){
+        this.labelString = labString;
     }
 }

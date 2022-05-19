@@ -40,16 +40,21 @@ public class IOFunctions {
 
     public void readFromCSV() {
         String path = getFilePath(false,false);
-
+        LocalDate date;
         HashMap<LocalDate,String> duplicates = new HashMap<>();
         try (Scanner lineIn = new Scanner(Paths.get(path))) {
             while (lineIn.hasNextLine()) {
                 String row = lineIn.nextLine();
                 String[] words = row.split(",");
                 Integer index = Integer.valueOf(words[0]);
-                words[1] = words[1].replace("/" , "-");
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                LocalDate date = LocalDate.parse(words[1],formatter);
+                if(words[1].contains("/")){
+                    words[1] = words[1].replace("/" , "-");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    date = LocalDate.parse(words[1],formatter);
+                } else {
+                    date = LocalDate.parse(words[1]);
+                }
+
                 String text = words[2];
                 if(dataAllDays.importDayEntry(index,date, text)){
                     duplicates.put(date,text);
@@ -58,8 +63,10 @@ public class IOFunctions {
                 }
             }
             if(!duplicates.isEmpty()){
-                PopupDuplicateImport popupDuplicateImport = new PopupDuplicateImport(duplicates, drawCalendar);
-                popupDuplicateImport.showPopup(dataAllDays);
+                DuplicateImport duplicateImport = new DuplicateImport(duplicates, drawCalendar);
+                duplicateImport.setLabelString("The following entries already exist on the calendar");
+                duplicateImport.setyesButtonString("Click to add selected entries again");
+                duplicateImport.showPopup(dataAllDays);
             }
 
         } catch (Exception e) {
@@ -136,8 +143,10 @@ public class IOFunctions {
                 }
             }
             if(!duplicates.isEmpty()){
-                PopupDuplicateImport popupDuplicateImport = new PopupDuplicateImport(duplicates, drawCalendar);
-                popupDuplicateImport.showPopup(dataAllDays);
+                DuplicateImport duplicateImport = new DuplicateImport(duplicates, drawCalendar);
+                duplicateImport.setLabelString("The following entries already exist on the calendar");
+                duplicateImport.setyesButtonString("Click to add selected entries again");
+                duplicateImport.showPopup(dataAllDays);
                 }
         } catch (Exception e) {
             System.out.println("Did not work. Error " + e.toString());
@@ -149,6 +158,7 @@ public class IOFunctions {
         try (Connection connection = DriverManager.getConnection(accessURL)) {
             String SQLQuery = "INSERT INTO Cal_Entries(Entry_ID, Entry_Date, Entry) VALUES(?,?,?)";
             try (PreparedStatement statement = connection.prepareStatement(SQLQuery);) {
+                HashMap<LocalDate,String> duplicates = new HashMap<>();
                 for (LocalDate lDate : dataAllDays.getAllData().keySet()) {
                     for (Integer index : dataAllDays.getAllData().get(lDate).getKeyset()) {
                         entry = dataAllDays.getAllData().get(lDate).getAnEntry(index);
@@ -161,10 +171,12 @@ public class IOFunctions {
                         } else {
                             if(checkIfPairExists(lDate, entry)){
                                 //duplicate
+                                duplicates.put(lDate,entry);
                             }
                         }
                     }
                 }
+
             } catch (Exception e) {
                 System.out.println("Did not write. Error " + e);
             }
@@ -247,14 +259,19 @@ public class IOFunctions {
                         if (!checkIfRowExists(index, date, entry)) {
                             String SQLQuery = "INSERT INTO Cal_Entries(Entry_ID, Entry_Date, Entry) VALUES(" + index +
                                     ",'" + date +"',\"" + entry +"\")";
-                        } else {
-                            if(checkIfPairExists(date, entry)){
+                        } else if(checkIfPairExists(date, entry))  {
+
                                 //duplicate
 
-                            }
+
                         }
         } catch (Exception e) {
             System.out.println("Connection error " + e);
         }
+    }
+
+    public void duplicatesIntoDB(LocalDate date, String entry, boolean newIndex){
+
+
     }
 }
