@@ -15,7 +15,6 @@ public abstract class DuplicateAbstract {
     protected Button yesButton, noButton;
     protected ArrayList<CheckBox> cbAry;
     protected Label output;
-    protected DrawCalendar drawCalendar;
     protected BlankStage blankStage;
     protected VBox cbLayout;
     protected HashMap<LocalDate,String> duplicatesHM;
@@ -23,21 +22,20 @@ public abstract class DuplicateAbstract {
     protected String yesButtonString, labelString, entry;
     protected LocalDate entryDate;
 
-    public DuplicateAbstract(HashMap<LocalDate,String> duplicatesHM, DrawCalendar drawCalendar){
-        this.allConstructors(drawCalendar);
+    public DuplicateAbstract(HashMap<LocalDate,String> duplicatesHM){
+        this.allConstructors();
         this.duplicatesHM = duplicatesHM;
         this.entry = "";
     }
-    public DuplicateAbstract(DrawCalendar drawCalendar, LocalDate entryDate, String entry){
-        this.allConstructors(drawCalendar);
+    public DuplicateAbstract(LocalDate entryDate, String entry){
+        this.allConstructors();
         this.entry = entry;
         this.entryDate = entryDate;
     }
-    protected void allConstructors(DrawCalendar drawCalendar){
+    protected void allConstructors(){
         blankStage = new BlankStage();
         cbLayout = new VBox();
         cbAry = new ArrayList<>();
-        this.drawCalendar = drawCalendar;
         yesButtonString = "";
         labelString = "";
     }

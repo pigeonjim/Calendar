@@ -7,8 +7,8 @@ import java.util.HashMap;
 
 public class DuplicateImport extends DuplicateAbstract {
 
-    public DuplicateImport(HashMap<LocalDate, String> thelist, DrawCalendar drawCalendar) {
-        super(thelist, drawCalendar);
+    public DuplicateImport(HashMap<LocalDate, String> thelist) {
+        super(thelist);
         setLabelString("The following entries already exist on the calendar");
         setyesButtonString("Click to add selected entries again");
 
@@ -22,7 +22,6 @@ public class DuplicateImport extends DuplicateAbstract {
                 if (cb.isSelected()) {
                     String[] bits = cb.getText().split(" : ");
                     data.addNewDayData(LocalDate.parse(bits[0]), bits[1]);
-                    drawCalendar.refreshDays();
                 }
             }
 

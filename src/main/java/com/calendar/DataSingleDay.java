@@ -1,4 +1,5 @@
 package com.calendar;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.lang.StringBuilder;
 import java.util.Set;
@@ -32,8 +33,18 @@ public class DataSingleDay {
         }
     }
 
+    public void addText(Integer index, String text){
+        if(todaysData.containsKey(index)){
+            todaysData.put(index,text);
+        }
+    }
+
     public void removeText(String text){
         while(todaysData.values().remove(text));
+    }
+
+    public void removeText(Integer index){
+        todaysData.remove(index);
     }
 
     public int getNoOfEntries(){
@@ -56,5 +67,19 @@ public class DataSingleDay {
     }
     public Set<Integer> getKeyset(){
         return todaysData.keySet();
+    }
+
+    public Integer duplicateNewIndexFinder(ArrayList<Integer> indexList){
+        System.out.println("dupIndexFinder start: " + indexList.toString());
+        combineLists(indexList);
+        System.out.println("dupIndexFinder after: " + indexList.toString());
+        return indexControl.findFirstNotInUse(indexList);
+    }
+
+    public void combineLists(ArrayList<Integer> indexList){
+
+        for (Integer number: todaysData.keySet()){
+                indexList.add(number);
+        }
     }
 }

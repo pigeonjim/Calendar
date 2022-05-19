@@ -4,6 +4,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.PrintWriter;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.nio.file.Paths;
@@ -14,15 +15,9 @@ public class IOFunctions {
 
     private DataAllDays dataAllDays;
     private BlankStage blankStage;
-    private DrawCalendar drawCalendar;
-    private boolean usingDB;
-    private String dBPath;
 
-    public IOFunctions(DataAllDays dataAllDays, DrawCalendar drawCalendar) {
+    public IOFunctions(DataAllDays dataAllDays) {
         this.dataAllDays = dataAllDays;
-        this.drawCalendar = drawCalendar;
-        this.usingDB = false;
-        this.dBPath = null;
     }
 
     public void outputToCSV() {
@@ -63,7 +58,7 @@ public class IOFunctions {
                 }
             }
             if(!duplicates.isEmpty()){
-                DuplicateImport duplicateImport = new DuplicateImport(duplicates, drawCalendar);
+                DuplicateImport duplicateImport = new DuplicateImport(duplicates);
                 duplicateImport.showPopup(dataAllDays);
             }
 
@@ -71,7 +66,6 @@ public class IOFunctions {
             System.out.println("error - " + e.toString());
         }
     }
-
     public String getFilePath(boolean loadOrSave, boolean DB) {
         //parameter is true for save file and false for load file
         String path;
@@ -120,11 +114,10 @@ public class IOFunctions {
         return path;
     }
 
-
    public void getAllAccess() {
 
        HashMap<LocalDate,String> duplicates = new HashMap<>();
-        String accessURL = "jdbc:ucanaccess://" + dBPath;
+        String accessURL = "jdbc:ucanaccess://" + dataAllDays.getdBPath();
         try (Connection connection = DriverManager.getConnection(accessURL)) {
             String SQLQuery = "Select * From Cal_Entries";
             Statement statement = connection.createStatement();
@@ -133,6 +126,7 @@ public class IOFunctions {
                 LocalDate date = results.getDate("Entry_Date").toLocalDate();
                 Integer index = results.getInt("Entry_ID");
                 String entry = results.getString("Entry");
+                System.out.println(entry);
 
                 if(dataAllDays.importDayEntry(index,date, entry)){
                     duplicates.put(date,entry);
@@ -141,7 +135,7 @@ public class IOFunctions {
                 }
             }
             if(!duplicates.isEmpty()){
-                DuplicateImport duplicateImport = new DuplicateImport(duplicates, drawCalendar);
+                DuplicateImport duplicateImport = new DuplicateImport(duplicates);
                 duplicateImport.showPopup(dataAllDays);
                 }
         } catch (Exception e) {
@@ -150,7 +144,7 @@ public class IOFunctions {
     }
     public void saveAllAccess() {
         String entry;
-        String accessURL = "jdbc:ucanaccess://" + dBPath;
+        String accessURL = "jdbc:ucanaccess://" + dataAllDays.getdBPath();
         try (Connection connection = DriverManager.getConnection(accessURL)) {
             String SQLQuery = "INSERT INTO Cal_Entries(Entry_ID, Entry_Date, Entry) VALUES(?,?,?)";
             try (PreparedStatement statement = connection.prepareStatement(SQLQuery);) {
@@ -184,7 +178,7 @@ public class IOFunctions {
     public boolean checkIfRowExists(Integer index, LocalDate date, String entry){
     //function that returns true if a row exists in the access DB
 
-        String accessURL = "jdbc:ucanaccess://" + dBPath;
+        String accessURL = "jdbc:ucanaccess://" + dataAllDays.getdBPath();
         try (Connection connection = DriverManager.getConnection(accessURL)) {
             String SQLQuery = "SELECT TOP 1 IIF((Select SUM([Entry_ID]) FROM Cal_Entries " +
                     "WHERE [Entry_ID] = "+ index + " AND [Entry] =  \"" +
@@ -207,7 +201,7 @@ public class IOFunctions {
 
     public boolean checkIfPairExists(LocalDate date, String entry){
         //function that returns true if a date/entry pair exists in the access DB
-        String accessURL = "jdbc:ucanaccess://" + dBPath;
+        String accessURL = "jdbc:ucanaccess://" + dataAllDays.getdBPath();
         try (Connection connection = DriverManager.getConnection(accessURL)) {
             String SQLQuery = "SELECT TOP 1 IIF((Select SUM([Entry_ID]) FROM Cal_Entries " +
                     " [Entry] =  \"" + entry + "\" AND Entry_Date = '" + Date.valueOf(date) + "') > 0, 1, 2) AS [Check] FROM Cal_Entries";
@@ -226,48 +220,57 @@ public class IOFunctions {
         }
         return false;
     }
-    public boolean getUsingDB(){
-        return usingDB;
-    }
-    public void setUsingDB(boolean answer){
-        this.usingDB = answer;
-    }
 
     public void connectToDB(){
-        dBPath = getFilePath(false, true);
-        if(dBPath.isEmpty()){
+        dataAllDays.setdBPath(getFilePath(false, true));
+        if(dataAllDays.getdBPath().isEmpty()){
             System.out.println("Unable to connect");
             return;
         }
-        setUsingDB(true);
+        dataAllDays.setUsingDB(true);
         getAllAccess();
     }
     public void disconnectFromDB(){
-        setUsingDB(false);
+        dataAllDays.setUsingDB(false);
         saveAllAccess();
-        dBPath = "";
+        dataAllDays.setdBPath("");
     }
 
     public void updateDBOneRow(Integer index, LocalDate date, String entry){
-        String accessURL = "jdbc:ucanaccess://" + dBPath;
+        String accessURL = "jdbc:ucanaccess://" + dataAllDays.getdBPath();
         try (Connection connection = DriverManager.getConnection(accessURL)) {
 
-                        if (!checkIfRowExists(index, date, entry)) {
-                            String SQLQuery = "INSERT INTO Cal_Entries(Entry_ID, Entry_Date, Entry) VALUES(" + index +
-                                    ",'" + date +"',\"" + entry +"\")";
-                        } else if(checkIfPairExists(date, entry))  {
-
-                                //duplicate
-
-
-                        }
+            if (!checkIfRowExists(index, date, entry)) {
+                String SQLQuery = "INSERT INTO Cal_Entries(Entry_ID, Entry_Date, Entry) VALUES(" + index +
+                        ",'" + date +"',\"" + entry +"\")";
+                Statement statement = connection.createStatement();
+                statement.executeUpdate(SQLQuery);
+            } else if(checkIfPairExists(date, entry))  {
+                DuplicateExport duplicateExport = new DuplicateExport(date,entry,index,getDayIndexList(date), dataAllDays.getdBPath());
+                duplicateExport.showPopup(dataAllDays);
+            }
         } catch (Exception e) {
             System.out.println("Connection error " + e);
         }
     }
 
-    public void duplicatesIntoDB(LocalDate date, String entry, boolean newIndex){
-
-
+    public ArrayList<Integer> getDayIndexList(LocalDate indexDate){
+        ArrayList<Integer> indexList = new ArrayList<>();
+        String accessURL = "jdbc:ucanaccess://" + dataAllDays.getdBPath();
+        try (Connection connection = DriverManager.getConnection(accessURL)){
+            String SQLQuery = "Select Entry_ID From Cal_Entries " +
+                    " WHERE Entry_Date = " + indexDate;
+            Statement statement = connection.createStatement();
+            ResultSet results = statement.executeQuery(SQLQuery);
+            while (results.next()){
+                indexList.add(results.getInt("Entry_ID"));
+            }
+        } catch(Exception e) {
+            System.out.printf(e.toString());
+        }
+        for(Integer index:indexList){
+            System.out.println(index);
+        }
+        return indexList;
     }
 }

@@ -122,9 +122,9 @@ public class DrawUI {
             dateDDChange();
         });
         exitM.setOnAction((event) -> {
-            if(IOFunctions.getUsingDB()){
+           /* if(IOFunctions.getUsingDB()){
                 IOFunctions.disconnectFromDB();
-            }
+            }*/
             Platform.exit();
         });
         dBConnectM.setOnAction((event) -> {

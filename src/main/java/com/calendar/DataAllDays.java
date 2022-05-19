@@ -7,11 +7,15 @@ import java.util.HashMap;
 public class DataAllDays {
     private HashMap<LocalDate, DataSingleDay> allData;
     private LocalDate workingDate = LocalDate.now();
-    IndexControl indexControl;
+    private IndexControl indexControl;
+    private String dBPath;
+    private boolean usingDB;
 
     public DataAllDays() {
         allData = new HashMap<>();
         indexControl = new IndexControl();
+        this.dBPath = "";
+        this.usingDB = false;
     }
 
     public void addNewDayData(LocalDate date, String text) {
@@ -21,9 +25,21 @@ public class DataAllDays {
         allData.get(date).addText(text);
     }
 
+    public void addNewDayData(LocalDate date, String text, Integer index) {
+        if (!allData.containsKey(date)) {
+            allData.put(date, new DataSingleDay());
+        }
+        allData.get(date).addText(index, text);
+    }
+
     public void deleteDayData(LocalDate date, String text) {
         if (allData.containsKey(date)) {
             allData.get(date).removeText(text);
+        }
+    }
+    public void deleteDayData(LocalDate date, Integer index){
+        if (allData.containsKey(date)) {
+            allData.get(date).removeText(index);
         }
     }
 
@@ -82,5 +98,24 @@ public class DataAllDays {
             addNewDayData(date,entry);
         }
         return false;
+    }
+    public Integer duplicateNewIndexFinder(LocalDate date, ArrayList<Integer> indexList){
+        return allData.get(date).duplicateNewIndexFinder(indexList);
+    }
+
+    public void setdBPath(String dBPath) {
+        this.dBPath = dBPath;
+    }
+
+    public String getdBPath() {
+        return dBPath;
+    }
+
+    public void setUsingDB(boolean usingDB) {
+        this.usingDB = usingDB;
+    }
+
+    public boolean isUsingDB() {
+        return usingDB;
     }
 }
