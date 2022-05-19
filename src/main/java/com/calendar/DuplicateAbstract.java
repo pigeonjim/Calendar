@@ -1,7 +1,6 @@
 package com.calendar;
 
 import javafx.geometry.Pos;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.CheckBox;
@@ -14,20 +13,29 @@ import javafx.scene.control.ScrollPane;
 
 public abstract class DuplicateAbstract {
     protected Button yesButton, noButton;
-    protected BorderPane pane;
     protected ArrayList<CheckBox> cbAry;
     protected Label output;
     protected DrawCalendar drawCalendar;
     protected BlankStage blankStage;
     protected VBox cbLayout;
-    protected HashMap<LocalDate,String> thelist;
+    protected HashMap<LocalDate,String> duplicatesHM;
     protected ScrollPane scrolling;
-    protected String yesButtonString, labelString;
+    protected String yesButtonString, labelString, entry;
+    protected LocalDate entryDate;
 
-    public DuplicateAbstract(HashMap<LocalDate,String> thelist, DrawCalendar drawCalendar){
+    public DuplicateAbstract(HashMap<LocalDate,String> duplicatesHM, DrawCalendar drawCalendar){
+        this.allConstructors(drawCalendar);
+        this.duplicatesHM = duplicatesHM;
+        this.entry = "";
+    }
+    public DuplicateAbstract(DrawCalendar drawCalendar, LocalDate entryDate, String entry){
+        this.allConstructors(drawCalendar);
+        this.entry = entry;
+        this.entryDate = entryDate;
+    }
+    protected void allConstructors(DrawCalendar drawCalendar){
         blankStage = new BlankStage();
         cbLayout = new VBox();
-        this.thelist = thelist;
         cbAry = new ArrayList<>();
         this.drawCalendar = drawCalendar;
         yesButtonString = "";
@@ -35,7 +43,11 @@ public abstract class DuplicateAbstract {
     }
 
     public void showPopup(DataAllDays data){
-        setUpCheckBoxes();
+        if(entry.isEmpty()){
+            setUpCheckBoxesHM();
+        } else{
+            setUpCheckBoxesSingle();
+        }
         yesButton = new Button(yesButtonString);
         yesButton.setStyle("-fx-border-style: solid inside;" +
                 "-fx-border-width: 3;" +
@@ -81,21 +93,33 @@ public abstract class DuplicateAbstract {
         });
     }
 
-    private void setUpCheckBoxes(){
+    private void setUpCheckBoxesHM(){
         cbLayout.getChildren().clear();
         cbAry.clear();
-        System.out.println(thelist.toString());
-        for(LocalDate date: thelist.keySet()){
-            CheckBox cb = new CheckBox(date + " : " + thelist.get(date));
-            cb.setPrefHeight(40);
-            cb.setStyle("-fx-font-weight: bold;" +
-                    "-fx-font-family: cursive;" +
-                    "fx-font-size: 30;");
-            cbAry.add(cb);
+        for(LocalDate date: duplicatesHM.keySet()){
+            createCB(date,duplicatesHM.get(date));
         }
         for(CheckBox cb:cbAry){
             cbLayout.getChildren().add(cb);
         }
+    }
+
+    private void setUpCheckBoxesSingle(){
+        cbLayout.getChildren().clear();
+        cbAry.clear();
+        createCB(entryDate,entry);
+        for(CheckBox cbox:cbAry){
+            cbLayout.getChildren().add(cbox);
+        }
+    }
+
+    private void createCB(LocalDate date, String entry){
+        CheckBox cb = new CheckBox(date + " : " + entry);
+        cb.setPrefHeight(40);
+        cb.setStyle("-fx-font-weight: bold;" +
+                "-fx-font-family: cursive;" +
+                "fx-font-size: 30;");
+        cbAry.add(cb);
     }
 
     protected void yesButtonEvent(DataAllDays yesdata){

@@ -10,6 +10,10 @@ public class DuplicateExport extends DuplicateAbstract{
     public DuplicateExport(HashMap<LocalDate,String> thelist, DrawCalendar drawCalendar){
         super(thelist,drawCalendar);
     }
+
+    public DuplicateExport(DrawCalendar drawCalendar, LocalDate entryDate, String entry){
+        super(drawCalendar,entryDate,entry);
+    }
     public void showPopup(DataAllDays data){
         super.showPopup(data);
         setLabelString("The following entries already exist in the database");
