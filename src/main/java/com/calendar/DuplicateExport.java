@@ -42,7 +42,7 @@ public class DuplicateExport extends DuplicateAbstract{
                 try (Connection connection = DriverManager.getConnection(accessURL)) {
 
                     String SQLQuery = "INSERT INTO Cal_Entries(Entry_ID, Entry_Date, Entry) VALUES(" + newIndex +
-                            ",'" + entryDate + "',\"" + entry + "\")";
+                            ",'" + entryDate + "','" + entry + "')";
                     Statement statement = connection.createStatement();
                     statement.executeUpdate(SQLQuery);
 

@@ -25,11 +25,15 @@ public class DataSingleDay {
         return textToday.toString();
     }
 
-    public void addText(String text){
+    public Integer addText(String text){
         if(todaysData.isEmpty()){
             todaysData.put(1,text);
+            return 1;
         } else {
-            todaysData.put(indexControl.findFirstNotInUse(todaysData.keySet()),text);
+            Integer newIndex;
+            newIndex = indexControl.findFirstNotInUse(todaysData.keySet());
+            todaysData.put(newIndex,text);
+            return newIndex;
         }
     }
 

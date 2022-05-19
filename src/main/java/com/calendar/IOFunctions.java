@@ -126,7 +126,6 @@ public class IOFunctions {
                 LocalDate date = results.getDate("Entry_Date").toLocalDate();
                 Integer index = results.getInt("Entry_ID");
                 String entry = results.getString("Entry");
-                System.out.println(entry);
 
                 if(dataAllDays.importDayEntry(index,date, entry)){
                     duplicates.put(date,entry);
@@ -181,8 +180,8 @@ public class IOFunctions {
         String accessURL = "jdbc:ucanaccess://" + dataAllDays.getdBPath();
         try (Connection connection = DriverManager.getConnection(accessURL)) {
             String SQLQuery = "SELECT TOP 1 IIF((Select SUM([Entry_ID]) FROM Cal_Entries " +
-                    "WHERE [Entry_ID] = "+ index + " AND [Entry] =  \"" +
-                     entry + "\" AND Entry_Date = '" + Date.valueOf(date) + "') > 0, 1, 2) AS [Check] FROM Cal_Entries";
+                    "WHERE [Entry_ID] = "+ index + " AND [Entry] =  '" +
+                     entry + "' AND Entry_Date = '" + Date.valueOf(date) + "') > 0, 1, 2) AS [Check] FROM Cal_Entries";
             Statement statement = connection.createStatement();
                 ResultSet results = statement.executeQuery(SQLQuery);
                         while (results.next()) {
@@ -194,7 +193,7 @@ public class IOFunctions {
                             }
                         }
         } catch (Exception e) {
-            System.out.println("connection did not work. Error " + e);
+            System.out.println("Expect this to error lots!");
         }
         return false;
     }
@@ -204,7 +203,7 @@ public class IOFunctions {
         String accessURL = "jdbc:ucanaccess://" + dataAllDays.getdBPath();
         try (Connection connection = DriverManager.getConnection(accessURL)) {
             String SQLQuery = "SELECT TOP 1 IIF((Select SUM([Entry_ID]) FROM Cal_Entries " +
-                    " [Entry] =  \"" + entry + "\" AND Entry_Date = '" + Date.valueOf(date) + "') > 0, 1, 2) AS [Check] FROM Cal_Entries";
+                    " [Entry] =  '" + entry + "' AND Entry_Date = '" + Date.valueOf(date) + "') > 0, 1, 2) AS [Check] FROM Cal_Entries";
             Statement statement = connection.createStatement();
             ResultSet results = statement.executeQuery(SQLQuery);
             while (results.next()) {
@@ -241,8 +240,7 @@ public class IOFunctions {
         try (Connection connection = DriverManager.getConnection(accessURL)) {
 
             if (!checkIfRowExists(index, date, entry)) {
-                String SQLQuery = "INSERT INTO Cal_Entries(Entry_ID, Entry_Date, Entry) VALUES(" + index +
-                        ",'" + date +"',\"" + entry +"\")";
+                String SQLQuery = "INSERT INTO Cal_Entries (Entry_ID, Entry_Date, Entry) VALUES (" + index + ", '" + date +"', '" + entry +"')";
                 Statement statement = connection.createStatement();
                 statement.executeUpdate(SQLQuery);
             } else if(checkIfPairExists(date, entry))  {
@@ -250,7 +248,7 @@ public class IOFunctions {
                 duplicateExport.showPopup(dataAllDays);
             }
         } catch (Exception e) {
-            System.out.println("Connection error " + e);
+            System.out.println("Connection error Update1Row " + e);
         }
     }
 

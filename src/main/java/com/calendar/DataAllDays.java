@@ -18,11 +18,11 @@ public class DataAllDays {
         this.usingDB = false;
     }
 
-    public void addNewDayData(LocalDate date, String text) {
+    public Integer addNewDayData(LocalDate date, String text) {
         if (!allData.containsKey(date)) {
             allData.put(date, new DataSingleDay());
         }
-        allData.get(date).addText(text);
+        return allData.get(date).addText(text);
     }
 
     public void addNewDayData(LocalDate date, String text, Integer index) {

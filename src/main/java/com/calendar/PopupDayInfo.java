@@ -17,6 +17,7 @@ public class PopupDayInfo {
     private DrawDay drawDay;
     private Label outputBox;
     private BlankStage blankStage;
+    private IOFunctions ioFunctions;
 
     public PopupDayInfo(DataAllDays dataAllDays, DrawDay drawDay){
         this.dataAllDays = dataAllDays;
@@ -25,6 +26,7 @@ public class PopupDayInfo {
         this.drawDay = drawDay;
         this.outputBox = new Label();
         blankStage = new BlankStage();
+        ioFunctions = new IOFunctions(dataAllDays);
     }
 
     public void showPopup(){
@@ -72,11 +74,19 @@ public class PopupDayInfo {
         outputBox.setText(dataAllDays.getDayEntriesToString(drawDay.getDate()));
 
         addButton.setOnAction((event) -> {
-            addButtonEvent();
+            if(!inputBox.getText().isEmpty()){
+                addButtonEvent();
+            } else {
+                System.out.println( "Nothing happening");
+            }
         });
         inputBox.setOnKeyReleased((event) -> {
             if(event.getCode() == KeyCode.ENTER){
-                addButtonEvent();
+                if(!inputBox.getText().isEmpty()){
+                    addButtonEvent();
+                } else {
+                    System.out.println( "Nothing happening");
+                }
             }
         });
         deleteButton.setOnAction((event) -> {
@@ -84,19 +94,24 @@ public class PopupDayInfo {
         });
     }
         private void addButtonEvent(){
-            allButtonEvents();
+            Integer newIndex = allButtonEvents();
             outputBox.setText(dataAllDays.getDayEntriesToString(drawDay.getDate()));
             inputBox.setDisable(false);
+            if(dataAllDays.isUsingDB()){
+                ioFunctions.updateDBOneRow(newIndex,drawDay.getDate(),inputBox.getText());
+            }
             inputBox.setText("");
             addButton.setText("Save and add another new entry");
             close.setText("Close and save");
         }
 
-        private void allButtonEvents(){
+        private Integer allButtonEvents(){
                 if(layout.getChildren().contains(inputBox) && !inputBox.getText().isEmpty()){
-                    dataAllDays.addNewDayData(drawDay.getDate(),inputBox.getText());
+                    Integer newIndex = dataAllDays.addNewDayData(drawDay.getDate(),inputBox.getText());
                     drawDay.setDayText();
+                    return newIndex;
                 }
+                return 0;
         }
         private void deleteButtonEvent(){
             allButtonEvents();
