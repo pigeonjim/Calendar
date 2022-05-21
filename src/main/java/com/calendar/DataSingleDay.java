@@ -38,8 +38,10 @@ public class DataSingleDay {
     }
 
     public void addText(Integer index, String text){
-        if(todaysData.containsKey(index)){
+        if(!todaysData.containsKey(index)){
             todaysData.put(index,text);
+        } else {
+            System.out.println("Was not updated with new index correctly");
         }
     }
 
@@ -74,9 +76,7 @@ public class DataSingleDay {
     }
 
     public Integer duplicateNewIndexFinder(ArrayList<Integer> indexList){
-        System.out.println("dupIndexFinder start: " + indexList.toString());
         combineLists(indexList);
-        System.out.println("dupIndexFinder after: " + indexList.toString());
         return indexControl.findFirstNotInUse(indexList);
     }
 

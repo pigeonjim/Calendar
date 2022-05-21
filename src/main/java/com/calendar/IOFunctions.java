@@ -238,15 +238,18 @@ public class IOFunctions {
     public void updateDBOneRow(Integer index, LocalDate date, String entry){
         String accessURL = "jdbc:ucanaccess://" + dataAllDays.getdBPath();
         try (Connection connection = DriverManager.getConnection(accessURL)) {
-
             if (!checkIfRowExists(index, date, entry)) {
                 String SQLQuery = "INSERT INTO Cal_Entries (Entry_ID, Entry_Date, Entry) VALUES (" + index + ", '" + date +"', '" + entry +"')";
                 Statement statement = connection.createStatement();
                 statement.executeUpdate(SQLQuery);
-            } else if(checkIfPairExists(date, entry))  {
-                DuplicateExport duplicateExport = new DuplicateExport(date,entry,index,getDayIndexList(date), dataAllDays.getdBPath());
-                duplicateExport.showPopup(dataAllDays);
-            }
+            } else if (checkIfRowExists(index, date, entry)){
+                    DuplicateExport duplicateExport = new DuplicateExport(date,entry,index,getDayIndexList(date), dataAllDays.getdBPath());
+                    duplicateExport.showPopup(dataAllDays);
+
+                } else if(checkIfPairExists(date, entry)){
+                    //need to check if index/date combo exists
+                }
+
         } catch (Exception e) {
             System.out.println("Connection error Update1Row " + e);
         }
@@ -257,7 +260,7 @@ public class IOFunctions {
         String accessURL = "jdbc:ucanaccess://" + dataAllDays.getdBPath();
         try (Connection connection = DriverManager.getConnection(accessURL)){
             String SQLQuery = "Select Entry_ID From Cal_Entries " +
-                    " WHERE Entry_Date = " + indexDate;
+                    " WHERE Entry_Date = '" + indexDate + "'";
             Statement statement = connection.createStatement();
             ResultSet results = statement.executeQuery(SQLQuery);
             while (results.next()){
